@@ -1,10 +1,13 @@
-import { LogoutButton } from '@/components/LogoutButton'
+import { MateCard } from '@/components/MateCard'
+import { Sidebar } from '@/components/Sidebar'
 
 export default function Dashboard() {
   return (
     <>
-      <h1 className='text-white'>This is the dashboard</h1>
-      <LogoutButton />
+      <Sidebar />
+      <main className='w-full min-h-full main-bg rounded-2xl border card-border p-12'>
+        <MateCard />
+      </main>
     </>
   )
 }

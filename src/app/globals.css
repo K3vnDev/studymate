@@ -2,3 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+.card-border {
+  @apply border-[#332E3A];
+}
+
+.card-bg {
+  @apply bg-[#100F14];
+}
+
+.main-bg {
+  @apply bg-white/[.025];
+}
+
+.button {
+  @apply hover:brightness-110 transition-all active:scale-95 active:brightness-95 disabled:opacity-75 disabled:scale-100 disabled:brightness-100 disabled:pointer-events-none select-none;
+}

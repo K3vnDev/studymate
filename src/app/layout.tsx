@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import "./globals.css"
+import type { Metadata } from 'next'
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Studymate',
@@ -7,15 +7,13 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="bg-zinc-950">
-        {children}
-      </body>
+    <html lang='en'>
+      <body className='bg-zinc-950 min-h-screen py-16 px-32 flex'>{children}</body>
     </html>
-  );
+  )
 }
