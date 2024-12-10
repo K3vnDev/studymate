@@ -7,6 +7,33 @@ const poppins = Poppins({
   subsets: ['latin']
 })
 
-export const fonts = {
-  poppins: poppins.className
+export const FONTS = {
+  POPPINS: poppins.className
 }
+
+export const CATEGORIES = [
+  '3D Modeling',
+  '3D Animation',
+  '2D Animation',
+  'Graphic Design',
+  'Web Development',
+  'Frontend Development',
+  'Backend Development',
+  'Mobile App Development',
+  'Logo & Branding Design',
+  'Game Development',
+  'Machine Learning',
+  'Databases',
+  'UI Design',
+  'UX Design',
+  'Music Theory',
+  'Audio Mixing & Mastering',
+  'Photography',
+  'Video Editing',
+  'Motion Graphics',
+  'Digital Marketing',
+  'Social Media Strategy',
+  'Project Management',
+  'Productivity',
+  'Study Techniques'
+] as const
