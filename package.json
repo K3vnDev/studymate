@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/auth-helpers-nextjs": "0.10.0",
+    "@supabase/supabase-js": "2.45.6",
     "next": "15.0.2",
+    "openai": "^4.76.1",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
-    "@supabase/auth-helpers-nextjs": "0.10.0",
-    "@supabase/supabase-js": "2.45.6"
+    "zustand": "5.0.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

@@ -1,25 +1,31 @@
-import { ChipButton } from '@components/ChipButton'
+'use client'
+
 import Image from 'next/image'
 
-export const MateCard = () => {
-  return (
-    <div className='card-bg border card-border max-w-xl w-full rounded-2xl flex items-center overflow-hidden px-8 gap-4'>
+interface Props {
+  message: string
+  children?: React.ReactNode
+  onClick?: () => void
+}
+
+export const MateCard = ({ message, children, onClick }: Props) => (
+  <article
+    className='card-bg border card-border w-fit max-w-[38rem] rounded-2xl flex items-center px-8 gap-4'
+    onClick={onClick}
+  >
+    <div className='h-full min-w-40'>
       <Image
         src='/mate-image.webp'
         alt='Your virtual assistant, Mate, waving its hand at you'
         width={150}
         height={150}
-        className='h-full w-40 object-cover self-end'
+        className='h-full scale-[1.15] object-cover self-end origin-bottom'
       />
-      <main className='flex flex-col items-end gap-5 py-5'>
-        <span className='text-[#CCCCCC] w-full'>
-          Hey there! I'm Mate. I'll be helping you out with everything you need.
-        </span>
-        <div className='flex gap-2'>
-          <ChipButton empty>Button</ChipButton>
-          <ChipButton>Button</ChipButton>
-        </div>
-      </main>
     </div>
-  )
-}
+
+    <main className='flex flex-col gap-5 py-5'>
+      <span className='text-[#CCCCCC]'>{message}</span>
+      <div className='flex gap-2 self-end'>{children}</div>
+    </main>
+  </article>
+)

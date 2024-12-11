@@ -37,3 +37,6 @@ export const CATEGORIES = [
   'Productivity',
   'Study Techniques'
 ] as const
+
+export const MATE_INITIAL_MESSAGE =
+  "Hey there! I'm Mate. I'll be helping you out with everything you need."

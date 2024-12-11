@@ -17,3 +17,7 @@
 .button {
   @apply hover:brightness-110 transition-all active:scale-95 active:brightness-95 disabled:opacity-75 disabled:scale-100 disabled:brightness-100 disabled:pointer-events-none select-none;
 }
+
+.main {
+  @apply w-full max-w-full min-h-full main-bg rounded-2xl border card-border p-14 pb-10 flex flex-col;
+}

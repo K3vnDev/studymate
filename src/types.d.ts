@@ -7,3 +7,8 @@ export interface Studyplan {
   category: Category
   duration: number
 }
+
+export interface ChatMessage {
+  role: 'user' | 'assistant'
+  content: string
+}
