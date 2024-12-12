@@ -8,10 +8,12 @@ interface ChatsStore {
 }
 
 export const useChatsStore = create<ChatsStore>(set => ({
-  chatMessages: Array(2).fill({
-    role: 'assistant',
-    content: MATE_INITIAL_MESSAGE
-  }),
+  chatMessages: [
+    {
+      role: 'assistant',
+      content: MATE_INITIAL_MESSAGE
+    }
+  ],
 
   pushChatMessage: newChatMessage =>
     set(({ chatMessages }) => {
