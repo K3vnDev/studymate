@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className='bg-zinc-950 min-h-screen py-6 px-48 flex justify-end'>
+      <body className='bg-zinc-950 min-h-screen py-6 px-48 flex justify-end overflow-y-scroll'>
         <Sidebar />
         {children}
       </body>

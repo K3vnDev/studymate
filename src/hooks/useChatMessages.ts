@@ -4,7 +4,7 @@ import type { ChatMessage } from '@/types.d'
 import { dataFetch } from '@/utils/dataFetch'
 import { useEffect, useState } from 'react'
 
-export const useChat = () => {
+export const useChatMessages = () => {
   const chatMessages = useChatsStore(s => s.chatMessages)
   const pushChatMessages = useChatsStore(s => s.pushChatMessages)
   const setChatMessages = useChatsStore(s => s.setChatMessages)
