@@ -2,44 +2,46 @@
 
 import { ChatMessage } from '@/components/ChatMessage'
 import { AppIcon, ChevronIcon } from '@/components/icons'
-import { FONTS } from '@/consts'
+import { CONTENT_JSON, FONTS } from '@/consts'
 import { useChatsStore } from '@/store/useChatsStore'
+import { dataFetch } from '@/utils/dataFetch'
 import { useState } from 'react'
 
 export default function Chat() {
-  const [message, setMessage] = useState('')
+  const [userMessage, setUserMessage] = useState('')
   const chatMessages = useChatsStore(s => s.chatMessages)
   const pushChatMessage = useChatsStore(s => s.pushChatMessage)
 
   const messageMate = async (message: string) => {
-    const res = await fetch('/api', {
-      headers: {
-        'Content-Type': 'application/json'
+    dataFetch<string>({
+      url: '/api',
+      options: {
+        headers: CONTENT_JSON,
+        method: 'POST',
+        body: JSON.stringify({
+          prevMessages: chatMessages,
+          newMessage: message
+        })
       },
-      method: 'POST',
-      body: JSON.stringify({ message })
-    })
-
-    const data = await res.json()
-    pushChatMessage({
-      role: 'assistant',
-      content: data.message
+      onSuccess: data => {
+        pushChatMessage({ role: 'assistant', content: data })
+      }
     })
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value)
+    setUserMessage(e.target.value)
   }
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
-    e ? e.preventDefault() : 0
+    e?.preventDefault()
 
-    const trimmedMessage = message.trim()
+    const trimmedMessage = userMessage.trim()
     if (trimmedMessage === '') return
 
     pushChatMessage({ role: 'user', content: trimmedMessage })
     messageMate(trimmedMessage)
-    setMessage('')
+    setUserMessage('')
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -70,7 +72,7 @@ export default function Chat() {
           <textarea
             className='min-h-12 py-3 w-full max-w-full placeholder:text-[#363636] bg-transparent outline-none text-[#ccc] resize-none [field-sizing:content]'
             placeholder='Message Mate'
-            value={message}
+            value={userMessage}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
           />

@@ -12,3 +12,8 @@ export interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
 }
+
+export interface MessageAssistantData {
+  prevMessages?: ChatMessage[]
+  newMessage?: string
+}
