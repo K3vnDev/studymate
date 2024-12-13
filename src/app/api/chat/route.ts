@@ -3,9 +3,21 @@ import { MessagesSchema } from '@/schemas/Messages'
 import type { ChatMessage, MessageAssistantData } from '@/types.d'
 import type { NextRequest } from 'next/server'
 import OpenAI from 'openai'
-import { Response } from './response'
-import { saveChatMessagesToDatabase } from './saveChatMessagesToDabatase'
+import { getPrevChatMessages } from '../getPrevChatMessages'
+import { Response } from '../response'
+import { saveChatMessagesToDatabase } from '../saveChatMessagesToDabatase'
 
+// Get all previous chat messages
+export const GET = async () => {
+  try {
+    const messages = await getPrevChatMessages()
+    return Response(true, 200, { data: messages })
+  } catch {
+    return Response(false, 500)
+  }
+}
+
+// Send a message to mate and get a response
 export const POST = async (req: NextRequest) => {
   const openai = new OpenAI()
   openai.apiKey = process.env.OPENAI_API_KEY ?? ''
@@ -46,7 +58,7 @@ export const POST = async (req: NextRequest) => {
     // Save messages to database
     saveChatMessagesToDatabase({ assistantMessage, userMessage })
 
-    return Response(true, 200, { data: assistantMessage })
+    return Response(true, 201, { data: assistantMessage })
   } catch {
     return Response(false, 500)
   }

@@ -9,7 +9,7 @@ import { STUDYPLANS_MOCK } from '@/mocks'
 
 export default function Dashboard() {
   return (
-    <main className='main gap-12'>
+    <main className='main gap-12 px-24 py-12 h-full'>
       <MateCard message={MATE_INITIAL_MESSAGE}>
         <ChipButton empty>Button</ChipButton>
         <ChipButton>Button</ChipButton>

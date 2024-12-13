@@ -4,19 +4,17 @@ import { create } from 'zustand'
 
 interface ChatsStore {
   chatMessages: ChatMessage[]
-  pushChatMessage: (chatMessage: ChatMessage) => void
+  setChatMessages: (chatMessages: ChatMessage[]) => void
+  pushChatMessages: (...chatMessages: ChatMessage[]) => void
 }
 
 export const useChatsStore = create<ChatsStore>(set => ({
-  chatMessages: [
-    {
-      role: 'assistant',
-      content: MATE_INITIAL_MESSAGE
-    }
-  ],
+  chatMessages: [],
 
-  pushChatMessage: newChatMessage =>
+  setChatMessages: chatMessages => set({ chatMessages }),
+
+  pushChatMessages: (...newChatMessages) =>
     set(({ chatMessages }) => {
-      return { chatMessages: [...chatMessages, newChatMessage] }
+      return { chatMessages: [...chatMessages, ...newChatMessages] }
     })
 }))

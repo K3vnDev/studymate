@@ -19,5 +19,5 @@
 }
 
 .main {
-  @apply w-full max-w-full min-h-full main-bg rounded-2xl border card-border p-14 pb-10 flex flex-col;
+  @apply w-[65rem] main-bg border rounded-3xl card-border flex flex-col;
 }

@@ -24,7 +24,7 @@ export const Sidebar = () => {
   ]
 
   return (
-    <aside className='w-[32rem] min-h-full flex flex-col gap-16 py-16'>
+    <aside className='w-[32rem] flex flex-col gap-16 justify-center fixed left-48 top-1/2 -translate-y-1/2'>
       <h2 className={`text-white text-3xl flex gap-3 items-center ${FONTS.POPPINS}`}>
         <AppIcon />
         <div>
