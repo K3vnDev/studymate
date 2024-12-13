@@ -120,3 +120,22 @@ export const ChevronIcon = (props: Props) => (
     <path d='M6 15l6 -6l6 6' />
   </svg>
 )
+
+export const ArrowIcon = (props: Props) => (
+  <svg
+    width='24'
+    height='24'
+    viewBox='0 0 24 24'
+    fill='none'
+    stroke='currentColor'
+    strokeWidth='2'
+    strokeLinecap='round'
+    strokeLinejoin='round'
+    {...props}
+  >
+    <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+    <path d='M12 5l0 14' />
+    <path d='M18 13l-6 6' />
+    <path d='M6 13l6 6' />
+  </svg>
+)

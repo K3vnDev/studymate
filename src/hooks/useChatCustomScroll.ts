@@ -1,8 +1,11 @@
 import { useChatsStore } from '@/store/useChatsStore'
-import { useEffect, useRef } from 'react'
+import { getElementRef } from '@/utils/getElementRef'
+import { useEffect, useRef, useState } from 'react'
 
 export const useChatCustomScroll = () => {
   const chatMessages = useChatsStore(s => s.chatMessages)
+  const [scrollIsOnBottom, setScrollIsOnBottom] = useState(false)
+
   const listRef = useRef(null)
   const scrollRef = useRef(null)
 
@@ -22,13 +25,31 @@ export const useChatCustomScroll = () => {
   // Apply scroll made on the body to the chat
   useEffect(() => {
     const handleScroll = () => {
-      if (listRef.current === null) return
-      const listElement: HTMLLIElement = listRef.current
+      const listElement = getElementRef<HTMLUListElement>(listRef)
       listElement.scrollTo({ top: window.scrollY })
+      checkScrollOnBottom(listElement)
     }
     document.addEventListener('scroll', handleScroll)
     return () => document.addEventListener('scroll', handleScroll)
   }, [])
 
-  return { listRef, scrollRef }
+  const checkScrollOnBottom = (listElement: HTMLUListElement) => {
+    const { scrollTop, scrollHeight, clientHeight } = listElement
+    const scrollDifference = scrollHeight - scrollTop
+
+    const TRESHOLD = 20
+    setScrollIsOnBottom(Math.abs(clientHeight - scrollDifference) < TRESHOLD)
+  }
+
+  const scrollDownButtonProps: { onClick: () => void; style: React.CSSProperties } = {
+    onClick: () => {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' })
+    },
+    style: {
+      opacity: scrollIsOnBottom ? 0 : 1,
+      pointerEvents: scrollIsOnBottom ? 'none' : 'auto'
+    }
+  }
+
+  return { listRef, scrollRef, scrollDownButtonProps }
 }

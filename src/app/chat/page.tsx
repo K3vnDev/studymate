@@ -1,14 +1,14 @@
 'use client'
 
 import { ChatMessage } from '@/components/ChatMessage'
-import { AppIcon, ChevronIcon } from '@/components/icons'
+import { AppIcon, ArrowIcon, ChevronIcon } from '@/components/icons'
 import { FONTS } from '@/consts'
 import { useChatCustomScroll } from '@/hooks/useChatCustomScroll'
 import { useChatMessages } from '@/hooks/useChatMessages'
 
 export default function Chat() {
   const { chatMessages, handleSubmit, inputProps } = useChatMessages()
-  const { listRef, scrollRef } = useChatCustomScroll()
+  const { listRef, scrollRef, scrollDownButtonProps } = useChatCustomScroll()
 
   return (
     <>
@@ -45,7 +45,17 @@ export default function Chat() {
             <ChevronIcon className='text-[#1C1B20] stroke-[2.5px] transition group-active:-translate-y-1' />
           </button>
         </form>
+
+        {/* Scroll down button */}
+        <button
+          className='transition absolute left-1/2 -translate-x-1/2 bottom-[5.5rem] rounded-full border border-[#555555] p-2 bg-[#131313] button'
+          {...scrollDownButtonProps}
+        >
+          <ArrowIcon className='text-[#555555]' />
+        </button>
       </main>
+
+      {/* Scroll reference*/}
       <div className='w-8 bg-transparent pointer-events-none' ref={scrollRef} />
     </>
   )
