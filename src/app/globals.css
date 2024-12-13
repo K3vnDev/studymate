@@ -21,3 +21,14 @@
 .main {
   @apply w-[65rem] main-bg border rounded-3xl card-border flex flex-col;
 }
+
+@keyframes chat-message-bubbles-pounce{
+  from{
+    transform: translateY(2px);
+    opacity: 0.5;
+  }
+  to{
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}

@@ -17,7 +17,8 @@
         "useAltText": "off",
         "noSvgWithoutTitle": "off",
         "noAutofocus": "off",
-        "noLabelWithoutControl": "off"
+        "noLabelWithoutControl": "off",
+        "useValidAriaRole": "off"
       },
       "suspicious": {
         "noArrayIndexKey": "off",

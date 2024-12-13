@@ -1,14 +1,15 @@
 'use client'
 
 import { ChatMessage } from '@/components/ChatMessage'
+import { ChatMessageBubbles } from '@/components/ChatMessageBubbles'
 import { AppIcon, ArrowIcon, ChevronIcon } from '@/components/icons'
 import { FONTS } from '@/consts'
 import { useChatCustomScroll } from '@/hooks/useChatCustomScroll'
 import { useChatMessages } from '@/hooks/useChatMessages'
 
 export default function Chat() {
-  const { chatMessages, handleSubmit, inputProps } = useChatMessages()
-  const { listRef, scrollRef, scrollDownButtonProps } = useChatCustomScroll()
+  const { chatMessages, handleSubmit, isWaitingResponse, inputProps } = useChatMessages()
+  const { listRef, scrollRef, scrollDownButtonProps } = useChatCustomScroll({ isWaitingResponse })
 
   return (
     <>
@@ -21,9 +22,14 @@ export default function Chat() {
         </div>
 
         <ul className='w-full max-h-full flex flex-col gap-4 py-28 overflow-y-hidden' ref={listRef}>
-          {chatMessages.map((chatMessage, i) => (
-            <ChatMessage {...chatMessage} key={i} />
-          ))}
+          <>
+            {chatMessages.map(({ role, content }, i) => (
+              <ChatMessage role={role} key={i}>
+                {content}
+              </ChatMessage>
+            ))}
+            {isWaitingResponse && <ChatMessageBubbles />}
+          </>
         </ul>
 
         <form

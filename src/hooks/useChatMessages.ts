@@ -9,6 +9,7 @@ export const useChatMessages = () => {
   const pushChatMessages = useChatsStore(s => s.pushChatMessages)
   const setChatMessages = useChatsStore(s => s.setChatMessages)
   const [userMessage, setUserMessage] = useState('')
+  const [isWaitingResponse, setIsWaitingRespose] = useState(false)
 
   const getPreviousMessages = () => {
     dataFetch<ChatMessage[]>({
@@ -21,6 +22,8 @@ export const useChatMessages = () => {
   useEffect(getPreviousMessages, [])
 
   const messageMate = (message: string) => {
+    setIsWaitingRespose(true)
+
     dataFetch<string>({
       url: '/api/chat',
       options: {
@@ -33,6 +36,7 @@ export const useChatMessages = () => {
       },
       onSuccess: data => {
         pushChatMessages({ role: 'assistant', content: data })
+        setIsWaitingRespose(false)
       }
     })
   }
@@ -62,6 +66,7 @@ export const useChatMessages = () => {
   return {
     chatMessages,
     handleSubmit,
+    isWaitingResponse,
     inputProps: {
       onChange: handleChange,
       onKeyDown: handleKeyDown,

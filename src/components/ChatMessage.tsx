@@ -1,6 +1,11 @@
 import type { ChatMessage as ChatMessageType } from '@/types.d'
 
-export const ChatMessage = ({ role, content }: ChatMessageType) => {
+interface Props {
+  role: ChatMessageType['role']
+  children: React.ReactNode
+}
+
+export const ChatMessage = ({ role, children }: Props) => {
   const style: React.CSSProperties =
     role === 'assistant'
       ? {
@@ -18,7 +23,7 @@ export const ChatMessage = ({ role, content }: ChatMessageType) => {
 
   return (
     <li className='px-6 list-none py-3 w-fit max-w-96 rounded-3xl' style={style}>
-      {content}
+      {children}
     </li>
   )
 }

@@ -3,7 +3,11 @@ import { useChatsStore } from '@/store/useChatsStore'
 import { getElementRef } from '@/utils/getElementRef'
 import { useEffect, useRef, useState } from 'react'
 
-export const useChatCustomScroll = () => {
+interface Params {
+  isWaitingResponse: boolean
+}
+
+export const useChatCustomScroll = ({ isWaitingResponse }: Params) => {
   const chatMessages = useChatsStore(s => s.chatMessages)
   const [scrollIsOnBottom, setScrollIsOnBottom] = useState(true)
   const isAutoScrollingDown = useRef(false)
@@ -34,7 +38,7 @@ export const useChatCustomScroll = () => {
       checkScrollOnBottom()
     }
     document.addEventListener('scroll', handleScroll)
-    return () => document.addEventListener('scroll', handleScroll)
+    return () => document.removeEventListener('scroll', handleScroll)
   }, [])
 
   // Handle scroll on bottom checking logic
@@ -55,9 +59,9 @@ export const useChatCustomScroll = () => {
       scrollToBottom(isOnInitialScroll.current ? 'instant' : 'smooth')
       isOnInitialScroll.current = false
     }
-  }, [chatMessages])
+  }, [chatMessages, isWaitingResponse])
 
-  const scrollToBottom = (behavior: 'smooth' | 'instant') => {
+  const scrollToBottom = (behavior: ScrollBehavior) => {
     window.scrollTo({ top: document.documentElement.scrollHeight, behavior })
     isAutoScrollingDown.current = true
   }
