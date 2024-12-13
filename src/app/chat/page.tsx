@@ -15,7 +15,10 @@ export default function Chat() {
     <>
       <main className='main items-center h-[calc(100vh-3rem)] flex-col justify-between fixed right-48 top-6 px-48'>
         <div
-          className={`${FONTS.POPPINS} flex gap-3 items-center text-white absolute top-8 left-1/2 -translate-x-1/2 h-14 backdrop-blur-sm rounded-full px-16 bg-black/25`}
+          className={`
+            ${FONTS.POPPINS} flex gap-3 items-center text-white absolute top-8 left-1/2 -translate-x-1/2 h-14 
+            backdrop-blur-lg rounded-full px-16 bg-black/25 card-border border
+          `}
         >
           <AppIcon className='size-8' />
           <h3 className='font-medium text-3xl'>MATE</h3>

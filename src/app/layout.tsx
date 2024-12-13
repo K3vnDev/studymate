@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { AppBackground } from '@/components/AppBackground'
 import { Sidebar } from '@/components/Sidebar'
 
 export const metadata: Metadata = {
@@ -14,9 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className='bg-zinc-950 min-h-screen py-6 px-48 flex justify-end overflow-y-scroll'>
+      <body className='min-h-screen py-6 px-48 flex justify-end overflow-y-scroll'>
         <Sidebar />
         {children}
+        <AppBackground />
       </body>
     </html>
   )
