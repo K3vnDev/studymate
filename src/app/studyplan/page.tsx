@@ -4,17 +4,18 @@ import { Studyplan } from '@/components/Studyplan'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import type { Studyplan as StudyplanType } from '@/types'
 import { dataFetch } from '@/utils/dataFetch'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 export default function StudyplanPage() {
   const studyplan = useStudyplansStore(s => s.studyplan)
   const setStudyplan = useStudyplansStore(s => s.setStudyplan)
-  const params = useSearchParams()
   const router = useRouter()
 
   useEffect(() => {
-    const id = params.get('id')
+    const searchParams = new URLSearchParams(window.location.search)
+    const id = searchParams.get('id')
+
     if (id === null) {
       if (studyplan === null) router.push('/dashboard')
       return
