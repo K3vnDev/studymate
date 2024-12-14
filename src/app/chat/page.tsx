@@ -7,7 +7,7 @@ import { FONTS } from '@/consts'
 import { useChatCustomScroll } from '@/hooks/useChatCustomScroll'
 import { useChatMessages } from '@/hooks/useChatMessages'
 
-export default function Chat() {
+export default function ChatPage() {
   const { chatMessages, handleSubmit, isWaitingResponse, inputProps } = useChatMessages()
   const { listRef, scrollRef, scrollDownButtonProps } = useChatCustomScroll({ isWaitingResponse })
 
@@ -17,7 +17,7 @@ export default function Chat() {
         <div
           className={`
             ${FONTS.POPPINS} flex gap-3 items-center text-white absolute top-8 left-1/2 -translate-x-1/2 h-14 
-            backdrop-blur-lg rounded-full px-16 bg-black/25 card-border border
+            backdrop-blur-lg rounded-full px-16 bg-black/35
           `}
         >
           <AppIcon className='size-8' />

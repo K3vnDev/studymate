@@ -1,3 +1,4 @@
+import { FONTS } from '@/consts'
 import type { ChatMessage as ChatMessageType } from '@/types.d'
 
 interface Props {
@@ -22,7 +23,10 @@ export const ChatMessage = ({ role, children }: Props) => {
         }
 
   return (
-    <li className='px-6 list-none py-3 w-fit max-w-96 rounded-3xl' style={style}>
+    <li
+      className={`px-6 list-none py-3 w-fit max-w-96 rounded-3xl ${FONTS.INTER} font-light`}
+      style={style}
+    >
       {children}
     </li>
   )

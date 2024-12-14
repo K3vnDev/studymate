@@ -18,7 +18,7 @@ export const ChipButton = ({ children, onClick, empty }: Props) => {
 
   return (
     <button
-      className='border rounded-full py-1 px-6 font-medium text-lg button'
+      className='border rounded-full py-1 px-6 font-medium text-lg button flex gap-2 items-center *:size-6'
       style={style}
       onClick={handleClick}
     >

@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { Paragraph } from './Paragraph'
 
 interface Props {
   message: string
@@ -24,7 +25,7 @@ export const MateCard = ({ message, children, onClick }: Props) => (
     </div>
 
     <main className='flex flex-col gap-5 py-5'>
-      <span className='text-[#CCCCCC]'>{message}</span>
+      <Paragraph>{message}</Paragraph>
       <div className='flex gap-2 self-end'>{children}</div>
     </main>
   </article>

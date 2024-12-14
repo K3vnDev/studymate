@@ -1,5 +1,5 @@
 import { MATE_TRAIN_MESSAGE } from '@/consts'
-import { MessagesSchema } from '@/schemas/Messages'
+import { ChatMessagesSchema } from '@/schemas/ChatMessages'
 import type { ChatMessage, MessageAssistantData } from '@/types.d'
 import type { NextRequest } from 'next/server'
 import OpenAI from 'openai'
@@ -33,7 +33,7 @@ export const POST = async (req: NextRequest) => {
     userMessage = newMessage.trim()
     if (userMessage === '') return Response(false, 400)
 
-    chatMessages = MessagesSchema.parse(prevMessages)
+    chatMessages = ChatMessagesSchema.parse(prevMessages)
 
     console.log({ messagesRecievedFromClient: chatMessages })
   } catch {

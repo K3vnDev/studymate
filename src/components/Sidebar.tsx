@@ -1,5 +1,4 @@
 import { FONTS } from '@/consts'
-import Image from 'next/image'
 import Link from 'next/link'
 import { AppIcon, ClockIcon, HomeIcon, MessageIcon, ProfileIcon } from './icons'
 

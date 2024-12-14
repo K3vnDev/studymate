@@ -19,7 +19,7 @@
 }
 
 .main {
-  @apply w-[65rem] main-bg border rounded-3xl card-border flex flex-col;
+  @apply w-[65rem] main-bg border rounded-3xl card-border flex flex-col min-h-[calc(100vh-3rem)];
 }
 
 @keyframes chat-message-bubbles-pounce {
