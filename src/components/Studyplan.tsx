@@ -1,6 +1,6 @@
 import { FONTS } from '@/consts'
+import { parseDays } from '@/lib/utils/parseDays'
 import type { Studyplan as StudyplanType } from '@/types.d'
-import { parseDays } from '@/utils/parseDays'
 import { Badge } from './Badge'
 import { ChipButton } from './ChipButton'
 import { Header } from './Header'

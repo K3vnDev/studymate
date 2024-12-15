@@ -1,9 +1,9 @@
 'use client'
 
 import { Studyplan } from '@/components/Studyplan'
+import { dataFetch } from '@/lib/utils/dataFetch'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import type { Studyplan as StudyplanType } from '@/types'
-import { dataFetch } from '@/utils/dataFetch'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 

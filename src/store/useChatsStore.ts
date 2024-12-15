@@ -1,4 +1,3 @@
-import { MATE_INITIAL_MESSAGE } from '@/consts'
 import type { ChatMessage } from '@/types.d'
 import { create } from 'zustand'
 

@@ -1,4 +1,4 @@
-import { repeat } from '@/utils/repeat'
+import { repeat } from '@/lib/utils/repeat'
 import { ChatMessage } from './ChatMessage'
 
 export const ChatMessageBubbles = () => (

@@ -1,25 +1,22 @@
-import { MAX_CHAT_MESSAGES_DB } from '@/consts'
+import type { MateResponse } from '@/lib/schemas/MateResponse'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { getPrevChatMessages } from './getPrevChatMessages'
 
 interface Params {
   userMessage: string
-  assistantMessage: string
+  assistantMessages: MateResponse
 }
 
-export const saveChatMessagesToDatabase = async ({ userMessage, assistantMessage }: Params) => {
+export const saveChatMessagesToDatabase = async ({ userMessage, assistantMessages }: Params) => {
   try {
     const prevChatMessages = await getPrevChatMessages()
-
-    if (prevChatMessages.length >= MAX_CHAT_MESSAGES_DB) {
-      prevChatMessages.slice(2 - MAX_CHAT_MESSAGES_DB)
-    }
+    const filteredMessages = assistantMessages.responses.filter(({ type }) => type === 'message')
 
     const messagesToInsert = [
       ...prevChatMessages,
       { role: 'user', content: userMessage },
-      { role: 'assistant', content: assistantMessage }
+      ...filteredMessages.map(({ data }) => ({ role: 'assistant', content: data }))
     ]
 
     const supabase = createServerComponentClient({ cookies })
@@ -28,7 +25,5 @@ export const saveChatMessagesToDatabase = async ({ userMessage, assistantMessage
       .from('users')
       .update([{ chat_with_mate: messagesToInsert }])
       .eq('id', (await supabase.auth.getUser()).data.user?.id)
-  } catch (err) {
-    console.log('ErrorTrace', { err })
-  }
+  } catch {}
 }

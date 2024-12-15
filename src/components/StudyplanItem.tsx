@@ -1,7 +1,7 @@
 import { FONTS } from '@/consts'
+import { parseDays } from '@/lib/utils/parseDays'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import type { Studyplan } from '@/types.d'
-import { parseDays } from '@/utils/parseDays'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ClockIcon } from './icons'

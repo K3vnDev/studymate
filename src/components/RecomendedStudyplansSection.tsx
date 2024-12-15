@@ -1,6 +1,6 @@
+import { dataFetch } from '@/lib/utils/dataFetch'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import type { Studyplan } from '@/types'
-import { dataFetch } from '@/utils/dataFetch'
 import { useEffect } from 'react'
 import { Header } from './Header'
 import { StudyplanItem } from './StudyplanItem'

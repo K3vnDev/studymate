@@ -1,7 +1,8 @@
 import { CONTENT_JSON } from '@/consts'
+import type { MateResponse } from '@/lib/schemas/MateResponse'
+import { dataFetch } from '@/lib/utils/dataFetch'
 import { useChatsStore } from '@/store/useChatsStore'
 import type { ChatMessage } from '@/types.d'
-import { dataFetch } from '@/utils/dataFetch'
 import { useEffect, useState } from 'react'
 
 export const useChatMessages = () => {
@@ -24,7 +25,7 @@ export const useChatMessages = () => {
   const messageMate = (message: string) => {
     setIsWaitingRespose(true)
 
-    dataFetch<string>({
+    dataFetch<MateResponse>({
       url: '/api/chat',
       options: {
         headers: CONTENT_JSON,
@@ -35,7 +36,12 @@ export const useChatMessages = () => {
         })
       },
       onSuccess: data => {
-        pushChatMessages({ role: 'assistant', content: data })
+        const chatMessages = data.responses
+          .filter(({ type }) => type === 'message')
+          .map(({ data }) => ({ role: 'assistant', content: data })) as ChatMessage[]
+
+        console.log(data)
+        pushChatMessages(...chatMessages)
         setIsWaitingRespose(false)
       }
     })

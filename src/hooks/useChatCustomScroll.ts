@@ -1,6 +1,6 @@
 import { CHAT_ON_BOTTOM_THRESHOLD } from '@/consts'
+import { getElementRef } from '@/lib/utils/getElementRef'
 import { useChatsStore } from '@/store/useChatsStore'
-import { getElementRef } from '@/utils/getElementRef'
 import { useEffect, useRef, useState } from 'react'
 
 interface Params {
