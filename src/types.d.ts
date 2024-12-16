@@ -1,29 +1,36 @@
+import type { z } from 'zod'
 import type { CATEGORIES } from './consts'
+import type { ChatMessageSchema as ChatMessageSchemaType } from './lib/schemas/ChatMessage'
+import type { MateResponseSchema as MateResponseSchemaType } from './lib/schemas/MateResponse'
+import type { StudyplanSchema as StudyplanSchemaType } from './lib/schemas/Studyplan'
 
 export type Category = (typeof CATEGORIES)[number]
 
-export interface ChatMessage {
-  role: 'user' | 'assistant'
+export type ChatMessage =
+  | {
+      role: 'assistant' | 'user' | 'error'
+      content: string
+    }
+  | {
+      role: 'studyplan'
+      content: StudyplanUnsavedSchema
+    }
+
+export type ChatMessagesDBResponse = {
+  role: 'assistant' | 'user' | 'system'
   content: string
 }
 
 export interface MessageAssistantData {
-  prevMessages?: ChatMessage[]
+  prevMessages?: ChatMessageSchemaType[]
   newMessage?: string
 }
 
-export interface Studyplan {
-  id: string
-  name: string
-  desc: string
-  category: Category
-  daily_lessons: [
-    {
-      name: string
-      desc: string
-      tasks: {
-        goal: string
-      }
-    }
-  ]
+// Schemas
+export type ChatMessageSchema = z.infer<typeof ChatMessageSchemaType>
+export type MateResponseSchema = z.infer<typeof MateResponseSchemaType>
+
+export type StudyplanSchema = z.infer<typeof StudyplanSchemaType> & {
+  id: string | null
+  created_by: string | null
 }

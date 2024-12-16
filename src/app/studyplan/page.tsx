@@ -3,7 +3,7 @@
 import { Studyplan } from '@/components/Studyplan'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
-import type { Studyplan as StudyplanType } from '@/types'
+import type { StudyplanSchema } from '@/types'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -24,7 +24,7 @@ export default function StudyplanPage() {
     if (studyplan === null || studyplan.id !== id) {
       setStudyplan(null)
 
-      dataFetch<StudyplanType>({
+      dataFetch<StudyplanSchema>({
         url: `/api/studyplan?id=${id}`,
         onSuccess: data => {
           setStudyplan(data)

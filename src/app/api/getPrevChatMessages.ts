@@ -1,9 +1,9 @@
-import type { ChatMessage } from '@/types'
+import type { ChatMessageSchema } from '@/types'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 
 export const getPrevChatMessages = async () =>
-  new Promise<ChatMessage[]>((res, rej) => {
+  new Promise<ChatMessageSchema[]>((res, rej) => {
     const supabase = createServerComponentClient({ cookies })
 
     supabase

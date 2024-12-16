@@ -1,7 +1,7 @@
 import { CATEGORIES } from '@/consts'
 import { z } from 'zod'
 
-export const StudyplanUnsavedSchema = z.object({
+export const StudyplanSchema = z.object({
   name: z.string(),
   desc: z.string(),
   category: z.enum(CATEGORIES),
@@ -17,9 +17,4 @@ export const StudyplanUnsavedSchema = z.object({
       )
     })
   )
-})
-
-export const StudyplanSavedSchema = StudyplanUnsavedSchema.extend({
-  id: z.string().uuid(),
-  created_by: z.string().uuid()
 })

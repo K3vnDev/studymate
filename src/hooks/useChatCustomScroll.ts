@@ -55,7 +55,7 @@ export const useChatCustomScroll = ({ isWaitingResponse }: Params) => {
 
   // Scroll to bottom on new message
   useEffect(() => {
-    if (scrollIsOnBottom && chatMessages.length > 0) {
+    if (scrollIsOnBottom && chatMessages !== null && chatMessages.length > 0) {
       scrollToBottom(isOnInitialScroll.current ? 'instant' : 'smooth')
       isOnInitialScroll.current = false
     }

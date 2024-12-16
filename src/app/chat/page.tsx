@@ -1,8 +1,7 @@
 'use client'
 
 import { ChatMessage } from '@/components/ChatMessage'
-import { ChatMessageBubbles } from '@/components/ChatMessageBubbles'
-import { AppIcon, ArrowIcon, ChevronIcon } from '@/components/icons'
+import { AppIcon, ArrowIcon, ChevronIcon, LoadingIcon } from '@/components/icons'
 import { FONTS } from '@/consts'
 import { useChatCustomScroll } from '@/hooks/useChatCustomScroll'
 import { useChatMessages } from '@/hooks/useChatMessages'
@@ -24,17 +23,23 @@ export default function ChatPage() {
           <h3 className='font-medium text-3xl'>MATE</h3>
         </div>
 
+        {/* Messages section */}
         <ul className='w-full max-h-full flex flex-col gap-4 py-28 overflow-y-hidden' ref={listRef}>
-          <>
-            {chatMessages.map(({ role, content }, i) => (
-              <ChatMessage role={role} key={i}>
-                {content}
-              </ChatMessage>
-            ))}
-            {isWaitingResponse && <ChatMessageBubbles />}
-          </>
+          {chatMessages !== null ? (
+            <>
+              {chatMessages.map((chatMessage, i) => (
+                <ChatMessage {...chatMessage} key={i} />
+              ))}
+              {isWaitingResponse && <ChatMessage role='bubbles' content='' />}
+            </>
+          ) : (
+            <div className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'>
+              <LoadingIcon className='size-20 animate-spin text-white/25' />
+            </div>
+          )}
         </ul>
 
+        {/* Input */}
         <form
           className={`
           bg-[#1C1B20] border border-[#555] rounded-3xl flex px-4 justify-between 

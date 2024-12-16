@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { StudyplanUnsavedSchema } from './Studyplan'
+import { StudyplanSchema } from './Studyplan'
 
 export const MateResponseSchema = z.object({
   responses: z.array(
@@ -10,10 +10,8 @@ export const MateResponseSchema = z.object({
       }),
       z.object({
         type: z.enum(['studyplan']),
-        data: StudyplanUnsavedSchema
+        data: StudyplanSchema
       })
     ])
   )
 })
-
-export type MateResponse = z.infer<typeof MateResponseSchema>

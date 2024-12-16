@@ -1,29 +1,35 @@
-import type { MateResponse } from '@/lib/schemas/MateResponse'
+import type { MateResponseSchema } from '@/types.d'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { getPrevChatMessages } from './getPrevChatMessages'
 
 interface Params {
   userMessage: string
-  assistantMessages: MateResponse
+  assistantMessages: MateResponseSchema
+  userId: string
 }
 
-export const saveChatMessagesToDatabase = async ({ userMessage, assistantMessages }: Params) => {
+export const saveChatMessagesToDatabase = async ({
+  userMessage,
+  assistantMessages,
+  userId
+}: Params) => {
   try {
     const prevChatMessages = await getPrevChatMessages()
-    const filteredMessages = assistantMessages.responses.filter(({ type }) => type === 'message')
 
     const messagesToInsert = [
       ...prevChatMessages,
       { role: 'user', content: userMessage },
-      ...filteredMessages.map(({ data }) => ({ role: 'assistant', content: data }))
+      ...assistantMessages.responses.map(({ type, data }) => {
+        return type === 'message'
+          ? { role: 'assistant', content: data }
+          : { role: 'system', content: JSON.stringify(data) }
+      })
     ]
 
-    const supabase = createServerComponentClient({ cookies })
-
-    await supabase
+    await createServerComponentClient({ cookies })
       .from('users')
       .update([{ chat_with_mate: messagesToInsert }])
-      .eq('id', (await supabase.auth.getUser()).data.user?.id)
+      .eq('id', userId)
   } catch {}
 }

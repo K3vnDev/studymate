@@ -1,12 +1,12 @@
 import { FONTS } from '@/consts'
 import { parseDays } from '@/lib/utils/parseDays'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
-import type { Studyplan } from '@/types.d'
+import type { StudyplanSchema } from '@/types.d'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ClockIcon } from './icons'
 
-export const StudyplanItem = (studyplan: Studyplan) => {
+export const StudyplanItem = (studyplan: StudyplanSchema) => {
   const setStudyplan = useStudyplansStore(s => s.setStudyplan)
   const { id, name, category, daily_lessons } = studyplan
 

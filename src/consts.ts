@@ -1,4 +1,3 @@
-import fs from 'node:fs'
 import { Inter, Poppins } from 'next/font/google'
 
 // Fonts

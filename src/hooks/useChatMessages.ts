@@ -1,8 +1,7 @@
 import { CONTENT_JSON } from '@/consts'
-import type { MateResponse } from '@/lib/schemas/MateResponse'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useChatsStore } from '@/store/useChatsStore'
-import type { ChatMessage } from '@/types.d'
+import type { ChatMessage, ChatMessagesDBResponse, MateResponseSchema } from '@/types.d'
 import { useEffect, useState } from 'react'
 
 export const useChatMessages = () => {
@@ -12,20 +11,26 @@ export const useChatMessages = () => {
   const [userMessage, setUserMessage] = useState('')
   const [isWaitingResponse, setIsWaitingRespose] = useState(false)
 
-  const getPreviousMessages = () => {
-    dataFetch<ChatMessage[]>({
+  useEffect(() => {
+    if (chatMessages !== null) return
+
+    dataFetch<ChatMessagesDBResponse[]>({
       url: '/api/chat',
       onSuccess: data => {
-        setChatMessages(data)
+        const newMessages = data.map(msg => {
+          return msg.role === 'system'
+            ? { role: 'studyplan', content: JSON.parse(msg.content) }
+            : msg
+        }) as ChatMessage[]
+        setChatMessages(newMessages)
       }
     })
-  }
-  useEffect(getPreviousMessages, [])
+  }, [])
 
   const messageMate = (message: string) => {
     setIsWaitingRespose(true)
 
-    dataFetch<MateResponse>({
+    dataFetch<MateResponseSchema>({
       url: '/api/chat',
       options: {
         headers: CONTENT_JSON,
@@ -36,11 +41,11 @@ export const useChatMessages = () => {
         })
       },
       onSuccess: data => {
-        const chatMessages = data.responses
-          .filter(({ type }) => type === 'message')
-          .map(({ data }) => ({ role: 'assistant', content: data })) as ChatMessage[]
+        const chatMessages = data.responses.map(({ type, data }) => ({
+          role: type === 'message' ? 'assistant' : 'studyplan',
+          content: data
+        })) as ChatMessage[]
 
-        console.log(data)
         pushChatMessages(...chatMessages)
         setIsWaitingRespose(false)
       }

@@ -1,6 +1,6 @@
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
-import type { Studyplan } from '@/types'
+import type { StudyplanSchema } from '@/types.d'
 import { useEffect } from 'react'
 import { Header } from './Header'
 import { StudyplanItem } from './StudyplanItem'
@@ -12,7 +12,7 @@ export const RecomendedStudyplansSection = () => {
   useEffect(() => {
     if (studyplans.recomended.length) return
 
-    dataFetch<Studyplan[]>({
+    dataFetch<StudyplanSchema[]>({
       url: '/api/studyplan',
       onSuccess: data => {
         setStudyplans({ ...studyplans, recomended: data })

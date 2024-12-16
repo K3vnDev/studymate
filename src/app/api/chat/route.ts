@@ -1,10 +1,14 @@
 import { MAX_CHAT_MESSAGES_PROMPT } from '@/consts'
-import { ChatMessagesSchema } from '@/lib/schemas/ChatMessages'
+import { ChatMessageSchema } from '@/lib/schemas/ChatMessage'
 import { MateResponseSchema } from '@/lib/schemas/MateResponse'
-import type { ChatMessage, MessageAssistantData } from '@/types.d'
+import type { MessageAssistantData } from '@/types.d'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import OpenAI from 'openai'
 import { zodResponseFormat } from 'openai/helpers/zod.mjs'
+import type { ChatCompletionMessageParam } from 'openai/src/resources/index.js'
+import { z } from 'zod'
 import { getPrevChatMessages } from '../getPrevChatMessages'
 import { Response } from '../response'
 import { saveChatMessagesToDatabase } from '../saveChatMessagesToDabatase'
@@ -25,8 +29,17 @@ export const POST = async (req: NextRequest) => {
   const openai = new OpenAI()
   openai.apiKey = process.env.OPENAI_API_KEY ?? ''
 
-  let chatMessages: ChatMessage[] = []
+  let chatMessages: ChatCompletionMessageParam[] = []
   let userMessage = ''
+
+  const supabase = createServerComponentClient({ cookies })
+  const user = await supabase.auth.getUser()
+
+  // Check if user is logged in
+  if (user.data.user === null) {
+    return Response(false, 401)
+  }
+  const { id } = user.data.user
 
   try {
     // Extract user message
@@ -36,7 +49,13 @@ export const POST = async (req: NextRequest) => {
     userMessage = newMessage.trim()
     if (userMessage === '') return Response(false, 400)
 
-    chatMessages = ChatMessagesSchema.parse(prevMessages)
+    const validatedMessages = z.array(ChatMessageSchema).parse(prevMessages)
+    const parsedMessages = validatedMessages.map(msg => {
+      return msg.role === 'studyplan'
+        ? { role: 'system', content: JSON.stringify(msg.content) }
+        : msg
+    })
+    chatMessages = parsedMessages as ChatCompletionMessageParam[]
   } catch {
     return Response(false, 400, { msg: 'Invalid messages format' })
   }
@@ -58,7 +77,7 @@ export const POST = async (req: NextRequest) => {
     if (!assistantMessages) return Response(false, 500)
 
     // Save messages to database
-    saveChatMessagesToDatabase({ assistantMessages, userMessage })
+    saveChatMessagesToDatabase({ assistantMessages, userMessage, userId: id })
 
     return Response(true, 201, { data: assistantMessages })
   } catch (e) {
