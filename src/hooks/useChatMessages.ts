@@ -1,19 +1,28 @@
-import { CONTENT_JSON } from '@/consts'
+import { CONTENT_JSON, EVENTS } from '@/consts'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useChatsStore } from '@/store/useChatsStore'
 import type { ChatMessage, ChatMessagesDBResponse, MateResponseSchema } from '@/types.d'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useEvent } from './useEvent'
 
 export const useChatMessages = () => {
   const chatMessages = useChatsStore(s => s.chatMessages)
   const pushChatMessages = useChatsStore(s => s.pushChatMessages)
   const setChatMessages = useChatsStore(s => s.setChatMessages)
+
   const [userMessage, setUserMessage] = useState('')
   const [isWaitingResponse, setIsWaitingRespose] = useState(false)
+  const [isOnError, setIsOnError] = useState(false)
+  const tryAgainCallback = useRef<() => void>(() => {})
 
+  // Load previous messages
   useEffect(() => {
-    if (chatMessages !== null) return
+    if (chatMessages === null) {
+      loadPreviousMessages()
+    }
+  }, [])
 
+  const loadPreviousMessages = () => {
     dataFetch<ChatMessagesDBResponse[]>({
       url: '/api/chat',
       onSuccess: data => {
@@ -25,10 +34,14 @@ export const useChatMessages = () => {
         setChatMessages(newMessages)
       }
     })
-  }, [])
+  }
+
+  // Resend message when user presses try again
+  useEvent(EVENTS.ON_CHAT_TRY_AGAIN, tryAgainCallback.current, [isOnError])
 
   const messageMate = (message: string) => {
     setIsWaitingRespose(true)
+    setIsOnError(false)
 
     dataFetch<MateResponseSchema>({
       url: '/api/chat',
@@ -36,7 +49,9 @@ export const useChatMessages = () => {
         headers: CONTENT_JSON,
         method: 'POST',
         body: JSON.stringify({
-          prevMessages: chatMessages,
+          prevMessages: chatMessages?.filter(({ role }) =>
+            ['studyplan', 'user', 'assistant'].includes(role)
+          ),
           newMessage: message
         })
       },
@@ -48,6 +63,12 @@ export const useChatMessages = () => {
 
         pushChatMessages(...chatMessages)
         setIsWaitingRespose(false)
+      },
+      onError: () => {
+        setIsOnError(true)
+        setIsWaitingRespose(false)
+
+        tryAgainCallback.current = () => messageMate(message)
       }
     })
   }
@@ -78,6 +99,7 @@ export const useChatMessages = () => {
     chatMessages,
     handleSubmit,
     isWaitingResponse,
+    isOnError,
     inputProps: {
       onChange: handleChange,
       onKeyDown: handleKeyDown,

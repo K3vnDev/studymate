@@ -4,10 +4,10 @@ import { useChatsStore } from '@/store/useChatsStore'
 import { useEffect, useRef, useState } from 'react'
 
 interface Params {
-  isWaitingResponse: boolean
+  updateScrollOn: any[]
 }
 
-export const useChatCustomScroll = ({ isWaitingResponse }: Params) => {
+export const useChatCustomScroll = ({ updateScrollOn }: Params) => {
   const chatMessages = useChatsStore(s => s.chatMessages)
   const [scrollIsOnBottom, setScrollIsOnBottom] = useState(true)
   const isAutoScrollingDown = useRef(false)
@@ -27,7 +27,7 @@ export const useChatCustomScroll = ({ isWaitingResponse }: Params) => {
       const scrollElement: HTMLDivElement = scrollRef.current
       scrollElement.style.height = `${scrollHeight}px`
     }
-  }, [listRef.current, scrollRef.current, chatMessages])
+  }, [listRef.current, scrollRef.current, chatMessages, ...updateScrollOn])
 
   // Apply scroll made on the body to the chat
   useEffect(() => {
@@ -59,7 +59,7 @@ export const useChatCustomScroll = ({ isWaitingResponse }: Params) => {
       scrollToBottom(isOnInitialScroll.current ? 'instant' : 'smooth')
       isOnInitialScroll.current = false
     }
-  }, [chatMessages, isWaitingResponse])
+  }, [chatMessages, ...updateScrollOn])
 
   const scrollToBottom = (behavior: ScrollBehavior) => {
     window.scrollTo({ top: document.documentElement.scrollHeight, behavior })

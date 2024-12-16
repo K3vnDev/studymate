@@ -1,6 +1,7 @@
 import { MAX_CHAT_MESSAGES_PROMPT } from '@/consts'
 import { ChatMessageSchema } from '@/lib/schemas/ChatMessage'
 import { MateResponseSchema } from '@/lib/schemas/MateResponse'
+import { messagesParser } from '@/lib/utils/messagesParser'
 import type { MessageAssistantData } from '@/types.d'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
@@ -50,11 +51,7 @@ export const POST = async (req: NextRequest) => {
     if (userMessage === '') return Response(false, 400)
 
     const validatedMessages = z.array(ChatMessageSchema).parse(prevMessages)
-    const parsedMessages = validatedMessages.map(msg => {
-      return msg.role === 'studyplan'
-        ? { role: 'system', content: JSON.stringify(msg.content) }
-        : msg
-    })
+    const parsedMessages = messagesParser.clientToPrompt(validatedMessages)
     chatMessages = parsedMessages as ChatCompletionMessageParam[]
   } catch {
     return Response(false, 400, { msg: 'Invalid messages format' })

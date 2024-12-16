@@ -2,13 +2,16 @@
 
 import { ChatMessage } from '@/components/ChatMessage'
 import { AppIcon, ArrowIcon, ChevronIcon, LoadingIcon } from '@/components/icons'
-import { FONTS } from '@/consts'
+import { CHAT_ERROR_MESSAGE, FONTS } from '@/consts'
 import { useChatCustomScroll } from '@/hooks/useChatCustomScroll'
 import { useChatMessages } from '@/hooks/useChatMessages'
 
 export default function ChatPage() {
-  const { chatMessages, handleSubmit, isWaitingResponse, inputProps } = useChatMessages()
-  const { listRef, scrollRef, scrollDownButtonProps } = useChatCustomScroll({ isWaitingResponse })
+  const { chatMessages, handleSubmit, isWaitingResponse, isOnError, inputProps } = useChatMessages()
+
+  const { listRef, scrollRef, scrollDownButtonProps } = useChatCustomScroll({
+    updateScrollOn: [isWaitingResponse, isOnError]
+  })
 
   return (
     <>
@@ -31,6 +34,7 @@ export default function ChatPage() {
                 <ChatMessage {...chatMessage} key={i} />
               ))}
               {isWaitingResponse && <ChatMessage role='bubbles' content='' />}
+              {isOnError && <ChatMessage role='error' content={CHAT_ERROR_MESSAGE} />}
             </>
           ) : (
             <div className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'>

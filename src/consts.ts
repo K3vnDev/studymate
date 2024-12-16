@@ -20,6 +20,10 @@ export const CONTENT_JSON = {
   'Content-Type': 'application/json'
 }
 
+export const EVENTS = {
+  ON_CHAT_TRY_AGAIN: 'onchattryagain'
+}
+
 export const CATEGORIES = [
   '3D Modeling',
   '3D Animation',
@@ -48,21 +52,23 @@ export const CATEGORIES = [
 ] as const
 
 // Virtual assistant
-export const MATE_INITIAL_MESSAGE =
+export const MATE_MEET_MESSAGE =
   "Hey there! I'm Mate. I'll be helping you out with everything you need."
 
 // Chat
+export const CHAT_ERROR_MESSAGE = "Sorry, I'm having some trouble right now"
+
 export const MAX_CHAT_MESSAGES_PROMPT = 15
 
 export const CHAT_ON_BOTTOM_THRESHOLD = 20
 
-export const MATE_RESPONSE_VALUES = {
+export const MATE_VALUES = {
   MESSAGE: {
-    MAX: 300
+    MAX: 350
   },
   STUDYPLAN: {
-    NAME: { MIN: 10, MAX: 40 },
-    DESC: { MIN: 100, MAX: 200 },
+    NAME: { MIN: 10, MAX: 30 },
+    DESC: { MIN: 70, MAX: 150 },
     TASKGOAL: { MIN: 25, MAX: 60 }
   }
 }
