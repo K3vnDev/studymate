@@ -46,12 +46,12 @@ const ChatStudyplan = (studyplan: StudyplanSchema) => {
   }
 
   return (
-    <li className='w-[22rem] border card-bg card-border px-5 py-6 flex flex-col gap-1 rounded-2xl'>
+    <li className='w-[22rem] border border-card-border bg-card-background px-5 py-6 flex flex-col gap-1 rounded-2xl'>
       <Badge>STUDYPLAN</Badge>
       <Header className='mb-1'>{name}</Header>
       <Paragraph>{desc}</Paragraph>
       <div className='mt-3 flex justify-between items-center'>
-        <span className='flex text-[#ccc] gap-1 items-center'>
+        <span className='flex text-gray-10 gap-1 items-center'>
           <ClockIcon className='size-6' />
           {parseDays(daily_lessons.length)}
         </span>
@@ -68,7 +68,7 @@ export const ChatBubbles = () => (
   <div className='flex gap-2 items-center justify-center h-7 w-12'>
     {repeat(3, i => (
       <div
-        className='size-[0.625rem] bg-[#ccc] rounded-full'
+        className='size-[0.625rem] bg-gray-10 rounded-full'
         style={{
           animation: `chat-message-bubbles-pounce 0.4s ease ${i * 0.2}s both infinite alternate`
         }}
@@ -109,8 +109,10 @@ export const ChatError = ({ children }: ChildrenProps) => {
 const overlaysBase = `px-6 list-none py-3 w-fit max-w-96 rounded-3xl ${FONTS.INTER} font-light`
 
 const UserOverlay = ({ children }: ChildrenProps) => (
-  <li className={`${overlaysBase} bg-[#6168E8] text-white rounded-se-none self-end`}>{children}</li>
+  <li className={`${overlaysBase} bg-blue-20 text-white rounded-se-none self-end`}>{children}</li>
 )
 const AssistantOverlay = ({ children }: ChildrenProps) => (
-  <li className={`${overlaysBase} bg-[#222] text-[#ccc] rounded-ss-none self-start`}>{children}</li>
+  <li className={`${overlaysBase} bg-gray-40 text-gray-10 rounded-ss-none self-start`}>
+    {children}
+  </li>
 )

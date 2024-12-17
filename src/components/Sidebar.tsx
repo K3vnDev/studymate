@@ -36,7 +36,7 @@ export const Sidebar = () => {
           <li key={name}>
             <Link
               href={name.toLowerCase()}
-              className='flex gap-4 text-[#CCCCCC] button'
+              className='flex gap-4 text-gray-10 button'
               draggable={false}
             >
               <div className='*:size-8 *:stroke-[1.5px]'>{icon}</div>

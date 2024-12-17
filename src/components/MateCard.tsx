@@ -11,7 +11,7 @@ interface Props {
 
 export const MateCard = ({ message, children, onClick }: Props) => (
   <article
-    className='card-bg border card-border w-fit max-w-[38rem] rounded-2xl flex items-center px-8 gap-4'
+    className='bg-card-background border border-card-border w-fit max-w-[38rem] rounded-2xl flex items-center px-8 gap-4'
     onClick={onClick}
   >
     <div className='h-full min-w-40'>

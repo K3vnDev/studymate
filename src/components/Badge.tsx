@@ -5,5 +5,5 @@ interface Props {
 }
 
 export const Badge = ({ children }: Props) => (
-  <span className={`text-[#6168E8] text-base ${FONTS.INTER} font-semibold`}>{children}</span>
+  <span className={`text-blue-20 text-base ${FONTS.INTER} font-semibold`}>{children}</span>
 )

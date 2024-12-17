@@ -7,10 +7,10 @@ export const ScrollDownButton = () => {
 
   return (
     <button
-      className='transition absolute left-1/2 -translate-x-1/2 bottom-[5.5rem] rounded-full border border-[#555555] p-2 bg-[#131313] button'
+      className='transition absolute left-1/2 -translate-x-1/2 bottom-[5.5rem] rounded-full border border-gray-20 p-2 bg-gray-60 button'
       {...scrollDownButtonProps}
     >
-      <ArrowIcon className='text-[#555555]' />
+      <ArrowIcon className='text-gray-20' />
     </button>
   )
 }

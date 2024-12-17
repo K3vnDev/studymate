@@ -47,7 +47,7 @@ export const Input = () => {
     >
       <form
         className={`
-          bg-[#1C1B20] ${formBorder} border-[#555] rounded-3xl flex px-4 justify-between gap-4 items-center 
+          bg-gray-50 ${formBorder} border-gray-20 rounded-3xl flex px-4 justify-between gap-4 items-center 
           focus-within:border-[#aaa] [transition:all_.2s_ease] hover:brightness-110
         `}
         onSubmit={handleSubmit}
@@ -55,14 +55,14 @@ export const Input = () => {
         <textarea
           className={`
           min-h-12 py-3 w-full max-w-full placeholder:text-[#363636] bg-transparent 
-          outline-none text-[#ccc] resize-none [field-sizing:content]
+          outline-none text-gray-10 resize-none [field-sizing:content]
           `}
           placeholder='Message Mate'
           ref={inputRef}
           {...inputProps}
         />
-        <button className='bg-[#555] rounded-full size-9 min-w-9 flex justify-center items-center button group'>
-          <ChevronIcon className='text-[#1C1B20] stroke-[2.5px] transition group-active:-translate-y-1' />
+        <button className='bg-gray-20 rounded-full size-9 min-w-9 flex justify-center items-center button group'>
+          <ChevronIcon className='text-gray-50 stroke-[2.5px] transition group-active:-translate-y-1' />
         </button>
       </form>
 

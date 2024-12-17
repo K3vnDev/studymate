@@ -1,6 +1,6 @@
 'use client'
 
-import { Studyplan } from '@/components/Studyplan'
+import { Studyplan } from '@/app/studyplan/Studyplan'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import type { StudyplanSchema } from '@/types'

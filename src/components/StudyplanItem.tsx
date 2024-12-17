@@ -32,7 +32,7 @@ export const StudyplanItem = (studyplan: StudyplanSchema) => {
         >
           {name}
         </span>
-        <span className='flex items-center gap-1 text-[#CCCCCC]'>
+        <span className='flex items-center gap-1 text-gray-10'>
           <ClockIcon className='size-5' />
           {parseDays(daily_lessons.length)}
         </span>

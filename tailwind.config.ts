@@ -9,8 +9,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: 'var(--background)',
-        foreground: 'var(--foreground)'
+        'blue-10': '#CED1FF',
+        'blue-20': '#6168E8',
+        'blue-30': '#1820B4',
+        'gray-10': '#CCCCCC',
+        'gray-20': '#555555',
+        'gray-30': '#363636',
+        'gray-40': '#222222',
+        'gray-50': '#1C1B20',
+        'gray-60': '#131313',
+        'gray-70': '#0C0C0C',
+        'card-background': '#100F14',
+        'card-border': '#332E3A',
+        'main-background': 'rgb(255 255 255 / .033)'
       },
       animation: {
         'spin-pulse': 'spin-pulse 1.5s linear both infinite',

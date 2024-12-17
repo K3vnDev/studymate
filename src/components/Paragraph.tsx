@@ -10,7 +10,7 @@ export const Paragraph = ({ className = '', s = 2, children }: Props) => {
   const sizes = ['text-sm', 'text-base', 'text-lg']
 
   return (
-    <h3 className={`${FONTS.INTER} text-[#ccc] font-light ${sizes[s - 1]} ${className}`}>
+    <h3 className={`${FONTS.INTER} text-gray-10 font-light ${sizes[s - 1]} ${className}`}>
       {children}
     </h3>
   )

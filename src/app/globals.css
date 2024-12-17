@@ -2,24 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-.card-border {
-  @apply border-[#332E3A];
-}
-
-.card-bg {
-  @apply bg-[#0f0e13];
-}
-
-.main-bg {
-  @apply bg-white/[.033];
-}
-
 .button {
   @apply hover:brightness-125 transition-all active:scale-95 active:brightness-95 disabled:opacity-75 disabled:scale-100 disabled:brightness-100 disabled:pointer-events-none select-none;
 }
 
 .main {
-  @apply w-[65rem] main-bg border rounded-3xl card-border flex flex-col min-h-[calc(100vh-3rem)];
+  @apply w-[65rem] bg-main-background border rounded-3xl border-card-border flex flex-col min-h-[calc(100vh-3rem)];
 }
 
 @keyframes chat-message-bubbles-pounce {
