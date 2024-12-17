@@ -15,7 +15,7 @@
 }
 
 .button {
-  @apply hover:brightness-110 transition-all active:scale-95 active:brightness-95 disabled:opacity-75 disabled:scale-100 disabled:brightness-100 disabled:pointer-events-none select-none;
+  @apply hover:brightness-125 transition-all active:scale-95 active:brightness-95 disabled:opacity-75 disabled:scale-100 disabled:brightness-100 disabled:pointer-events-none select-none;
 }
 
 .main {

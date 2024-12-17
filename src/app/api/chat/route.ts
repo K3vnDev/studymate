@@ -1,4 +1,4 @@
-import { MAX_CHAT_MESSAGES_PROMPT } from '@/consts'
+import { MAX_MESSAGES_ON_PROMPT } from '@/consts'
 import { ChatMessageSchema } from '@/lib/schemas/ChatMessage'
 import { MateResponseSchema } from '@/lib/schemas/MateResponse'
 import { messagesParser } from '@/lib/utils/messagesParser'
@@ -63,7 +63,7 @@ export const POST = async (req: NextRequest) => {
       model: 'gpt-4o-mini',
       messages: [
         { role: 'system', content: MATE_TRAIN_MESSAGE },
-        ...chatMessages.slice(-MAX_CHAT_MESSAGES_PROMPT),
+        ...chatMessages.slice(-MAX_MESSAGES_ON_PROMPT),
         { role: 'user', content: userMessage }
       ],
       response_format: zodResponseFormat(MateResponseSchema, 'messages_and_studyplan')

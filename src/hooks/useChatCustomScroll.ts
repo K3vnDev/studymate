@@ -1,4 +1,4 @@
-import { CHAT_ON_BOTTOM_THRESHOLD } from '@/consts'
+import { CHAT_ON_BOTTOM_SCROLL_THRESHOLD } from '@/consts'
 import { getElementRef } from '@/lib/utils/getElementRef'
 import { useChatsStore } from '@/store/useChatsStore'
 import { useEffect, useRef, useState } from 'react'
@@ -32,8 +32,10 @@ export const useChatCustomScroll = ({ updateScrollOn }: Params) => {
   // Apply scroll made on the body to the chat
   useEffect(() => {
     const handleScroll = () => {
+      if (listRef.current === null) return
       const listElement = getElementRef<HTMLUListElement>(listRef)
-      listElement.scrollTo({ top: window.scrollY })
+
+      listElement?.scrollTo({ top: window.scrollY })
 
       checkScrollOnBottom()
     }
@@ -43,11 +45,14 @@ export const useChatCustomScroll = ({ updateScrollOn }: Params) => {
 
   // Handle scroll on bottom checking logic
   const checkScrollOnBottom = () => {
+    if (listRef.current === null) return
     const listElement = getElementRef<HTMLUListElement>(listRef)
+
     const { scrollTop, scrollHeight, clientHeight } = listElement
     const scrollDifference = scrollHeight - scrollTop
 
-    const newScrollIsOnBottom = Math.abs(clientHeight - scrollDifference) < CHAT_ON_BOTTOM_THRESHOLD
+    const newScrollIsOnBottom =
+      Math.abs(clientHeight - scrollDifference) < CHAT_ON_BOTTOM_SCROLL_THRESHOLD
     if (newScrollIsOnBottom) isAutoScrollingDown.current = false
 
     setScrollIsOnBottom(newScrollIsOnBottom)

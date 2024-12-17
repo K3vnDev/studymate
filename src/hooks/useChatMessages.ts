@@ -10,16 +10,16 @@ export const useChatMessages = () => {
   const pushChatMessages = useChatsStore(s => s.pushChatMessages)
   const setChatMessages = useChatsStore(s => s.setChatMessages)
 
-  const [userMessage, setUserMessage] = useState('')
+  const userChatInput = useChatsStore(s => s.userChatInput)
+  const setUserChatInput = useChatsStore(s => s.setUserChatInput)
+
   const [isWaitingResponse, setIsWaitingRespose] = useState(false)
   const [isOnError, setIsOnError] = useState(false)
   const tryAgainCallback = useRef<() => void>(() => {})
 
   // Load previous messages
   useEffect(() => {
-    if (chatMessages === null) {
-      loadPreviousMessages()
-    }
+    if (chatMessages === null) loadPreviousMessages()
   }, [])
 
   const loadPreviousMessages = () => {
@@ -74,18 +74,18 @@ export const useChatMessages = () => {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setUserMessage(e.target.value)
+    setUserChatInput(e.target.value)
   }
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
 
-    const trimmedMessage = userMessage.trim()
+    const trimmedMessage = userChatInput.trim()
     if (trimmedMessage === '') return
 
     pushChatMessages({ role: 'user', content: trimmedMessage })
     messageMate(trimmedMessage)
-    setUserMessage('')
+    setUserChatInput('')
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -103,7 +103,7 @@ export const useChatMessages = () => {
     inputProps: {
       onChange: handleChange,
       onKeyDown: handleKeyDown,
-      value: userMessage
+      value: userChatInput
     }
   }
 }

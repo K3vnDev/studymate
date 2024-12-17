@@ -55,12 +55,16 @@ export const CATEGORIES = [
 export const MATE_MEET_MESSAGE =
   "Hey there! I'm Mate. I'll be helping you out with everything you need."
 
+export const MAX_MESSAGES_ON_PROMPT = 15
+
+export const USER_PROMPTS = {
+  GENERATE_STUDYPLAN: 'I want you to create a studyplan for me'
+}
+
 // Chat
 export const CHAT_ERROR_MESSAGE = "Sorry, I'm having some trouble right now"
 
-export const MAX_CHAT_MESSAGES_PROMPT = 15
-
-export const CHAT_ON_BOTTOM_THRESHOLD = 20
+export const CHAT_ON_BOTTOM_SCROLL_THRESHOLD = 20
 
 export const MATE_VALUES = {
   MESSAGE: {
