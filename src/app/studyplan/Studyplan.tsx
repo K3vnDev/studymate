@@ -18,12 +18,13 @@ import {
 export const Studyplan = ({ id, name, desc, category, daily_lessons }: StudyplanSchema) => {
   const [extendedLesson, setExtendedLesson] = useState(-1)
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'ArrowUp') {
+  // Change selected daily lesson on arrow keys pressed
+  const handleKeyDown = ({ key }: KeyboardEvent) => {
+    if (key === 'ArrowUp') {
       setExtendedLesson(ex => {
         return ex <= 0 ? daily_lessons.length - 1 : ex - 1
       })
-    } else if (e.key === 'ArrowDown') {
+    } else if (key === 'ArrowDown') {
       setExtendedLesson(ex => {
         return ex >= daily_lessons.length - 1 ? 0 : ex + 1
       })

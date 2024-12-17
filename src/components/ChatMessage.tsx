@@ -48,7 +48,7 @@ const ChatStudyplan = (studyplan: StudyplanSchema) => {
   return (
     <li
       className={`
-        w-[22rem] border border-card-border hover:border-gray-30 transition bg-card-background 
+        w-[22rem] border border-card-border card bg-card-background 
         px-5 py-6 flex flex-col gap-1 rounded-2xl cursor-default
       `}
       onClick={handleClick}

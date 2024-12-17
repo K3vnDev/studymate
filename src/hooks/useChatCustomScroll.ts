@@ -1,6 +1,6 @@
 import { CHAT_ON_BOTTOM_SCROLL_THRESHOLD } from '@/consts'
 import { getElementRef } from '@/lib/utils/getElementRef'
-import { useChatsStore } from '@/store/useChatsStore'
+import { useChatStore } from '@/store/useChatStore'
 import { useEffect, useRef, useState } from 'react'
 
 interface Params {
@@ -8,7 +8,7 @@ interface Params {
 }
 
 export const useChatCustomScroll = ({ updateScrollOn }: Params) => {
-  const chatMessages = useChatsStore(s => s.chatMessages)
+  const chatMessages = useChatStore(s => s.messages)
   const [scrollIsOnBottom, setScrollIsOnBottom] = useState(true)
   const isAutoScrollingDown = useRef(false)
   const isOnInitialScroll = useRef(true)

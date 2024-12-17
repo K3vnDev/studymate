@@ -6,6 +6,10 @@
   @apply hover:brightness-125 transition-all active:scale-95 active:brightness-95 disabled:opacity-75 disabled:scale-100 disabled:brightness-100 disabled:pointer-events-none select-none;
 }
 
+.card {
+  @apply hover:brightness-110 cursor-pointer select-none active:brightness-95 transition;
+}
+
 .main {
   @apply w-[65rem] bg-main-background border rounded-3xl border-card-border flex flex-col min-h-[calc(100vh-3rem)];
 }

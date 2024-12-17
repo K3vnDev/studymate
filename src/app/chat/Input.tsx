@@ -1,12 +1,13 @@
 import { ChevronIcon } from '@/components/icons'
 import { ChatContext } from '@/lib/context/ChatContext'
-import { useChatsStore } from '@/store/useChatsStore'
+import { useChatStore } from '@/store/useChatStore'
 import { useContext, useEffect, useRef } from 'react'
 
 export const Input = () => {
-  const highlightedMessage = useChatsStore(s => s.highlightedMessage)
-  const setHighlihtedMessage = useChatsStore(s => s.setHighlihtedMessage)
-  const setUserChatInput = useChatsStore(s => s.setUserChatInput)
+  const highlightedMessage = useChatStore(s => s.highlightedMessage)
+  const setHighlihtedMessage = useChatStore(s => s.setHighlihtedMessage)
+  const setUserInput = useChatStore(s => s.setUserInput)
+  const messages = useChatStore(s => s.messages)
 
   const { handleSubmit, inputProps } = useContext(ChatContext)
   const timeoutRef = useRef<NodeJS.Timeout>()
@@ -14,11 +15,11 @@ export const Input = () => {
 
   useEffect(() => {
     if (highlightedMessage !== null) {
-      setUserChatInput(highlightedMessage)
+      if (highlightedMessage !== '') setUserInput(highlightedMessage)
 
+      clearTimeout(timeoutRef.current)
       timeoutRef.current = setTimeout(() => {
         setHighlihtedMessage(null)
-        console.log('Clear highlight')
       }, 2000)
 
       if (inputRef.current) {
@@ -27,21 +28,22 @@ export const Input = () => {
         inputRef.current.setSelectionRange(length, length)
       }
     }
-    return () => {
-      clearTimeout(timeoutRef.current)
-      setHighlihtedMessage(null)
-    }
-  }, [])
+    return () => clearTimeout(timeoutRef.current)
+  }, [highlightedMessage])
+
+  useEffect(() => () => setHighlihtedMessage(null), [])
 
   const [gradientBorderOpacity, formBorder, pounceAnimation] =
     highlightedMessage === null
       ? ['opacity-0', 'border', 'animate-none']
       : ['opacity-100', 'border-none', 'animate-pounce-once']
 
+  const yPosition = messages?.length ? 'bottom-5' : 'bottom-1/2 translate-y-[calc(100%+.75rem)]'
+
   return (
     <div
       className={`
-        absolute bottom-5 left-1/2 -translate-x-1/2 w-[calc(100%-23.5rem)] 
+        absolute ${yPosition} left-1/2 -translate-x-1/2 w-[calc(100%-23.5rem)] 
         p-1 rounded-full overflow-hidden ${pounceAnimation}
       `}
     >

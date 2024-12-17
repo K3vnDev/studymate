@@ -1,8 +1,6 @@
-import type { ChatMessage } from '@/types.d'
 import { createContext } from 'react'
 
 interface ChatContext {
-  chatMessages: ChatMessage[] | null
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
   isWaitingResponse: boolean
   isOnError: boolean
@@ -20,7 +18,6 @@ interface ChatContext {
 }
 
 export const ChatContext = createContext<ChatContext>({
-  chatMessages: null,
   handleSubmit: () => {},
   isWaitingResponse: false,
   isOnError: false,

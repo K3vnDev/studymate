@@ -1,28 +1,27 @@
 import { CONTENT_JSON, EVENTS } from '@/consts'
 import { dataFetch } from '@/lib/utils/dataFetch'
-import { useChatsStore } from '@/store/useChatsStore'
+import { useChatStore } from '@/store/useChatStore'
 import type { ChatMessage, ChatMessagesDBResponse, MateResponseSchema } from '@/types.d'
 import { useEffect, useRef, useState } from 'react'
 import { useEvent } from './useEvent'
 
 export const useChatMessages = () => {
-  const chatMessages = useChatsStore(s => s.chatMessages)
-  const pushChatMessages = useChatsStore(s => s.pushChatMessages)
-  const setChatMessages = useChatsStore(s => s.setChatMessages)
-
-  const userChatInput = useChatsStore(s => s.userChatInput)
-  const setUserChatInput = useChatsStore(s => s.setUserChatInput)
+  const messages = useChatStore(s => s.messages)
+  const pushMessages = useChatStore(s => s.pushMessages)
+  const setMessages = useChatStore(s => s.setMessages)
+  const setHighlihtedMessage = useChatStore(s => s.setHighlihtedMessage)
+  const userInput = useChatStore(s => s.userInput)
+  const setUserInput = useChatStore(s => s.setUserInput)
 
   const [isWaitingResponse, setIsWaitingRespose] = useState(false)
   const [isOnError, setIsOnError] = useState(false)
+
   const tryAgainCallback = useRef<() => void>(() => {})
 
   // Load previous messages
   useEffect(() => {
-    if (chatMessages === null) loadPreviousMessages()
-  }, [])
+    if (messages !== null) return
 
-  const loadPreviousMessages = () => {
     dataFetch<ChatMessagesDBResponse[]>({
       url: '/api/chat',
       onSuccess: data => {
@@ -31,10 +30,10 @@ export const useChatMessages = () => {
             ? { role: 'studyplan', content: JSON.parse(msg.content) }
             : msg
         }) as ChatMessage[]
-        setChatMessages(newMessages)
+        setMessages(newMessages)
       }
     })
-  }
+  }, [])
 
   // Resend message when user presses try again
   useEvent(EVENTS.ON_CHAT_TRY_AGAIN, tryAgainCallback.current, [isOnError])
@@ -49,7 +48,7 @@ export const useChatMessages = () => {
         headers: CONTENT_JSON,
         method: 'POST',
         body: JSON.stringify({
-          prevMessages: chatMessages?.filter(({ role }) =>
+          prevMessages: messages?.filter(({ role }) =>
             ['studyplan', 'user', 'assistant'].includes(role)
           ),
           newMessage: message
@@ -61,7 +60,7 @@ export const useChatMessages = () => {
           content: data
         })) as ChatMessage[]
 
-        pushChatMessages(...chatMessages)
+        pushMessages(...chatMessages)
         setIsWaitingRespose(false)
       },
       onError: () => {
@@ -74,18 +73,19 @@ export const useChatMessages = () => {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setUserChatInput(e.target.value)
+    setUserInput(e.target.value)
   }
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
 
-    const trimmedMessage = userChatInput.trim()
+    const trimmedMessage = userInput.trim()
     if (trimmedMessage === '') return
 
-    pushChatMessages({ role: 'user', content: trimmedMessage })
+    pushMessages({ role: 'user', content: trimmedMessage })
     messageMate(trimmedMessage)
-    setUserChatInput('')
+    setUserInput('')
+    setHighlihtedMessage(null)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -96,14 +96,13 @@ export const useChatMessages = () => {
   }
 
   return {
-    chatMessages,
     handleSubmit,
     isWaitingResponse,
     isOnError,
     inputProps: {
       onChange: handleChange,
       onKeyDown: handleKeyDown,
-      value: userChatInput
+      value: userInput
     }
   }
 }

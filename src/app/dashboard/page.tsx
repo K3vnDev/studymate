@@ -4,31 +4,20 @@ import { ChipButton } from '@/components/ChipButton'
 import { MateCard } from '@/components/MateCard'
 import { RecomendedStudyplansSection } from '@/components/RecomendedStudyplansSection'
 import { MagicWandIcon, MessageIcon } from '@/components/icons'
-import { MATE_MEET_MESSAGE, USER_PROMPTS } from '@/consts'
-import { useChatsStore } from '@/store/useChatsStore'
-import { useRouter } from 'next/navigation'
+import { MATE_MEET_MESSAGE } from '@/consts'
+import { useUserPrompts } from '@/hooks/useUserPrompts'
 
 export default function DashboardPage() {
-  const setHighlihtedMessage = useChatsStore(s => s.setHighlihtedMessage)
-  const router = useRouter()
-
-  const navigateToChat = () => {
-    router.push('/chat')
-  }
-
-  const promptMateForAStudyplan = () => {
-    setHighlihtedMessage(USER_PROMPTS.GENERATE_STUDYPLAN)
-    navigateToChat()
-  }
+  const prompts = useUserPrompts({ redirect: true })
 
   return (
     <main className='main gap-12 px-24 py-12 h-full'>
-      <MateCard message={MATE_MEET_MESSAGE}>
-        <ChipButton empty onClick={promptMateForAStudyplan}>
+      <MateCard message={MATE_MEET_MESSAGE} onClick={prompts.blank}>
+        <ChipButton empty onClick={prompts.createStudyplan}>
           <MagicWandIcon />
           Create a studyplan
         </ChipButton>
-        <ChipButton onClick={navigateToChat}>
+        <ChipButton onClick={prompts.blank}>
           <MessageIcon />
           Chat
         </ChipButton>

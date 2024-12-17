@@ -6,12 +6,16 @@ import { Paragraph } from './Paragraph'
 interface Props {
   message: string
   children?: React.ReactNode
+  className?: string
   onClick?: () => void
 }
 
-export const MateCard = ({ message, children, onClick }: Props) => (
+export const MateCard = ({ message, children, onClick, className = '' }: Props) => (
   <article
-    className='bg-card-background border border-card-border w-fit max-w-[38rem] rounded-2xl flex items-center px-8 gap-4'
+    className={`
+      ${className} bg-card-background border border-card-border w-fit max-w-[40rem] 
+      rounded-2xl flex items-center px-8 gap-4 card
+    `}
     onClick={onClick}
   >
     <div className='h-full min-w-40'>
