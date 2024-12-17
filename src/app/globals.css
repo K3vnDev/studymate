@@ -20,3 +20,7 @@
     opacity: 1;
   }
 }
+
+:root {
+  interpolate-size: allow-keywords;
+}
