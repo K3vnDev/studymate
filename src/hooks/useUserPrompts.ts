@@ -11,10 +11,8 @@ export const useUserPrompts = ({ redirect = false }) => {
     setHighlihtedMessage(message)
   }
 
-  const prompt = {
+  return {
     createStudyplan: () => callback(USER_PROMPTS.GENERATE_STUDYPLAN),
     blank: () => callback('')
   }
-
-  return prompt
 }

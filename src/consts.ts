@@ -25,28 +25,35 @@ export const EVENTS = {
 }
 
 export const CATEGORIES = [
-  '3D Modeling',
-  '3D Animation',
   '2D Animation',
   'Graphic Design',
-  'Web Development',
-  'Frontend Development',
-  'Backend Development',
-  'Mobile App Development',
   'Logo & Branding Design',
-  'Game Development',
-  'Machine Learning',
+  'UI/UX Design',
+  '3D Modeling',
+  '3D Animation',
+  'Backend Development',
+  'Data Science',
   'Databases',
-  'UI Design',
-  'UX Design',
+  'Programming',
+  'Web Development',
+  'Software Development',
+  'Mobile App Development',
+  'Game Development',
   'Music Theory',
   'Audio Mixing & Mastering',
-  'Photography',
+  'Sound Design',
+  'Machine Learning',
+  'Prompt Engineering',
+  'Robotics',
   'Video Editing',
-  'Motion Graphics',
-  'Digital Marketing',
-  'Social Media Strategy',
-  'Project Management',
+  'Visual Effects',
+  'Cinematography',
+  'Mathematics',
+  'Physics',
+  'Geometry',
+  'Statistics',
+  'Photography',
+
   'Productivity',
   'Study Techniques'
 ] as const
@@ -58,7 +65,7 @@ export const MATE_MEET_MESSAGE =
 export const MAX_MESSAGES_ON_PROMPT = 15
 
 export const USER_PROMPTS = {
-  GENERATE_STUDYPLAN: 'Hey Mate, would you create a studyplan for me?'
+  GENERATE_STUDYPLAN: 'Hey Mate, I would like to create a new study plan'
 }
 
 // Chat
@@ -73,6 +80,7 @@ export const MATE_VALUES = {
   STUDYPLAN: {
     NAME: { MIN: 10, MAX: 30 },
     DESC: { MIN: 70, MAX: 150 },
-    TASKGOAL: { MIN: 25, MAX: 60 }
+    TASKGOAL: { MIN: 25, MAX: 60 },
+    MAX_DAYS: 10
   }
 }
