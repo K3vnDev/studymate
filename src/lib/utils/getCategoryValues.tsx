@@ -16,58 +16,71 @@ import type { Category } from '@/types.d'
 type CategoryValues = {
   categories: Category[]
   icon: React.ReactNode
+  image: string
 }
 
 const categoryValues: CategoryValues[] = [
   {
     categories: ['2D Animation', 'Graphic Design', 'Logo & Branding Design', 'UI/UX Design'],
-    icon: <PaletteIcon />
+    icon: <PaletteIcon />,
+    image: '2d-design'
   },
   {
     categories: ['3D Animation', '3D Modeling'],
-    icon: <CubeIcon />
+    icon: <CubeIcon />,
+    image: '3d-design'
   },
   {
     categories: ['Backend Development', 'Data Science', 'Databases', 'Programming'],
-    icon: <CodeIcon />
+    icon: <CodeIcon />,
+    image: 'programming'
   },
   {
     categories: ['Web Development', 'Software Development'],
-    icon: <ComputerCodeIcon />
+    icon: <ComputerCodeIcon />,
+    image: 'desktop-development'
   },
   {
     categories: ['Mobile App Development'],
-    icon: <MobileCodeIcon />
+    icon: <MobileCodeIcon />,
+    image: 'mobile-development'
   },
   {
     categories: ['Game Development'],
-    icon: <GamePadIcon />
+    icon: <GamePadIcon />,
+    image: 'game-development'
   },
   {
     categories: ['Music Theory', 'Audio Mixing & Mastering', 'Sound Design'],
-    icon: <SpeakerIcon />
+    icon: <SpeakerIcon />,
+    image: 'music-production'
   },
   {
     categories: ['Machine Learning', 'Prompt Engineering', 'Robotics'],
-    icon: <RobotIcon />
+    icon: <RobotIcon />,
+    image: 'machine-learning'
   },
   {
     categories: ['Video Editing', 'Visual Effects', 'Cinematography'],
-    icon: <PhotoAndVideoIcon />
+    icon: <PhotoAndVideoIcon />,
+    image: 'video-editing'
   },
   {
     categories: ['Mathematics', 'Physics', 'Geometry', 'Statistics'],
-    icon: <MathIcon />
+    icon: <MathIcon />,
+    image: 'mathematics'
   },
   {
     categories: ['Photography'],
-    icon: <CameraIcon />
+    icon: <CameraIcon />,
+    image: 'photography'
   }
 ]
 
 const defaultValues = {
   categories: undefined,
-  icon: <CodeIcon />
+  icon: <CodeIcon />,
+  image: ''
 }
 
 export const getCategoryValues = (category: Category) => {

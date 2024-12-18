@@ -2,7 +2,7 @@ import { EVENTS, FONTS } from '@/consts'
 import { parseDays } from '@/lib/utils/parseDays'
 import { repeat } from '@/lib/utils/repeat'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
-import type { ChatMessage as ChatMessageType, StudyplanSchema } from '@/types.d'
+import type { ChatMessage as ChatMessageType, StudyplanSaved } from '@/types.d'
 import { useRouter } from 'next/navigation'
 import { Badge } from './Badge'
 import { ChipButton } from './ChipButton'
@@ -35,7 +35,7 @@ export const ChatMessage = ({ role, content }: Props) => {
   return <ChatError>{content}</ChatError>
 }
 
-const ChatStudyplan = (studyplan: StudyplanSchema) => {
+const ChatStudyplan = (studyplan: StudyplanSaved) => {
   const setStudyplan = useStudyplansStore(s => s.setStudyplan)
   const { name, desc, daily_lessons } = studyplan
   const router = useRouter()

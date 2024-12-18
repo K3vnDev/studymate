@@ -1,14 +1,14 @@
-import type { StudyplanSchema } from '@/types.d'
+import type { StudyplanSaved, StudyplanUnSaved } from '@/types.d'
 import { create } from 'zustand'
 
 interface StudyplansStore {
   studyplans: {
-    recomended: StudyplanSchema[]
+    recomended: StudyplanSaved[]
   }
   setStudyplans: (newStudyplans: StudyplansStore['studyplans']) => void
 
-  studyplan: StudyplanSchema | null
-  setStudyplan: (value: StudyplanSchema | null) => void
+  studyplan: StudyplanSaved | StudyplanUnSaved | null
+  setStudyplan: (value: StudyplanSaved | StudyplanUnSaved | null) => void
 }
 
 export const useStudyplansStore = create<StudyplansStore>(set => ({

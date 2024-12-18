@@ -1,8 +1,8 @@
 interface Params<T> {
   url: string
   options?: RequestInit
-  onSuccess?: (data: T, message?: string) => void
-  onError?: (message?: string) => void
+  onSuccess?: (data: T, message?: string, status?: number) => void
+  onError?: (message?: string, status?: number) => void
 }
 
 interface JSONResponse<T> {
@@ -22,9 +22,9 @@ export const dataFetch = async <T>({
     const { success, data, message } = (await res.json()) as JSONResponse<T>
 
     if (!success || !res.ok) {
-      return onError(message)
+      return onError(message, res.status)
     }
-    onSuccess(data, message)
+    onSuccess(data, message, res.status)
   } catch {
     onError()
   }

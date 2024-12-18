@@ -1,7 +1,7 @@
 import { FONTS } from '@/consts'
 import { getCategoryValues } from '@/lib/utils/getCategoryValues'
 import { parseDays } from '@/lib/utils/parseDays'
-import type { StudyplanSchema } from '@/types.d'
+import type { StudyplanSaved } from '@/types.d'
 import { useEffect, useState } from 'react'
 import { Badge } from '../../components/Badge'
 import { ChipButton } from '../../components/ChipButton'
@@ -10,7 +10,12 @@ import { Paragraph } from '../../components/Paragraph'
 import { ClockIcon, MagicWandIcon, MoreIcon, RocketIcon } from '../../components/icons'
 import { DailyLesson } from './DailyLesson'
 
-export const Studyplan = ({ id, name, desc, category, daily_lessons }: StudyplanSchema) => {
+type Props = Omit<StudyplanSaved, 'id' | 'created_by'> & {
+  id?: string | null
+  created_by?: string | null
+}
+
+export const Studyplan = ({ name, desc, category, daily_lessons }: Props) => {
   const [extendedLesson, setExtendedLesson] = useState(-1)
 
   // Change selected daily lesson on arrow keys pressed

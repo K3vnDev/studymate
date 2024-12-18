@@ -77,8 +77,7 @@ export const POST = async (req: NextRequest) => {
     saveChatMessagesToDatabase({ assistantMessages, userMessage, userId: id })
 
     return Response(true, 201, { data: assistantMessages })
-  } catch (e) {
-    console.log({ ErrorTrace: e })
+  } catch {
     return Response(false, 500)
   }
 }

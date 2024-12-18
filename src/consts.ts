@@ -65,7 +65,7 @@ export const MATE_MEET_MESSAGE =
 export const MAX_MESSAGES_ON_PROMPT = 15
 
 export const USER_PROMPTS = {
-  GENERATE_STUDYPLAN: 'Hey Mate, I would like to create a new study plan'
+  GENERATE_STUDYPLAN: 'Hey Mate, Would you help me to create a new studyplan?'
 }
 
 // Chat

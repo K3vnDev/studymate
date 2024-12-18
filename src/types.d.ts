@@ -30,7 +30,9 @@ export interface MessageAssistantData {
 export type ChatMessageSchema = z.infer<typeof ChatMessageSchemaType>
 export type MateResponseSchema = z.infer<typeof MateResponseSchemaType>
 
-export type StudyplanSchema = z.infer<typeof StudyplanSchemaType> & {
-  id: string | null
-  created_by: string | null
-}
+export type StudyplanUnSaved = z.infer<typeof StudyplanSchemaType>
+
+export type StudyplanSaved = {
+  id: string
+  created_by: string
+} & StudyplanUnSaved

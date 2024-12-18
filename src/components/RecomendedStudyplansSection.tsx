@@ -1,21 +1,21 @@
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
-import type { StudyplanSchema } from '@/types.d'
+import type { StudyplanSaved } from '@/types.d'
 import { useEffect } from 'react'
 import { Header } from './Header'
-import { StudyplanItem } from './StudyplanItem'
+import { ItemStudyplan } from './ItemStudyplan'
 
 export const RecomendedStudyplansSection = () => {
-  const setStudyplans = useStudyplansStore(s => s.setStudyplans)
-  const studyplans = useStudyplansStore(s => s.studyplans)
+  const setStoreStudyplans = useStudyplansStore(s => s.setStudyplans)
+  const storeStudyplans = useStudyplansStore(s => s.studyplans)
 
   useEffect(() => {
-    if (studyplans.recomended.length) return
+    if (storeStudyplans.recomended.length) return
 
-    dataFetch<StudyplanSchema[]>({
+    dataFetch<StudyplanSaved[]>({
       url: '/api/studyplan',
       onSuccess: data => {
-        setStudyplans({ ...studyplans, recomended: data })
+        setStoreStudyplans({ ...storeStudyplans, recomended: data })
       }
     })
   }, [])
@@ -23,10 +23,10 @@ export const RecomendedStudyplansSection = () => {
   return (
     <section className='flex flex-col gap-4'>
       <Header>Study Plans for You</Header>
-      {studyplans.recomended.length > 0 && (
+      {storeStudyplans.recomended.length > 0 && (
         <ul className='flex gap-4'>
-          {studyplans.recomended.map(studyplan => (
-            <StudyplanItem key={studyplan.id} {...studyplan} />
+          {storeStudyplans.recomended.map(({ daily_lessons, created_by, desc, ...studyplan }) => (
+            <ItemStudyplan key={studyplan.id} {...{ ...studyplan, days: daily_lessons.length }} />
           ))}
         </ul>
       )}

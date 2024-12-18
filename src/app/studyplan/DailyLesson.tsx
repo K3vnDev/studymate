@@ -1,8 +1,8 @@
 import { CheckIcon, ChevronIcon } from '@/components/icons'
 import { FONTS } from '@/consts'
-import type { StudyplanSchema } from '@/types.d'
+import type { StudyplanSaved } from '@/types.d'
 
-type Props = StudyplanSchema['daily_lessons'][number] & {
+type Props = StudyplanSaved['daily_lessons'][number] & {
   extendedLesson: number
   setExtendedLesson: React.Dispatch<number>
   i: number
