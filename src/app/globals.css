@@ -3,15 +3,11 @@
 @tailwind utilities;
 
 .button {
-  @apply hover:brightness-125 transition-all active:scale-95 active:brightness-95 disabled:opacity-75 disabled:scale-100 disabled:brightness-100 disabled:pointer-events-none select-none;
+  @apply hover:brightness-125 transition-all active:scale-95 active:brightness-95 disabled:opacity-75 disabled:scale-100 disabled:brightness-75 disabled:pointer-events-none select-none cursor-pointer;
 }
 
 .card {
   @apply hover:brightness-110 cursor-pointer select-none active:brightness-95 transition;
-}
-
-.main {
-  @apply w-[65rem] bg-main-background border rounded-3xl border-card-border flex flex-col min-h-[calc(100vh-3rem)];
 }
 
 @keyframes chat-message-bubbles-pounce {
@@ -23,8 +19,4 @@
     transform: translateY(-4px);
     opacity: 1;
   }
-}
-
-:root {
-  interpolate-size: allow-keywords;
 }

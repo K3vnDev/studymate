@@ -7,7 +7,7 @@ import { Badge } from '../../components/Badge'
 import { ChipButton } from '../../components/ChipButton'
 import { Header } from '../../components/Header'
 import { Paragraph } from '../../components/Paragraph'
-import { ClockIcon, MagicWandIcon, MoreIcon, RocketIcon } from '../../components/icons'
+import { BookmarkIcon, ClockIcon, MoreIcon, RocketIcon } from '../../components/icons'
 import { DailyLesson } from './DailyLesson'
 
 type Props = Omit<StudyplanSaved, 'id' | 'created_by'> & {
@@ -15,7 +15,7 @@ type Props = Omit<StudyplanSaved, 'id' | 'created_by'> & {
   created_by?: string | null
 }
 
-export const Studyplan = ({ name, desc, category, daily_lessons }: Props) => {
+export const Studyplan = ({ id = null, name, desc, category, daily_lessons }: Props) => {
   const [extendedLesson, setExtendedLesson] = useState(-1)
 
   // Change selected daily lesson on arrow keys pressed
@@ -56,13 +56,11 @@ export const Studyplan = ({ name, desc, category, daily_lessons }: Props) => {
             {getCategoryValues(category).icon}
             {category}
           </span>
-          <div className='flex gap-4'>
-            <ChipButton empty>
-              <MagicWandIcon /> Modify
-            </ChipButton>
+          <div className='flex flex-row-reverse gap-4 items-center'>
             <ChipButton>
-              <RocketIcon /> See today's tasks
+              <RocketIcon /> Start this studyplan
             </ChipButton>
+            <BookmarkIcon className='size-9 text-blue-20 stroke-[1.5px]' />
           </div>
         </div>
       </section>

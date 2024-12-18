@@ -1,8 +1,11 @@
 'use client'
 
 import { ChipButton } from '@/components/ChipButton'
+import { Loading } from '@/components/Loading'
+import { Main } from '@/components/Main'
 import { MateCard } from '@/components/MateCard'
-import { LoadingIcon, MagicWandIcon } from '@/components/icons'
+import { Sidebar } from '@/components/Sidebar'
+import { MagicWandIcon } from '@/components/icons'
 import { MATE_MEET_MESSAGE } from '@/consts'
 import { useChatCustomScroll } from '@/hooks/useChatCustomScroll'
 import { useChatMessages } from '@/hooks/useChatMessages'
@@ -25,7 +28,7 @@ export default function ChatPage() {
 
   return (
     <ChatContext.Provider value={{ ...chatMessagesValues, ...customScrollValues }}>
-      <main className='main items-center h-[calc(100vh-3rem)] flex-col justify-between fixed right-48 top-6 px-48'>
+      <Main className='items-center h-[calc(100vh-3rem)] flex-col justify-between fixed right-48 top-6 px-48 w-[calc(100%-56rem)]'>
         {messages !== null ? (
           <>
             {messages.length ? (
@@ -50,12 +53,12 @@ export default function ChatPage() {
             <ScrollDownButton />
           </>
         ) : (
-          <div className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'>
-            <LoadingIcon className='size-20 animate-spin text-white/25' />
-          </div>
+          <Loading />
         )}
-      </main>
+      </Main>
       <div className='w-8 bg-transparent pointer-events-none' ref={customScrollValues.scrollRef} />
+
+      <Sidebar />
     </ChatContext.Provider>
   )
 }

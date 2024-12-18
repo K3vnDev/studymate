@@ -62,6 +62,7 @@ export const Input = () => {
           placeholder='Message Mate'
           ref={inputRef}
           {...inputProps}
+          autoFocus
         />
         <button className='bg-gray-20 rounded-full size-9 min-w-9 flex justify-center items-center button group'>
           <ChevronIcon className='text-gray-50 stroke-[2.5px] transition group-active:-translate-y-1' />

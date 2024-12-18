@@ -1,6 +1,10 @@
 'use client'
 
 import { Studyplan } from '@/app/studyplan/Studyplan'
+import { Loading } from '@/components/Loading'
+import { Main } from '@/components/Main'
+import { Sidebar } from '@/components/Sidebar'
+import { LoadingIcon } from '@/components/icons'
 import { useSearchStudyplan } from '@/hooks/useSearchStudyplan'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
@@ -19,7 +23,7 @@ export default function StudyplanPage() {
     const id = searchParams.get('id')
 
     if (id === null) {
-      if (studyplan === null) router.push('/dashboard')
+      if (studyplan === null) router.push('/chat')
       return
     }
 
@@ -30,6 +34,8 @@ export default function StudyplanPage() {
         setStudyplan(foundStudyplan)
         return
       }
+    } else if ((studyplan as StudyplanSaved)?.id === id) {
+      return
     }
 
     setStudyplan(null)
@@ -46,8 +52,12 @@ export default function StudyplanPage() {
   }, [])
 
   return (
-    <main className='main gap-12 px-24 py-12 h-full'>
-      {studyplan !== null && <Studyplan {...studyplan} />}
-    </main>
+    <>
+      <Main className='gap-12 px-24 py-12 h-full relative'>
+        {studyplan !== null ? <Studyplan {...studyplan} /> : <Loading />}
+      </Main>
+
+      <Sidebar />
+    </>
   )
 }
