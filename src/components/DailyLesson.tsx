@@ -25,29 +25,34 @@ export const DailyLesson = ({ name, desc, tasks, extendedLesson, setExtendedLess
     <li
       className={`
         px-7 py-5 ${parentColors} border-2 rounded-lg button cursor-pointer 
-        flex flex-col gap-4 transition-all overflow-hidden
+        flex justify-between gap-5 transition-all overflow-hidden
       `}
       onClick={handleClick}
     >
-      <header className='flex w-full justify-between items-center'>
-        <span className={`${FONTS.INTER} text-white font-normal text-base`}>{dailyLessonName}</span>
+      <div className='flex flex-col gap-3'>
+        <header className={`${FONTS.INTER} text-white font-normal text-base`}>
+          {dailyLessonName}
+        </header>
+        {isExtended && (
+          <>
+            <span className='text-gray-10 mt-1'>{desc}</span>
+            <ul className='flex flex-col gap-1'>
+              {tasks.map(({ goal }, i) => (
+                <li key={i} className='text-gray-10 text-base flex gap-2 items-center'>
+                  <CheckIcon className='size-4' />
+                  {goal}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+      <div className='flex flex-col justify-between items-end'>
         <ChevronIcon
           className={`size-6 text-gray-10 ${arrowRotation} [transition:transform_.3s_ease]`}
         />
-      </header>
-      {extendedLesson === i && (
-        <>
-          <span className='text-gray-10'>{desc}</span>
-          <ul className='flex flex-col gap-1'>
-            {tasks.map(({ goal }, i) => (
-              <li key={i} className='text-gray-10 text-base flex gap-2 items-center'>
-                <CheckIcon className='size-4' />
-                {goal}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+        {isExtended && <span className='text-gray-10/35'>Day {i + 1}</span>}
+      </div>
     </li>
   )
 }

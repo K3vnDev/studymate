@@ -4,11 +4,11 @@ import { repeat } from '@/lib/utils/repeat'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import type { ChatMessage as ChatMessageType, StudyplanSaved } from '@/types.d'
 import { useRouter } from 'next/navigation'
-import { Badge } from './Badge'
-import { ChipButton } from './ChipButton'
-import { Header } from './Header'
-import { Paragraph } from './Paragraph'
-import { ClockIcon, ErrorIcon, ReloadIcon, RocketIcon } from './icons'
+import { Badge } from '../../components/Badge'
+import { ChipButton } from '../../components/ChipButton'
+import { Header } from '../../components/Header'
+import { Paragraph } from '../../components/Paragraph'
+import { ClockIcon, ErrorIcon, ReloadIcon, RocketIcon } from '../../components/icons'
 
 interface Props {
   role: ChatMessageType['role'] | 'bubbles'
@@ -42,7 +42,7 @@ const ChatStudyplan = (studyplan: StudyplanSaved) => {
 
   const handleClick = () => {
     setStudyplan(studyplan)
-    router.push('/studyplan')
+    router.push('/chat/studyplan')
   }
 
   return (

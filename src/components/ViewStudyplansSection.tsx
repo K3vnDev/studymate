@@ -27,7 +27,7 @@ export const ViewStudyplansSection = ({ title, storeKey, maxItems }: Props) => {
     }
 
     dataFetch<StudyplanSaved[]>({
-      url: '/api/studyplan',
+      url: '/api/studyplans',
       onSuccess: data => {
         setStoreStudyplans(storeKey, data)
       }
@@ -60,7 +60,7 @@ const ViewStudyPlan = ({ id, name, category, days }: ViewStudyPlanProps) => {
 
   return (
     <li className='flex flex-col w-56 button' title={name}>
-      <Link href={`/studyplan?id=${id}`}>
+      <Link href={`/studyplan/${id}`}>
         <Image
           src={`/studyplan/${image}.webp`}
           alt='Studyplan category'

@@ -1,4 +1,4 @@
-import { ChatMessage } from '@/components/ChatMessage'
+import { ChatMessage } from '@/app/chat/ChatMessage'
 import { CHAT_ERROR_MESSAGE } from '@/consts'
 import { ChatContext } from '@/lib/context/ChatContext'
 import { useChatStore } from '@/store/useChatStore'

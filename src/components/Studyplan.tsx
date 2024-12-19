@@ -4,22 +4,24 @@ import { getCategoryValues } from '@/lib/utils/getCategoryValues'
 import { parseDays } from '@/lib/utils/parseDays'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import type { StudyplanSaved, UserStudyplan } from '@/types.d'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Badge } from '../../components/Badge'
-import { ChipButton } from '../../components/ChipButton'
-import { Header } from '../../components/Header'
-import { Paragraph } from '../../components/Paragraph'
-import { BookmarkIcon, ClockIcon, LoadingIcon, MoreIcon, RocketIcon } from '../../components/icons'
+import { Badge } from './Badge'
+import { ChipButton } from './ChipButton'
 import { DailyLesson } from './DailyLesson'
+import { Header } from './Header'
+import { Paragraph } from './Paragraph'
+import { BookIcon, BookmarkIcon, ClockIcon, LoadingIcon, MoreIcon, RocketIcon } from './icons'
 
 interface Props {
   studyplan: Omit<StudyplanSaved, 'id' | 'created_by'> & {
     id?: string | null
     created_by?: string | null
   }
+  usersCurrent?: boolean
 }
 
-export const Studyplan = ({ studyplan }: Props) => {
+export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
   const { id = null, name, desc, category, daily_lessons } = studyplan
   const [extendedLesson, setExtendedLesson] = useState(-1)
 
@@ -62,7 +64,15 @@ export const Studyplan = ({ studyplan }: Props) => {
             {category}
           </span>
           <div className='flex flex-row-reverse gap-4 items-center'>
-            <StartStudyplanButton studyplan={studyplan} />
+            {usersCurrent ? (
+              <ChipButton>
+                <RocketIcon />
+                See today's tasks
+              </ChipButton>
+            ) : (
+              <StartStudyplanButton studyplan={studyplan} />
+            )}
+
             <BookmarkIcon className='size-9 text-blue-20 stroke-[1.5px]' />
           </div>
         </div>
@@ -89,17 +99,19 @@ export const Studyplan = ({ studyplan }: Props) => {
 const StartStudyplanButton = ({ studyplan }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const setUserStudyplan = useStudyplansStore(s => s.setUserStudyplan)
+  const router = useRouter()
 
   const handleStartStudyplan = () => {
     setIsLoading(true)
 
     dataFetch<UserStudyplan>({
-      url: '/api/studyplan',
+      url: '/api/studyplans',
       options: { method: 'POST', headers: CONTENT_JSON, body: JSON.stringify(studyplan) },
 
       onSuccess: data => {
         setIsLoading(false)
         setUserStudyplan(data)
+        router.push('/studyplan')
       }
     })
   }

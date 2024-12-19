@@ -35,7 +35,7 @@ export const Sidebar = () => {
         {paths.map(({ name, icon }) => (
           <li key={name}>
             <Link
-              href={name.toLowerCase()}
+              href={`/${name.toLowerCase()}`}
               className='flex gap-4 text-gray-10 button'
               draggable={false}
             >
