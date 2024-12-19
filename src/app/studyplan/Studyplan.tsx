@@ -1,22 +1,32 @@
-import { FONTS } from '@/consts'
+import { CONTENT_JSON, FONTS } from '@/consts'
+import { dataFetch } from '@/lib/utils/dataFetch'
 import { getCategoryValues } from '@/lib/utils/getCategoryValues'
 import { parseDays } from '@/lib/utils/parseDays'
-import type { StudyplanSaved } from '@/types.d'
+import { useStudyplansStore } from '@/store/useStudyplansStore'
+import type { StudyplanSaved, UserStudyplan } from '@/types.d'
 import { useEffect, useState } from 'react'
 import { Badge } from '../../components/Badge'
 import { ChipButton } from '../../components/ChipButton'
 import { Header } from '../../components/Header'
 import { Paragraph } from '../../components/Paragraph'
-import { BookmarkIcon, ClockIcon, MoreIcon, RocketIcon } from '../../components/icons'
+import { BookmarkIcon, ClockIcon, LoadingIcon, MoreIcon, RocketIcon } from '../../components/icons'
 import { DailyLesson } from './DailyLesson'
 
-type Props = Omit<StudyplanSaved, 'id' | 'created_by'> & {
-  id?: string | null
-  created_by?: string | null
+interface Props {
+  studyplan: Omit<StudyplanSaved, 'id' | 'created_by'> & {
+    id?: string | null
+    created_by?: string | null
+  }
 }
 
-export const Studyplan = ({ id = null, name, desc, category, daily_lessons }: Props) => {
+export const Studyplan = ({ studyplan }: Props) => {
+  const { id = null, name, desc, category, daily_lessons } = studyplan
   const [extendedLesson, setExtendedLesson] = useState(-1)
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   // Change selected daily lesson on arrow keys pressed
   const handleKeyDown = ({ key }: KeyboardEvent) => {
@@ -30,11 +40,6 @@ export const Studyplan = ({ id = null, name, desc, category, daily_lessons }: Pr
       })
     }
   }
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [])
 
   return (
     <>
@@ -57,9 +62,7 @@ export const Studyplan = ({ id = null, name, desc, category, daily_lessons }: Pr
             {category}
           </span>
           <div className='flex flex-row-reverse gap-4 items-center'>
-            <ChipButton>
-              <RocketIcon /> Start this studyplan
-            </ChipButton>
+            <StartStudyplanButton studyplan={studyplan} />
             <BookmarkIcon className='size-9 text-blue-20 stroke-[1.5px]' />
           </div>
         </div>
@@ -80,5 +83,31 @@ export const Studyplan = ({ id = null, name, desc, category, daily_lessons }: Pr
         </ul>
       </section>
     </>
+  )
+}
+
+const StartStudyplanButton = ({ studyplan }: Props) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const setUserStudyplan = useStudyplansStore(s => s.setUserStudyplan)
+
+  const handleStartStudyplan = () => {
+    setIsLoading(true)
+
+    dataFetch<UserStudyplan>({
+      url: '/api/studyplan',
+      options: { method: 'POST', headers: CONTENT_JSON, body: JSON.stringify(studyplan) },
+
+      onSuccess: data => {
+        setIsLoading(false)
+        setUserStudyplan(data)
+      }
+    })
+  }
+
+  return (
+    <ChipButton onClick={handleStartStudyplan} disabled={isLoading}>
+      {isLoading ? <LoadingIcon className='animate-spin' /> : <RocketIcon />}
+      Start this studyplan
+    </ChipButton>
   )
 }

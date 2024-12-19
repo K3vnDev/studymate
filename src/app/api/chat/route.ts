@@ -17,12 +17,9 @@ import { MATE_TRAIN_MESSAGE } from './mateTrainMessage'
 
 // Get all previous chat messages
 export const GET = async () => {
-  try {
-    const messages = await getPrevChatMessages()
-    return Response(true, 200, { data: messages })
-  } catch {
-    return Response(false, 500)
-  }
+  const prevChatMessages = await getPrevChatMessages()
+  if (prevChatMessages === null) return Response(false, 500)
+  return Response(true, 200, { data: prevChatMessages })
 }
 
 // Send a message to mate and get a response
@@ -54,7 +51,7 @@ export const POST = async (req: NextRequest) => {
     const parsedMessages = messagesParser.clientToPrompt(validatedMessages)
     chatMessages = parsedMessages as ChatCompletionMessageParam[]
   } catch {
-    return Response(false, 400, { msg: 'Invalid messages format' })
+    return Response(false, 400)
   }
 
   try {

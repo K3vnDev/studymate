@@ -36,3 +36,7 @@ export type StudyplanSaved = {
   id: string
   created_by: string
 } & StudyplanUnSaved
+
+export type UserStudyplan = {
+  original_id: string
+} & StudyplanUnSaved

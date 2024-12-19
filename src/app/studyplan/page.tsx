@@ -54,7 +54,7 @@ export default function StudyplanPage() {
   return (
     <>
       <Main className='gap-12 px-24 py-12 h-full relative'>
-        {studyplan !== null ? <Studyplan {...studyplan} /> : <Loading />}
+        {studyplan !== null ? <Studyplan {...{ studyplan }} /> : <Loading />}
       </Main>
 
       <Sidebar />

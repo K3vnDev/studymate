@@ -15,18 +15,17 @@ export const saveChatMessagesToDatabase = async ({
   assistantMessages,
   userId
 }: Params) => {
-  try {
-    const prevChatMessages = await getPrevChatMessages()
+  const prevChatMessages = await getPrevChatMessages()
+  if (prevChatMessages === null) return
 
-    const messagesToInsert = [
-      ...prevChatMessages,
-      { role: 'user', content: userMessage },
-      ...messagesParser.mateResponseToDB(assistantMessages.responses)
-    ]
+  const messagesToInsert = [
+    ...prevChatMessages,
+    { role: 'user', content: userMessage },
+    ...messagesParser.mateResponseToDB(assistantMessages.responses)
+  ]
 
-    await createServerComponentClient({ cookies })
-      .from('users')
-      .update([{ chat_with_mate: messagesToInsert }])
-      .eq('id', userId)
-  } catch {}
+  await createServerComponentClient({ cookies })
+    .from('users')
+    .update([{ chat_with_mate: messagesToInsert }])
+    .eq('id', userId)
 }
