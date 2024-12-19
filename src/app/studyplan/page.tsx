@@ -5,13 +5,13 @@ import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
 import { Studyplan } from '@/components/Studyplan'
 import { dataFetch } from '@/lib/utils/dataFetch'
-import { useStudyplansStore } from '@/store/useStudyplansStore'
+import { useUserStore } from '@/store/useUserStore'
 import type { UserStudyplan } from '@/types.d'
 import { useEffect } from 'react'
 
 export default function UserStudyplanPage() {
-  const userStudyplan = useStudyplansStore(s => s.userStudyplan)
-  const setUserStudyplan = useStudyplansStore(s => s.setUserStudyplan)
+  const userStudyplan = useUserStore(s => s.studyplan)
+  const setUserStudyplan = useUserStore(s => s.setStudyplan)
 
   useEffect(() => {
     if (userStudyplan !== null) return

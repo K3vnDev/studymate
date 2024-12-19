@@ -9,9 +9,6 @@ export interface StudyplansStore {
 
   studyplan: StudyplanSaved | StudyplanUnSaved | UserStudyplan | null
   setStudyplan: (value: StudyplansStore['studyplan']) => void
-
-  userStudyplan: UserStudyplan | null
-  setUserStudyplan: (value: UserStudyplan | null) => void
 }
 
 export const useStudyplansStore = create<StudyplansStore>(set => ({
@@ -26,8 +23,5 @@ export const useStudyplansStore = create<StudyplansStore>(set => ({
     }),
 
   studyplan: null,
-  setStudyplan: value => set(() => ({ studyplan: value })),
-
-  userStudyplan: null,
-  setUserStudyplan: value => set(() => ({ userStudyplan: value }))
+  setStudyplan: value => set(() => ({ studyplan: value }))
 }))

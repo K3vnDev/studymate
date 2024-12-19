@@ -1,14 +1,8 @@
+import { CardStudyplan } from '@/components/CardStudyplan'
 import { EVENTS, FONTS } from '@/consts'
-import { parseDays } from '@/lib/utils/parseDays'
 import { repeat } from '@/lib/utils/repeat'
-import { useStudyplansStore } from '@/store/useStudyplansStore'
-import type { ChatMessage as ChatMessageType, StudyplanSaved } from '@/types.d'
-import { useRouter } from 'next/navigation'
-import { Badge } from '../../components/Badge'
-import { ChipButton } from '../../components/ChipButton'
-import { Header } from '../../components/Header'
-import { Paragraph } from '../../components/Paragraph'
-import { ClockIcon, ErrorIcon, ReloadIcon, RocketIcon } from '../../components/icons'
+import type { ChatMessage as ChatMessageType } from '@/types.d'
+import { ErrorIcon, ReloadIcon } from '../../components/icons'
 
 interface Props {
   role: ChatMessageType['role'] | 'bubbles'
@@ -17,7 +11,7 @@ interface Props {
 
 export const ChatMessage = ({ role, content }: Props) => {
   if (typeof content !== 'string') {
-    return <ChatStudyplan {...content} />
+    return <CardStudyplan studyplan={content} />
   }
   if (role === 'user') {
     return <UserOverlay>{content}</UserOverlay>
@@ -33,41 +27,6 @@ export const ChatMessage = ({ role, content }: Props) => {
     )
 
   return <ChatError>{content}</ChatError>
-}
-
-const ChatStudyplan = (studyplan: StudyplanSaved) => {
-  const setStudyplan = useStudyplansStore(s => s.setStudyplan)
-  const { name, desc, daily_lessons } = studyplan
-  const router = useRouter()
-
-  const handleClick = () => {
-    setStudyplan(studyplan)
-    router.push('/chat/studyplan')
-  }
-
-  return (
-    <li
-      className={`
-        w-[22rem] border border-card-border card bg-card-background 
-        px-5 py-6 flex flex-col gap-1 rounded-2xl cursor-default
-      `}
-      onClick={handleClick}
-    >
-      <Badge>STUDYPLAN</Badge>
-      <Header className='mb-1'>{name}</Header>
-      <Paragraph>{desc}</Paragraph>
-      <div className='mt-3 flex justify-between items-center'>
-        <span className='flex text-gray-10 gap-1 items-center'>
-          <ClockIcon className='size-6' />
-          {parseDays(daily_lessons.length)}
-        </span>
-        <ChipButton onClick={handleClick}>
-          <RocketIcon />
-          See plan
-        </ChipButton>
-      </div>
-    </li>
-  )
 }
 
 export const ChatBubbles = () => (

@@ -30,6 +30,7 @@ export const useChatMessages = () => {
             ? { role: 'studyplan', content: JSON.parse(msg.content) }
             : msg
         }) as ChatMessage[]
+
         setMessages(newMessages)
       }
     })
@@ -42,7 +43,7 @@ export const useChatMessages = () => {
     setIsWaitingRespose(true)
     setIsOnError(false)
 
-    dataFetch<MateResponseSchema>({
+    dataFetch<MateResponseSchema['responses']>({
       url: '/api/chat',
       options: {
         headers: CONTENT_JSON,
@@ -55,7 +56,7 @@ export const useChatMessages = () => {
         })
       },
       onSuccess: data => {
-        const chatMessages = data.responses.map(({ type, data }) => ({
+        const chatMessages = data.map(({ type, data }) => ({
           role: type === 'message' ? 'assistant' : 'studyplan',
           content: data
         })) as ChatMessage[]

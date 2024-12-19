@@ -2,7 +2,7 @@ import { CONTENT_JSON, FONTS } from '@/consts'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { getCategoryValues } from '@/lib/utils/getCategoryValues'
 import { parseDays } from '@/lib/utils/parseDays'
-import { useStudyplansStore } from '@/store/useStudyplansStore'
+import { useUserStore } from '@/store/useUserStore'
 import type { StudyplanSaved, UserStudyplan } from '@/types.d'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -11,7 +11,8 @@ import { ChipButton } from './ChipButton'
 import { DailyLesson } from './DailyLesson'
 import { Header } from './Header'
 import { Paragraph } from './Paragraph'
-import { BookIcon, BookmarkIcon, ClockIcon, LoadingIcon, MoreIcon, RocketIcon } from './icons'
+import { TodaysLesson } from './TodaysLesson'
+import { BookmarkIcon, ClockIcon, LoadingIcon, MoreIcon, RocketIcon } from './icons'
 
 interface Props {
   studyplan: Omit<StudyplanSaved, 'id' | 'created_by'> & {
@@ -64,19 +65,14 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
             {category}
           </span>
           <div className='flex flex-row-reverse gap-4 items-center'>
-            {usersCurrent ? (
-              <ChipButton>
-                <RocketIcon />
-                See today's tasks
-              </ChipButton>
-            ) : (
-              <StartStudyplanButton studyplan={studyplan} />
-            )}
+            {!usersCurrent && <StartStudyplanButton studyplan={studyplan} />}
 
             <BookmarkIcon className='size-9 text-blue-20 stroke-[1.5px]' />
           </div>
         </div>
       </section>
+
+      {usersCurrent && <TodaysLesson {...{ day: 0, daily_lessons }} />}
 
       <section className='flex flex-col gap-5'>
         <div className='flex justify-between items-center'>
@@ -98,7 +94,7 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
 
 const StartStudyplanButton = ({ studyplan }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
-  const setUserStudyplan = useStudyplansStore(s => s.setUserStudyplan)
+  const setUserStudyplan = useUserStore(s => s.setStudyplan)
   const router = useRouter()
 
   const handleStartStudyplan = () => {

@@ -22,6 +22,7 @@ export const MateCard = ({ message, children, onClick, className = '' }: Props) 
       <Image
         src='/mate-image.webp'
         alt='Your virtual assistant, Mate, waving its hand at you'
+        draggable={false}
         width={150}
         height={150}
         className='h-full scale-[1.15] object-cover self-end origin-bottom'

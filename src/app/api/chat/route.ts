@@ -1,4 +1,4 @@
-import { MAX_MESSAGES_ON_PROMPT } from '@/consts'
+import { MATE_VALUES, MAX_MESSAGES_ON_PROMPT } from '@/consts'
 import { ChatMessageSchema } from '@/lib/schemas/ChatMessage'
 import { MateResponseSchema } from '@/lib/schemas/MateResponse'
 import { messagesParser } from '@/lib/utils/messagesParser'
@@ -67,13 +67,21 @@ export const POST = async (req: NextRequest) => {
     })
 
     // Extract response message
-    const assistantMessages = completion.choices[0].message.parsed
-    if (!assistantMessages) return Response(false, 500)
+    const assistantResponse = completion.choices[0].message.parsed
+    if (!assistantResponse) return Response(false, 500)
+
+    // Remove extra messages
+    const assistantMessages = assistantResponse.responses.map(r => {
+      if (r.type === 'message') return r
+
+      const slicedDailyLessons = r.data.daily_lessons.slice(0, MATE_VALUES.STUDYPLAN.MAX_DAYS)
+      return { ...r, data: { ...r.data, daily_lessons: slicedDailyLessons } }
+    })
 
     // Save messages to database
     saveChatMessagesToDatabase({ assistantMessages, userMessage, userId: id })
 
-    return Response(true, 201, { data: assistantMessages })
+    return Response(true, 201, { data: assistantMessages, msg: 'Hello' })
   } catch {
     return Response(false, 500)
   }

@@ -6,7 +6,7 @@ import { getPrevChatMessages } from './getPrevChatMessages'
 
 interface Params {
   userMessage: string
-  assistantMessages: MateResponseSchema
+  assistantMessages: MateResponseSchema['responses']
   userId: string
 }
 
@@ -21,7 +21,7 @@ export const saveChatMessagesToDatabase = async ({
   const messagesToInsert = [
     ...prevChatMessages,
     { role: 'user', content: userMessage },
-    ...messagesParser.mateResponseToDB(assistantMessages.responses)
+    ...messagesParser.mateResponseToDB(assistantMessages)
   ]
 
   await createServerComponentClient({ cookies })

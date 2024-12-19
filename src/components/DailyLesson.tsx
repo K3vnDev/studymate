@@ -17,14 +17,14 @@ export const DailyLesson = ({ name, desc, tasks, extendedLesson, setExtendedLess
 
   const [parentColors, arrowRotation] = isExtended
     ? ['bg-gray-40 border-gray-20', 'rotate-0']
-    : ['bg-gray-60 border-gray-40', 'rotate-180']
+    : ['bg-gray-60 border-card-border', 'rotate-180']
 
   const dailyLessonName = isExtended ? `${name}:` : name
 
   return (
     <li
       className={`
-        px-7 py-5 ${parentColors} border-2 rounded-lg button cursor-pointer 
+        px-7 py-5 ${parentColors} border rounded-lg button cursor-pointer 
         flex justify-between gap-5 transition-all overflow-hidden
       `}
       onClick={handleClick}
