@@ -2,11 +2,11 @@ import type { UserStudyplan } from '@/types.d'
 import { create } from 'zustand'
 
 export interface UserStore {
-  studyplan: UserStudyplan | null
-  setStudyplan: (value: UserStudyplan | null) => void
+  studyplan: UserStudyplan | null | undefined
+  setStudyplan: (studyplan: UserStudyplan | null) => void
 }
 
 export const useUserStore = create<UserStore>(set => ({
-  studyplan: null,
+  studyplan: undefined,
   setStudyplan: value => set(() => ({ studyplan: value }))
 }))

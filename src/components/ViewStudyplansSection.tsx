@@ -36,7 +36,11 @@ export const ViewStudyplansSection = ({ title, storeKey, maxItems }: Props) => {
 
   return (
     <section className='flex flex-col gap-4'>
-      <Header>{title}</Header>
+      {storeStudyplans.length > 0 ? (
+        <Header>{title}</Header>
+      ) : (
+        <div className='bg-zinc-700 animate-pulse rounded-lg w-48 h-8' />
+      )}
       <ul className='flex flex-wrap gap-4'>
         {storeStudyplans.length > 0
           ? storeStudyplans.map(({ daily_lessons, created_by, desc, ...studyplan }) => (

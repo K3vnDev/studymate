@@ -1,5 +1,3 @@
-import { StudyplanSchema } from '@/lib/schemas/Studyplan'
-import type { StudyplanSaved, StudyplanUnSaved } from '@/types.d'
 import { Response } from '@api/response'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
@@ -31,52 +29,4 @@ export const GET = async (req: NextRequest) => {
   } catch {
     return Response(false, 500)
   }
-}
-
-// Start a studyplan
-export const POST = async (req: NextRequest) => {
-  const reqData = await req.json()
-  const supabase = createServerComponentClient({ cookies })
-
-  let studyplanFromReq: StudyplanSaved | StudyplanUnSaved
-
-  // biome-ignore format: <>
-  const { data: { user } } = await supabase.auth.getUser()
-  if (user === null) return Response(false, 401)
-  const { id: userId } = user
-
-  try {
-    studyplanFromReq = await StudyplanSchema.parseAsync(reqData)
-  } catch {
-    return Response(false, 400)
-  }
-
-  // Create a new studyplan if no one matches the id
-  const existingStudyplan = await getStudyplan(reqData.id)
-  let original_id: string
-
-  if (existingStudyplan === null) {
-    const { data, error } = await supabase.from('studyplans').insert(studyplanFromReq).select()
-
-    if (error !== null || data == null) {
-      return Response(false, 500)
-    }
-    original_id = data[0].id
-  } else {
-    studyplanFromReq = existingStudyplan
-    original_id = existingStudyplan.id
-  }
-
-  // Save a copy of the studyplan on the user
-  const { data, error } = await supabase
-    .from('users')
-    .update({ studyplan: { ...studyplanFromReq, original_id } })
-    .eq('id', userId)
-    .select()
-
-  if (error !== null || data === null) {
-    return Response(false, 500)
-  }
-
-  return Response(true, 201, { data: data[0].studyplan })
 }

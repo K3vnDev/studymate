@@ -24,7 +24,6 @@ export const dataFetch = async <T>({
     if (!success || !res.ok) {
       return onError(message, res.status)
     }
-    console.log('Success from dataFetch', { data }, res.status)
     onSuccess(data, message, res.status)
   } catch (err) {
     onError(err as string)

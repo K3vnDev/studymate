@@ -25,7 +25,7 @@ export const DailyLesson = ({ name, desc, tasks, extendedLesson, setExtendedLess
     <li
       className={`
         px-7 py-5 ${parentColors} border rounded-lg button cursor-pointer 
-        flex justify-between gap-5 transition-all overflow-hidden
+        flex justify-between gap-5 transition-all group relative
       `}
       onClick={handleClick}
     >

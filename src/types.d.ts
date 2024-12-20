@@ -39,4 +39,5 @@ export type StudyplanSaved = {
 
 export type UserStudyplan = {
   original_id: string
+  current_day: number
 } & StudyplanUnSaved

@@ -26,6 +26,8 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
   const { id = null, name, desc, category, daily_lessons } = studyplan
   const [extendedLesson, setExtendedLesson] = useState(-1)
 
+  const userStudyplan = useUserStore(s => s.studyplan)
+
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
@@ -72,7 +74,9 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
         </div>
       </section>
 
-      {usersCurrent && <TodaysLesson {...{ day: 0, daily_lessons }} />}
+      {usersCurrent && userStudyplan && (
+        <TodaysLesson day={userStudyplan.current_day} daily_lessons={daily_lessons} />
+      )}
 
       <section className='flex flex-col gap-5'>
         <div className='flex justify-between items-center'>
@@ -100,14 +104,13 @@ const StartStudyplanButton = ({ studyplan }: Props) => {
   const handleStartStudyplan = () => {
     setIsLoading(true)
 
-    dataFetch<UserStudyplan>({
-      url: '/api/studyplans',
+    dataFetch<UserStudyplan | null>({
+      url: '/api/user/studyplan',
       options: { method: 'POST', headers: CONTENT_JSON, body: JSON.stringify(studyplan) },
 
       onSuccess: data => {
-        setIsLoading(false)
         setUserStudyplan(data)
-        router.push('/studyplan')
+        router.replace('/studyplan')
       }
     })
   }

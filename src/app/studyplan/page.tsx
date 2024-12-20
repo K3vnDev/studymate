@@ -14,9 +14,9 @@ export default function UserStudyplanPage() {
   const setUserStudyplan = useUserStore(s => s.setStudyplan)
 
   useEffect(() => {
-    if (userStudyplan !== null) return
+    if (userStudyplan !== undefined) return
 
-    dataFetch<UserStudyplan>({
+    dataFetch<UserStudyplan | null>({
       url: '/api/user/studyplan',
       onSuccess: data => {
         setUserStudyplan(data)
@@ -27,11 +27,7 @@ export default function UserStudyplanPage() {
   return (
     <>
       <Main className='gap-12 px-24 py-12 h-full relative'>
-        {userStudyplan !== null ? (
-          <Studyplan studyplan={userStudyplan} usersCurrent />
-        ) : (
-          <Loading />
-        )}
+        {userStudyplan ? <Studyplan studyplan={userStudyplan} usersCurrent /> : <Loading />}
       </Main>
 
       <Sidebar />
