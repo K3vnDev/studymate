@@ -10,31 +10,16 @@ import { ViewStudyplansSection } from '@/components/ViewStudyplansSection'
 import { MagicWandIcon, MessageIcon } from '@/components/icons'
 import { MATE_MEET_MESSAGE } from '@/consts'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
-import { dataFetch } from '@/lib/utils/dataFetch'
-import { useUserStore } from '@/store/useUserStore'
-import type { UserStudyplan } from '@/types.d'
-import { useEffect } from 'react'
+import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 
 export default function DashboardPage() {
   const prompts = useUserPrompts({ redirect: true })
-  const userStudyplan = useUserStore(s => s.studyplan)
-  const setUserStudyplan = useUserStore(s => s.setStudyplan)
-
-  useEffect(() => {
-    if (userStudyplan !== undefined) return
-
-    dataFetch<UserStudyplan | null>({
-      url: '/api/user/studyplan',
-      onSuccess: data => {
-        setUserStudyplan(data)
-      }
-    })
-  }, [])
+  const [userStudyplan, isLoadingUserStudyplan] = useUserStudyplan()
 
   return (
     <>
       <Main className='gap-12 px-24 py-12 h-full'>
-        {userStudyplan === null ? (
+        {!userStudyplan && !isLoadingUserStudyplan ? (
           <MateCard message={MATE_MEET_MESSAGE} onClick={prompts.blank}>
             <ChipButton empty onClick={prompts.createStudyplan}>
               <MagicWandIcon />
@@ -45,7 +30,7 @@ export default function DashboardPage() {
               Chat
             </ChipButton>
           </MateCard>
-        ) : userStudyplan !== undefined ? (
+        ) : userStudyplan ? (
           <CardStudyplan className='w-[32rem]' studyplan={userStudyplan} userCurrent />
         ) : (
           <FallbackZone className='w-[32rem] h-40 bg-zinc-600' />

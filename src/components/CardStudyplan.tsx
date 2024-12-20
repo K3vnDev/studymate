@@ -28,21 +28,21 @@ export const CardStudyplan = ({ studyplan, userCurrent = false, className = '' }
     router.push(userCurrent ? '/studyplan' : '/chat/studyplan')
   }
 
-  const gradient = userCurrent
-    ? 'bg-gradient-to-r from-blue-30 to-blue-20 animate-spin'
-    : 'bg-card-border'
+  const [gradient, borderWidth] = userCurrent
+    ? ['bg-gradient-to-r from-blue-30 to-blue-20 animate-spin', 'p-0.5']
+    : ['bg-card-border', 'p-px']
 
   return (
     <GradientBorder
       className={{
         gradient,
-        main: `w-fit ${userCurrent ? '' : 'p-[0.0625rem]'}`
+        main: `w-fit ${borderWidth}`
       }}
     >
       <li
         className={`
-        ${className} w-[22rem] border border-card-border card bg-card-background 
-        px-5 py-6 flex flex-col gap-1 rounded-2xl cursor-default
+          ${className} w-[22rem] border border-card-border card bg-card-background 
+          px-5 py-6 flex flex-col gap-1 rounded-2xl cursor-default
         `}
         onClick={handleClick}
       >

@@ -1,3 +1,4 @@
+import { TodaysLesson } from '@/app/studyplan/TodaysLesson'
 import { CONTENT_JSON, FONTS } from '@/consts'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { getCategoryValues } from '@/lib/utils/getCategoryValues'
@@ -11,7 +12,6 @@ import { ChipButton } from './ChipButton'
 import { DailyLesson } from './DailyLesson'
 import { Header } from './Header'
 import { Paragraph } from './Paragraph'
-import { TodaysLesson } from './TodaysLesson'
 import { BookmarkIcon, ClockIcon, LoadingIcon, MoreIcon, RocketIcon } from './icons'
 
 interface Props {
