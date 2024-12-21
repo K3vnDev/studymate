@@ -1,7 +1,7 @@
 import { Badge } from '@/components/Badge'
 import { ChipButton } from '@/components/ChipButton'
 import { Paragraph } from '@/components/Paragraph'
-import { RocketIcon } from '@/components/icons'
+import { CheckIcon, RocketIcon } from '@/components/icons'
 import type { UserStudyplan } from '@/types.d'
 import { useRouter } from 'next/navigation'
 
@@ -11,8 +11,10 @@ interface Props {
 }
 
 export const TodaysLesson = ({ daily_lessons, day }: Props) => {
-  const { name, desc } = daily_lessons[day - 1]
+  const { name, desc, tasks } = daily_lessons[day - 1]
   const router = useRouter()
+
+  const allTasksAreDone = tasks.every(task => task.done)
 
   const handleClick = () => {
     router.push('/studyplan/tasks')
@@ -23,7 +25,10 @@ export const TodaysLesson = ({ daily_lessons, day }: Props) => {
       className='flex w-full h-fit flex-col bg-card-background px-7 py-6 rounded-2xl border border-card-border card'
       onClick={handleClick}
     >
-      <Badge className='mb-3'>TODAY'S LESSON</Badge>
+      <div className='flex w-full justify-between items-center'>
+        <Badge className='mb-3'>TODAY'S LESSON</Badge>
+        {allTasksAreDone && <CheckIcon className='text-blue-20 size-7 scale-150 origin-right' />}
+      </div>
 
       <div className='flex flex-col gap-1'>
         <Paragraph s={3} className='font-medium text-white'>

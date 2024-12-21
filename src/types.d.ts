@@ -37,7 +37,10 @@ export type StudyplanSaved = {
   created_by: string
 } & StudyplanUnSaved
 
-export type UserStudyplan = {
+export type DBUserStudyplan = {
   original_id: string
-  current_day: number
 } & StudyplanUnSaved
+
+export type UserStudyplan = {
+  current_day: number
+} & DBUserStudyplan

@@ -4,6 +4,7 @@ import { Response } from '@api/response'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
+import { getUserId } from '../../getUserId'
 import { getStudyplan } from '../../studyplans/getStudyplan'
 import { parseDataToUserStudyplan } from './parseDataToUserStudyplan'
 
@@ -26,10 +27,8 @@ export const POST = async (req: NextRequest) => {
 
   let studyplanFromReq: StudyplanSaved | StudyplanUnSaved
 
-  // biome-ignore format: <>
-  const { data: { user } } = await supabase.auth.getUser()
-  if (user === null) return Response(false, 401)
-  const { id: userId } = user
+  const userId = await getUserId(supabase)
+  if (userId === null) return Response(false, 401)
 
   try {
     studyplanFromReq = await StudyplanSchema.parseAsync(reqData)

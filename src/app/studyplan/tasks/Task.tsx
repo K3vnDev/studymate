@@ -4,12 +4,18 @@ import { FONTS } from '@/consts'
 import type { UserStudyplan } from '@/types.d'
 import { useState } from 'react'
 
-type Props = UserStudyplan['daily_lessons'][number]['tasks'][number]
+type Props = {
+  index: number
+  completeTask: (index: number, onErrorCallback: () => void) => void
+} & UserStudyplan['daily_lessons'][number]['tasks'][number]
 
-export const Task = ({ goal, done }: Props) => {
+export const Task = ({ goal, done, index, completeTask }: Props) => {
   const [isDone, setIsDone] = useState(done)
 
   const handleClick = () => {
+    completeTask(index, () => {
+      setIsDone(false)
+    })
     setIsDone(true)
   }
 

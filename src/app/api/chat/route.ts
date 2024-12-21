@@ -11,6 +11,7 @@ import { zodResponseFormat } from 'openai/helpers/zod.mjs'
 import type { ChatCompletionMessageParam } from 'openai/src/resources/index.js'
 import { z } from 'zod'
 import { getPrevChatMessages } from '../getPrevChatMessages'
+import { getUserId } from '../getUserId'
 import { Response } from '../response'
 import { saveChatMessagesToDatabase } from '../saveChatMessagesToDabatase'
 import { MATE_TRAIN_MESSAGE } from './mateTrainMessage'
@@ -31,13 +32,10 @@ export const POST = async (req: NextRequest) => {
   let userMessage = ''
 
   const supabase = createServerComponentClient({ cookies })
-  const user = await supabase.auth.getUser()
 
   // Check if user is logged in
-  if (user.data.user === null) {
-    return Response(false, 401)
-  }
-  const { id } = user.data.user
+  const userId = await getUserId(supabase)
+  if (userId === null) return Response(false, 401)
 
   try {
     // Extract user message
@@ -79,7 +77,7 @@ export const POST = async (req: NextRequest) => {
     })
 
     // Save messages to database
-    saveChatMessagesToDatabase({ assistantMessages, userMessage, userId: id })
+    saveChatMessagesToDatabase({ assistantMessages, userMessage, userId })
 
     return Response(true, 201, { data: assistantMessages, msg: 'Hello' })
   } catch {
