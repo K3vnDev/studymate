@@ -1,23 +1,35 @@
 import { StudyplanSchema } from '@/lib/schemas/Studyplan'
-import type { StudyplanSaved, StudyplanUnSaved } from '@/types.d'
-import { Response } from '@api/response'
+import type { StudyplanSaved, StudyplanUnSaved, UserStudyplan } from '@/types.d'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
-import { getUserId } from '../../getUserId'
-import { getStudyplan } from '../../studyplans/getStudyplan'
-import { parseDataToUserStudyplan } from './parseDataToUserStudyplan'
+import { Response } from '../../utils/Response'
+import { databaseQuery } from '../../utils/databaseQuery'
+import { getStudyplan } from '../../utils/getStudyplan'
+import { getUserId } from '../../utils/getUserId'
+import { parseDataToUserStudyplan } from '../../utils/parseDataToUserStudyplan'
+
+type GETResponse = Array<{
+  studyplan: UserStudyplan
+  current_studyplan_day: { day: number }
+}>
 
 // Get user studyplan and current day
 export const GET = async () => {
   const supabase = createServerComponentClient({ cookies })
 
-  const { data, error } = await supabase.from('users').select('studyplan, current_studyplan_day')
-  if (error !== null || data === null) return Response(false, 500)
+  try {
+    const data = await databaseQuery<GETResponse>({
+      query: s => s.from('users').select('studyplan, current_studyplan_day'),
+      supabase
+    })
+    if (data === null) return Response(false, 500)
+    if (data.length === 0) return Response(false, 401)
 
-  if (data.length === 0) return Response(false, 401)
-
-  return Response(true, 200, { data: parseDataToUserStudyplan(data) })
+    return Response(true, 200, { data: parseDataToUserStudyplan(data) })
+  } catch {
+    return Response(false, 500)
+  }
 }
 
 // Start a studyplan
@@ -26,8 +38,9 @@ export const POST = async (req: NextRequest) => {
   const supabase = createServerComponentClient({ cookies })
 
   let studyplanFromReq: StudyplanSaved | StudyplanUnSaved
+  let original_id: string
 
-  const userId = await getUserId(supabase)
+  const userId = await getUserId({ supabase })
   if (userId === null) return Response(false, 401)
 
   try {
@@ -37,38 +50,46 @@ export const POST = async (req: NextRequest) => {
   }
 
   // Create a new studyplan if no one matches the id
-  const existingStudyplan = await getStudyplan(reqData.id)
-  let original_id: string
+  try {
+    const existingStudyplan = await getStudyplan(reqData.id)
 
-  if (existingStudyplan === null) {
-    const { data, error } = await supabase.from('studyplans').insert(studyplanFromReq).select()
+    if (existingStudyplan === null) {
+      const data = await databaseQuery<StudyplanSaved[]>({
+        query: s => s.from('studyplans').insert(studyplanFromReq).select(),
+        supabase
+      })
 
-    if (error !== null || data == null) {
-      return Response(false, 500)
+      if (data === null) {
+        return Response(false, 500)
+      }
+      original_id = data[0].id
+    } else {
+      studyplanFromReq = existingStudyplan
+      original_id = existingStudyplan.id
     }
-    original_id = data[0].id
-  } else {
-    studyplanFromReq = existingStudyplan
-    original_id = existingStudyplan.id
+  } catch {
+    return Response(false, 500)
   }
 
+  // Save a copy of the studyplan on the user
   try {
     const current_studyplan_day = {
       day: 1,
       last_updated: new Date()
     }
 
-    // Save a copy of the studyplan on the user
-    const { data, error } = await supabase
-      .from('users')
-      .update({ studyplan: { ...studyplanFromReq, original_id }, current_studyplan_day })
-      .eq('id', userId)
-      .select()
+    // biome-ignore format: <>
+    const data = await databaseQuery<any>({
+      query: s => s
+        .from('users')
+        .update({ studyplan: { ...studyplanFromReq, original_id }, current_studyplan_day })
+        .eq('id', userId)
+        .select()
+    })
 
-    if (error !== null || data === null) {
+    if (data === null) {
       return Response(false, 500)
     }
-
     return Response(true, 201, { data: parseDataToUserStudyplan(data) })
   } catch {
     return Response(false, 500)

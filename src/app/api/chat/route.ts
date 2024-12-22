@@ -10,11 +10,11 @@ import OpenAI from 'openai'
 import { zodResponseFormat } from 'openai/helpers/zod.mjs'
 import type { ChatCompletionMessageParam } from 'openai/src/resources/index.js'
 import { z } from 'zod'
-import { getPrevChatMessages } from '../getPrevChatMessages'
-import { getUserId } from '../getUserId'
-import { Response } from '../response'
-import { saveChatMessagesToDatabase } from '../saveChatMessagesToDabatase'
-import { MATE_TRAIN_MESSAGE } from './mateTrainMessage'
+import { Response } from '../utils/Response'
+import { getPrevChatMessages } from '../utils/getPrevChatMessages'
+import { getUserId } from '../utils/getUserId'
+import { MATE_TRAIN_MESSAGE } from '../utils/mateTrainMessage'
+import { saveChatMessagesToDatabase } from '../utils/saveChatMessagesToDabatase'
 
 // Get all previous chat messages
 export const GET = async () => {
@@ -34,7 +34,7 @@ export const POST = async (req: NextRequest) => {
   const supabase = createServerComponentClient({ cookies })
 
   // Check if user is logged in
-  const userId = await getUserId(supabase)
+  const userId = await getUserId({ supabase })
   if (userId === null) return Response(false, 401)
 
   try {
@@ -53,7 +53,7 @@ export const POST = async (req: NextRequest) => {
   }
 
   try {
-    // Make send prompt to the AI
+    // Send prompt to the AI Model
     const completion = await openai.beta.chat.completions.parse({
       model: 'gpt-4o-mini',
       messages: [
