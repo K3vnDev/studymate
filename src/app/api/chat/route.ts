@@ -1,7 +1,7 @@
+import { dataParser } from '@/app/api/utils/dataParser'
 import { MATE_VALUES, MAX_MESSAGES_ON_PROMPT } from '@/consts'
 import { ChatMessageSchema } from '@/lib/schemas/ChatMessage'
 import { MateResponseSchema } from '@/lib/schemas/MateResponse'
-import { messagesParser } from '@/lib/utils/messagesParser'
 import type { MessageAssistantData } from '@/types.d'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
@@ -46,7 +46,7 @@ export const POST = async (req: NextRequest) => {
     if (userMessage === '') return Response(false, 400)
 
     const validatedMessages = z.array(ChatMessageSchema).parse(prevMessages)
-    const parsedMessages = messagesParser.clientToPrompt(validatedMessages)
+    const parsedMessages = dataParser.clientToPrompt(validatedMessages)
     chatMessages = parsedMessages as ChatCompletionMessageParam[]
   } catch {
     return Response(false, 400)

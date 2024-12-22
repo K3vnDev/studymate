@@ -1,32 +1,31 @@
 import { StudyplanSchema } from '@/lib/schemas/Studyplan'
-import type { StudyplanSaved, StudyplanUnSaved, UserStudyplan } from '@/types.d'
+import type {
+  StudyplanSaved,
+  StudyplanUnSaved,
+  UserStudyplanAndCurrentDayResponse
+} from '@/types.d'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import { Response } from '../../utils/Response'
+import { dataParser } from '../../utils/dataParser'
 import { databaseQuery } from '../../utils/databaseQuery'
 import { getStudyplan } from '../../utils/getStudyplan'
 import { getUserId } from '../../utils/getUserId'
-import { parseDataToUserStudyplan } from '../../utils/parseDataToUserStudyplan'
-
-type GETResponse = Array<{
-  studyplan: UserStudyplan
-  current_studyplan_day: { day: number }
-}>
 
 // Get user studyplan and current day
 export const GET = async () => {
   const supabase = createServerComponentClient({ cookies })
 
   try {
-    const data = await databaseQuery<GETResponse>({
+    const data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>({
       query: s => s.from('users').select('studyplan, current_studyplan_day'),
       supabase
     })
     if (data === null) return Response(false, 500)
     if (data.length === 0) return Response(false, 401)
 
-    return Response(true, 200, { data: parseDataToUserStudyplan(data) })
+    return Response(true, 200, { data: dataParser.DBResponseToUserStudyplan(data) })
   } catch {
     return Response(false, 500)
   }
@@ -51,7 +50,7 @@ export const POST = async (req: NextRequest) => {
 
   // Create a new studyplan if no one matches the id
   try {
-    const existingStudyplan = await getStudyplan(reqData.id)
+    const existingStudyplan = await getStudyplan({ id: reqData.id, supabase })
 
     if (existingStudyplan === null) {
       const data = await databaseQuery<StudyplanSaved[]>({
@@ -64,8 +63,10 @@ export const POST = async (req: NextRequest) => {
       }
       original_id = data[0].id
     } else {
-      studyplanFromReq = existingStudyplan
-      original_id = existingStudyplan.id
+      const { id, ...studyplan } = existingStudyplan
+
+      studyplanFromReq = studyplan
+      original_id = id
     }
   } catch {
     return Response(false, 500)
@@ -90,7 +91,7 @@ export const POST = async (req: NextRequest) => {
     if (data === null) {
       return Response(false, 500)
     }
-    return Response(true, 201, { data: parseDataToUserStudyplan(data) })
+    return Response(true, 201, { data: dataParser.DBResponseToUserStudyplan(data) })
   } catch {
     return Response(false, 500)
   }

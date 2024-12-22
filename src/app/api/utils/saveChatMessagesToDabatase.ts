@@ -1,4 +1,4 @@
-import { messagesParser } from '@/lib/utils/messagesParser'
+import { dataParser } from '@/app/api/utils/dataParser'
 import type { MateResponseSchema } from '@/types.d'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
@@ -21,7 +21,7 @@ export const saveChatMessagesToDatabase = async ({
   const messagesToInsert = [
     ...prevChatMessages,
     { role: 'user', content: userMessage },
-    ...messagesParser.mateResponseToDB(assistantMessages)
+    ...dataParser.mateResponseToDB(assistantMessages)
   ]
 
   await createServerComponentClient({ cookies })

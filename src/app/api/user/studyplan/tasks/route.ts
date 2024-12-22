@@ -1,19 +1,11 @@
 import { Response } from '@/app/api/utils/Response'
 import { databaseQuery } from '@/app/api/utils/databaseQuery'
 import { getUserId } from '@/app/api/utils/getUserId'
-import type { DBUserStudyplan } from '@/types.d'
+import type { DBUserStudyplan, UserStudyplanAndCurrentDayResponse } from '@/types.d'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import { z } from 'zod'
-
-interface POSTResponse {
-  studyplan: DBUserStudyplan | null
-  current_studyplan_day: {
-    day: number
-    last_updated: string
-  } | null
-}
 
 export const POST = async (req: NextRequest) => {
   let taskIndexes: number[]
@@ -30,7 +22,7 @@ export const POST = async (req: NextRequest) => {
 
   // Fetch values from database
   try {
-    const data = await databaseQuery<POSTResponse[]>({
+    const data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>({
       query: s => s.from('users').select('studyplan, current_studyplan_day'),
       supabase
     })

@@ -26,6 +26,15 @@ export interface MessageAssistantData {
   newMessage?: string
 }
 
+// DB Responses
+export interface UserStudyplanAndCurrentDayResponse {
+  studyplan: DBUserStudyplan
+  current_studyplan_day: {
+    day: number
+    last_updated: string
+  }
+}
+
 // Schemas
 export type ChatMessageSchema = z.infer<typeof ChatMessageSchemaType>
 export type MateResponseSchema = z.infer<typeof MateResponseSchemaType>
