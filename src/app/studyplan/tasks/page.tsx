@@ -7,7 +7,7 @@ import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { TodaysTasks } from './TodaysTasks'
 
 export default function TasksPage() {
-  const [userStudyplan] = useUserStudyplan()
+  const { userStudyplan } = useUserStudyplan({ redirectTo: '/dashboard' })
   const todaysTasks = userStudyplan?.daily_lessons[userStudyplan.current_day - 1]
 
   return (

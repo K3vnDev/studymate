@@ -7,7 +7,7 @@ import { Studyplan } from '@/components/Studyplan'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 
 export default function UserStudyplanPage() {
-  const [userStudyplan] = useUserStudyplan()
+  const { userStudyplan } = useUserStudyplan({ redirectTo: '/dashboard' })
 
   return (
     <>

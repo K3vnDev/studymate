@@ -32,8 +32,12 @@ export const GET = async () => {
       return Response(false, 500)
     }
 
-    // biome-ignore format: <>
     const [{ studyplan, current_studyplan_day }] = data
+
+    if (!studyplan || !current_studyplan_day) {
+      return Response(true, 200, { data: null })
+    }
+
     const { day, last_updated } = current_studyplan_day
 
     const todaysTasksAreDone = studyplan.daily_lessons[day - 1].tasks.every(t => t.done)
@@ -123,6 +127,27 @@ export const POST = async (req: NextRequest) => {
       return Response(false, 500)
     }
     return Response(true, 201, { data: dataParser.DBResponseToUserStudyplan(data) })
+  } catch {
+    return Response(false, 500)
+  }
+}
+
+// Abandon a studyplan
+export const DELETE = async () => {
+  const supabase = createServerComponentClient({ cookies })
+
+  const userId = await getUserId({ supabase })
+  if (userId === null) return Response(false, 401)
+
+  try {
+    // biome-ignore format: <>
+    await databaseQuery({
+      query: s => s
+        .from('users')
+        .update({ studyplan: null, current_studyplan_day: null })
+        .eq('id', userId)
+    })
+    return Response(true, 200)
   } catch {
     return Response(false, 500)
   }

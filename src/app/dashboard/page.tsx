@@ -14,12 +14,12 @@ import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 
 export default function DashboardPage() {
   const prompts = useUserPrompts({ redirect: true })
-  const [userStudyplan, isLoadingUserStudyplan] = useUserStudyplan()
+  const { userStudyplan, isLoading } = useUserStudyplan()
 
   return (
     <>
       <Main className='gap-12 px-24 py-12 h-full'>
-        {!userStudyplan && !isLoadingUserStudyplan ? (
+        {!userStudyplan && !isLoading ? (
           <MateCard message={MATE_MEET_MESSAGE} onClick={prompts.blank}>
             <ChipButton empty onClick={prompts.createStudyplan}>
               <MagicWandIcon />

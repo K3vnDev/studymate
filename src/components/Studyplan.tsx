@@ -1,5 +1,6 @@
 import { TodaysLesson } from '@/app/studyplan/TodaysLesson'
 import { CONTENT_JSON, FONTS } from '@/consts'
+import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { getCategoryValues } from '@/lib/utils/getCategoryValues'
 import { parseDays } from '@/lib/utils/parseDays'
@@ -54,9 +55,7 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
           <Header s={3}>{name}</Header>
           <Paragraph className='w-4/5'>{desc}</Paragraph>
 
-          <button className='absolute right-0 top-0 button'>
-            <MoreIcon className='text-gray-10 size-7' />
-          </button>
+          <MoreButton usersCurrent={usersCurrent} />
         </div>
 
         <div className='w-full flex justify-between items-center'>
@@ -120,5 +119,21 @@ const StartStudyplanButton = ({ studyplan }: Props) => {
       {isLoading ? <LoadingIcon className='animate-spin' /> : <RocketIcon />}
       Start this studyplan
     </ChipButton>
+  )
+}
+
+const MoreButton = ({ usersCurrent = false }) => {
+  const { abandonStudyplan, navigateToOriginal } = useUserStudyplan({ fetchOnAwake: false })
+
+  const handleClick = () => {
+    if (usersCurrent) {
+      abandonStudyplan()
+      navigateToOriginal()
+    }
+  }
+  return (
+    <button className='absolute right-0 top-0 button' onClick={handleClick}>
+      <MoreIcon className='text-gray-10 size-7' />
+    </button>
   )
 }

@@ -11,7 +11,7 @@ export const useCompleteTasks = () => {
   const [toCompleteTasks, setToCompleteTasks] = useState<ToCompleteTask[]>([])
   const timeout = useRef<NodeJS.Timeout>()
 
-  const WAIT_TIME = 300
+  const WAIT_TIME = 400
 
   useEffect(() => {
     if (toCompleteTasks.length === 0) return
