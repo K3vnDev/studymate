@@ -11,8 +11,10 @@
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "0.10.0",
     "@supabase/supabase-js": "2.45.6",
+    "@types/lodash": "4.17.13",
+    "lodash": "4.17.21",
     "next": "15.0.2",
-    "openai": "^4.76.1",
+    "openai": "4.76.1",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
     "zod": "3.24.1",

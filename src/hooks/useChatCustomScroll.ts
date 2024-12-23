@@ -1,10 +1,10 @@
-import { CHAT_ON_BOTTOM_SCROLL_THRESHOLD } from '@/consts'
-import { getElementRef } from '@/lib/utils/getElementRef'
 import { useChatStore } from '@/store/useChatStore'
 import { useEffect, useRef, useState } from 'react'
 
+const CHAT_ON_BOTTOM_SCROLL_THRESHOLD = 20
+
 interface Params {
-  updateScrollOn: any[]
+  updateScrollOn: unknown[]
 }
 
 export const useChatCustomScroll = ({ updateScrollOn }: Params) => {
@@ -13,16 +13,15 @@ export const useChatCustomScroll = ({ updateScrollOn }: Params) => {
   const isAutoScrollingDown = useRef(false)
   const isOnInitialScroll = useRef(true)
 
-  const listRef = useRef(null)
+  const listRef = useRef<HTMLLIElement>(null)
   const scrollRef = useRef(null)
 
   // Set chat scroll height to an element's height to increase body scroll
   useEffect(() => {
     if (listRef.current !== null && scrollRef.current !== null) {
-      const listElement: HTMLLIElement = listRef.current
-      listElement.style.overflowY = 'scroll'
-      const { scrollHeight } = listElement
-      listElement.style.overflowY = 'hidden'
+      listRef.current.style.overflowY = 'scroll'
+      const { scrollHeight } = listRef.current
+      listRef.current.style.overflowY = 'hidden'
 
       const scrollElement: HTMLDivElement = scrollRef.current
       scrollElement.style.height = `${scrollHeight}px`
@@ -33,10 +32,8 @@ export const useChatCustomScroll = ({ updateScrollOn }: Params) => {
   useEffect(() => {
     const handleScroll = () => {
       if (listRef.current === null) return
-      const listElement = getElementRef<HTMLUListElement>(listRef)
 
-      listElement?.scrollTo({ top: window.scrollY })
-
+      listRef.current.scrollTo({ top: window.scrollY })
       checkScrollOnBottom()
     }
     document.addEventListener('scroll', handleScroll)
@@ -46,9 +43,8 @@ export const useChatCustomScroll = ({ updateScrollOn }: Params) => {
   // Handle scroll on bottom checking logic
   const checkScrollOnBottom = () => {
     if (listRef.current === null) return
-    const listElement = getElementRef<HTMLUListElement>(listRef)
 
-    const { scrollTop, scrollHeight, clientHeight } = listElement
+    const { scrollTop, scrollHeight, clientHeight } = listRef.current
     const scrollDifference = scrollHeight - scrollTop
 
     const newScrollIsOnBottom =

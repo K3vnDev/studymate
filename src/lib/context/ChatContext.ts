@@ -9,8 +9,8 @@ interface ChatContext {
     onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void
     value: string
   }
-  listRef: React.MutableRefObject<null>
-  scrollRef: React.MutableRefObject<null>
+  listRef: React.MutableRefObject<any>
+  scrollRef: React.MutableRefObject<any>
   scrollDownButtonProps: {
     onClick: () => void
     style: React.CSSProperties

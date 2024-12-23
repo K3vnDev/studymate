@@ -10,6 +10,7 @@ import { MATE_MEET_MESSAGE } from '@/consts'
 import { useChatCustomScroll } from '@/hooks/useChatCustomScroll'
 import { useChatMessages } from '@/hooks/useChatMessages'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
+import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { ChatContext } from '@/lib/context/ChatContext'
 import { useChatStore } from '@/store/useChatStore'
 import { Header } from './Header'
@@ -21,6 +22,7 @@ export default function ChatPage() {
   const messages = useChatStore(s => s.messages)
   const prompt = useUserPrompts({})
   const chatMessagesValues = useChatMessages()
+  useUserStudyplan()
 
   const customScrollValues = useChatCustomScroll({
     updateScrollOn: [chatMessagesValues.isWaitingResponse, chatMessagesValues.isOnError]

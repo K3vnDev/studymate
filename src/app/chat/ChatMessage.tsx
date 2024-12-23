@@ -1,7 +1,9 @@
 import { CardStudyplan } from '@/components/CardStudyplan'
 import { EVENTS, FONTS } from '@/consts'
 import { repeat } from '@/lib/utils/repeat'
-import type { ChatMessage as ChatMessageType } from '@/types.d'
+import { useUserStore } from '@/store/useUserStore'
+import type { ChatMessage as ChatMessageType, StudyplanUnSaved } from '@/types.d'
+import { isEqual } from 'lodash'
 import { ErrorIcon, ReloadIcon } from '../../components/icons'
 
 interface Props {
@@ -10,8 +12,17 @@ interface Props {
 }
 
 export const ChatMessage = ({ role, content }: Props) => {
+  const userStudyplan = useUserStore(s => s.studyplan)
+
   if (typeof content !== 'string') {
-    return <CardStudyplan studyplan={content} />
+    const studyplan: StudyplanUnSaved = content
+    let userCurrent = false
+
+    if (userStudyplan) {
+      const { original_id, current_day, ...parsedUserStudyplan } = userStudyplan
+      userCurrent = isEqual(parsedUserStudyplan, studyplan)
+    }
+    return <CardStudyplan {...{ studyplan, userCurrent }} />
   }
   if (role === 'user') {
     return <UserOverlay>{content}</UserOverlay>

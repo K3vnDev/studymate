@@ -3,7 +3,7 @@ import type { PostgrestSingleResponse } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 
 interface Params {
-  query: (sup: SupabaseClient<any, 'public', any>) => any
+  query: (supabase: SupabaseClient<any, 'public', any>) => any
   supabase?: SupabaseClient<any, 'public', any>
   safeMode?: boolean
 }
@@ -17,7 +17,7 @@ export const databaseQuery = async <T>({
 
   if (error !== null) {
     if (safeMode) return null
-    throw new Error("Couldn't make query to database")
+    throw new Error(JSON.stringify(error))
   }
   return data as T
 }
