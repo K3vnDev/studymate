@@ -5,7 +5,7 @@ import { dataFetch } from '@/lib/utils/dataFetch'
 import { useUserStore } from '@/store/useUserStore'
 import type { UserStudyplan } from '@/types.d'
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Buttons } from './Buttons'
 import { NavigationButton } from './NavigationButton'
 import { Task } from './Task'
@@ -19,16 +19,26 @@ export const CurrentTask = ({ tasks }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const ulRef = useRef<HTMLUListElement>(null)
   const setTaskDone = useUserStore(s => s.setTaskDone)
-  // const router = useRouter()
+  const router = useRouter()
+
+  // Load task recieved on query params
+  useEffect(() => {
+    const url = new URL(location.href)
+    const taskIndex = Number(url.searchParams.get('task'))
+
+    if (Number.isNaN(taskIndex) || !taskIndex || taskIndex > tasks.length) return
+
+    swapTask(taskIndex - 1)
+  }, [])
 
   const swapTask = (index: number) => {
     if (!ulRef.current) return
 
     const { height } = ulRef.current.getBoundingClientRect()
-    ulRef.current.scrollTo({ top: height * index, behavior: 'smooth' })
+    ulRef.current.scrollTo({ top: height * index - 2, behavior: 'smooth' })
 
     setSelectedTask(index)
-    // router.replace(`/focus?task=${selectedTask}`)
+    router.replace(`/focus?task=${selectedTask}`)
   }
 
   const completeTask = () => {
@@ -48,6 +58,8 @@ export const CurrentTask = ({ tasks }: Props) => {
     })
   }
 
+  const asideGap = tasks.length < 4 ? 'gap-5' : tasks.length < 6 ? 'gap-4' : 'gap-2'
+
   return (
     <TasksContext.Provider
       value={{
@@ -65,7 +77,7 @@ export const CurrentTask = ({ tasks }: Props) => {
           rounded-2xl px-7 py-6 gap-7 w-[40rem]
         `}
       >
-        <main className='flex flex-col gap-5 w-full'>
+        <main className='flex flex-col gap-3 w-full'>
           <Badge>CURRENT TASK</Badge>
 
           <ul
@@ -79,7 +91,7 @@ export const CurrentTask = ({ tasks }: Props) => {
 
           <Buttons />
         </main>
-        <aside className='w-4 h-full flex flex-col justify-center gap-5'>
+        <aside className={`w-4 h-full flex flex-col justify-center ${asideGap}`}>
           {tasks.map((_, index) => (
             <NavigationButton key={index} index={index} />
           ))}

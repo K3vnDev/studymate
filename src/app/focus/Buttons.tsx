@@ -34,18 +34,19 @@ export const Buttons = () => {
 }
 
 const CompleteTaskButton = () => {
-  const { completeTask, isLoading } = useContext(TasksContext)
+  const { selectedTask, completeTask, isLoading } = useContext(TasksContext)
   const [justLoaded, setJustLoaded] = useState(true)
   const timeout = useRef<NodeJS.Timeout>()
 
-  const WAIT_TIME = 900
+  const WAIT_TIME = 750
 
   useEffect(() => {
+    setJustLoaded(true)
     timeout.current = setTimeout(() => {
       setJustLoaded(false)
     }, WAIT_TIME)
     return () => clearTimeout(timeout.current)
-  }, [])
+  }, [selectedTask])
 
   return (
     <ChipButton onClick={completeTask} disabled={isLoading || justLoaded}>

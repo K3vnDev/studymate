@@ -17,7 +17,7 @@ export const Task = ({ done, goal }: Props) => {
     >
       <span className={`text-white text-pretty ${lineThrough}`}>{goal}</span>
       <span className='h-full aspect-square flex items-center justify-end'>
-        {done && <CheckIcon className='text-blue-20 size-12' />}
+        {done && <CheckIcon className='text-blue-20 size-12 stroke-[2.5px]' />}
       </span>
     </li>
   )

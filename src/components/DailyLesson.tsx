@@ -51,7 +51,7 @@ export const DailyLesson = ({ name, desc, tasks, extendedLesson, setExtendedLess
         <ChevronIcon
           className={`size-6 text-gray-10 ${arrowRotation} [transition:transform_.3s_ease]`}
         />
-        {isExtended && <span className='text-gray-10/35'>Day {i + 1}</span>}
+        {isExtended && <span className='text-gray-10/35 text-nowrap'>Day {i + 1}</span>}
       </div>
     </li>
   )
