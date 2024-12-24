@@ -44,6 +44,10 @@ const config: Config = {
           '100%': { translate: '0 0' }
         }
       }
+    },
+    boxShadow: {
+      circle: '0px 0px 200px 0px',
+      card: '4px 4px 16px 0px'
     }
   },
   plugins: []

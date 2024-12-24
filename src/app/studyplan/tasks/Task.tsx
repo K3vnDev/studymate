@@ -23,7 +23,7 @@ export const Task = ({ goal, done, index, completeTask }: Props) => {
 
   return (
     <div
-      className={`${background} flex items-center gap-4 px-8 h-20 justify-between w-full rounded-lg`}
+      className={`${background} flex items-center gap-4 px-8 h-20 justify-between w-full rounded-lg shadow-card shadow-black/15 card`}
     >
       <span className={`${FONTS.INTER} ${text}`}>{goal}</span>
 

@@ -10,7 +10,7 @@ interface Props {
   onClick?: () => void
 }
 
-export const MateCard = ({ message, children, onClick, className = '' }: Props) => (
+export const CardMate = ({ message, children, onClick, className = '' }: Props) => (
   <article
     className={`
       ${className} bg-card-background border border-card-border w-fit max-w-[40rem] 

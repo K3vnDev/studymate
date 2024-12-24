@@ -24,7 +24,7 @@ interface Props {
 }
 
 export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
-  const { id = null, name, desc, category, daily_lessons } = studyplan
+  const { name, desc, category, daily_lessons } = studyplan
   const [extendedLesson, setExtendedLesson] = useState(-1)
 
   const userStudyplan = useUserStore(s => s.studyplan)

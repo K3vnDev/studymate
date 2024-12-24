@@ -1,9 +1,9 @@
 'use client'
 
+import { CardMate } from '@/components/CardMate'
 import { ChipButton } from '@/components/ChipButton'
 import { Loading } from '@/components/Loading'
 import { Main } from '@/components/Main'
-import { MateCard } from '@/components/MateCard'
 import { Sidebar } from '@/components/Sidebar'
 import { MagicWandIcon } from '@/components/icons'
 import { MATE_MEET_MESSAGE } from '@/consts'
@@ -20,7 +20,7 @@ import { ScrollDownButton } from './ScrollDownButton'
 
 export default function ChatPage() {
   const messages = useChatStore(s => s.messages)
-  const prompt = useUserPrompts({})
+  const prompt = useUserPrompts()
   const chatMessagesValues = useChatMessages()
   useUserStudyplan()
 
@@ -39,7 +39,7 @@ export default function ChatPage() {
                 <MessagesList />
               </>
             ) : (
-              <MateCard
+              <CardMate
                 message={MATE_MEET_MESSAGE}
                 onClick={prompt.blank}
                 className='absolute top-1/2 -translate-y-[calc(100%+.75rem)]'
@@ -48,7 +48,7 @@ export default function ChatPage() {
                   <MagicWandIcon />
                   Create a studyplan
                 </ChipButton>
-              </MateCard>
+              </CardMate>
             )}
 
             <Input />

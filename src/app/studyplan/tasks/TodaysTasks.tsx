@@ -1,6 +1,6 @@
+import { CardMate } from '@/components/CardMate'
 import { ChipButton } from '@/components/ChipButton'
 import { Header } from '@/components/Header'
-import { MateCard } from '@/components/MateCard'
 import { Paragraph } from '@/components/Paragraph'
 import { CheckListIcon, MagicWandIcon, MessageIcon } from '@/components/icons'
 import { useCompleteTasks } from '@/hooks/useCompleteTasks'
@@ -25,7 +25,7 @@ export const TodaysTasks = ({ desc, tasks }: Props) => {
         <Paragraph>{desc}</Paragraph>
       </div>
 
-      <MateCard
+      <CardMate
         message='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque eius delectus excepturi
         quo iure?'
       >
@@ -35,7 +35,7 @@ export const TodaysTasks = ({ desc, tasks }: Props) => {
         <ChipButton onClick={prompts.blank}>
           <MessageIcon /> Chat
         </ChipButton>
-      </MateCard>
+      </CardMate>
 
       <section className='flex flex-col gap-3'>
         {tasks.map(({ goal, done }, i) => (
