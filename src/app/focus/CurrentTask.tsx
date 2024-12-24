@@ -1,6 +1,10 @@
 import { Badge } from '@/components/Badge'
+import { CONTENT_JSON } from '@/consts'
 import { TasksContext } from '@/lib/context/TasksContext'
+import { dataFetch } from '@/lib/utils/dataFetch'
+import { useUserStore } from '@/store/useUserStore'
 import type { UserStudyplan } from '@/types.d'
+import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { Buttons } from './Buttons'
 import { NavigationButton } from './NavigationButton'
@@ -11,25 +15,48 @@ interface Props {
 }
 
 export const CurrentTask = ({ tasks }: Props) => {
-  const ulRef = useRef<HTMLUListElement>(null)
-
   const [selectedTask, setSelectedTask] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
+  const ulRef = useRef<HTMLUListElement>(null)
+  const setTaskDone = useUserStore(s => s.setTaskDone)
+  // const router = useRouter()
 
   const swapTask = (index: number) => {
-    if (ulRef.current) {
-      const { height } = ulRef.current.getBoundingClientRect()
-      ulRef.current.scrollTo({ top: height * index, behavior: 'smooth' })
+    if (!ulRef.current) return
 
-      setSelectedTask(index)
-    }
+    const { height } = ulRef.current.getBoundingClientRect()
+    ulRef.current.scrollTo({ top: height * index, behavior: 'smooth' })
+
+    setSelectedTask(index)
+    // router.replace(`/focus?task=${selectedTask}`)
+  }
+
+  const completeTask = () => {
+    setIsLoading(true)
+
+    dataFetch({
+      url: '/api/user/studyplan/tasks',
+      options: {
+        method: 'POST',
+        headers: CONTENT_JSON,
+        body: JSON.stringify({ index: selectedTask })
+      },
+      onSuccess: () => {
+        setTaskDone(selectedTask, true)
+        setIsLoading(false)
+      }
+    })
   }
 
   return (
     <TasksContext.Provider
       value={{
+        tasks,
         selectedTask,
+        selectedTaskIsDone: tasks[selectedTask].done,
         swapTask,
-        selectedTaskIsDone: tasks[selectedTask].done
+        completeTask,
+        isLoading
       }}
     >
       <article

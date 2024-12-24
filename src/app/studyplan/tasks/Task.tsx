@@ -1,20 +1,19 @@
 import { ChipButton } from '@/components/ChipButton'
 import { CheckIcon, RocketIcon } from '@/components/icons'
 import { FONTS } from '@/consts'
-import { useUserStore } from '@/store/useUserStore'
-import type { UserStudyplan } from '@/types.d'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   index: number
-  completeTask: (index: number, onErrorCallback: () => void) => void
-} & UserStudyplan['daily_lessons'][number]['tasks'][number]
+  goal: string
+  done: boolean
+}
 
-export const Task = ({ goal, done, index, completeTask }: Props) => {
-  const setTaskDone = useUserStore(s => s.setTaskDone)
+export const Task = ({ goal, done, index }: Props) => {
+  const router = useRouter()
 
   const handleClick = () => {
-    completeTask(index, () => setTaskDone(index, false))
-    setTaskDone(index, true)
+    if (!done) router.push(`/focus?task=${index + 1}`)
   }
 
   const [text, background] = done
@@ -23,7 +22,11 @@ export const Task = ({ goal, done, index, completeTask }: Props) => {
 
   return (
     <div
-      className={`${background} flex items-center gap-4 px-8 h-20 justify-between w-full rounded-lg shadow-card shadow-black/15 card`}
+      className={`
+        ${background} flex items-center gap-4 px-8 h-20 justify-between w-full rounded-lg 
+        shadow-card shadow-black/15 card
+      `}
+      onClick={handleClick}
     >
       <span className={`${FONTS.INTER} ${text}`}>{goal}</span>
 

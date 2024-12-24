@@ -3,7 +3,6 @@ import { ChipButton } from '@/components/ChipButton'
 import { Header } from '@/components/Header'
 import { Paragraph } from '@/components/Paragraph'
 import { CheckListIcon, MagicWandIcon, MessageIcon } from '@/components/icons'
-import { useCompleteTasks } from '@/hooks/useCompleteTasks'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
 import type { UserStudyplan } from '@/types.d'
 import { Task } from './Task'
@@ -12,7 +11,6 @@ type Props = UserStudyplan['daily_lessons'][number]
 
 export const TodaysTasks = ({ desc, tasks }: Props) => {
   const prompts = useUserPrompts({ redirect: true })
-  const { completeTask } = useCompleteTasks()
 
   return (
     <>
@@ -39,7 +37,7 @@ export const TodaysTasks = ({ desc, tasks }: Props) => {
 
       <section className='flex flex-col gap-3'>
         {tasks.map(({ goal, done }, i) => (
-          <Task {...{ goal, done, index: i, completeTask }} key={i} />
+          <Task {...{ goal, done, index: i }} key={i} />
         ))}
       </section>
     </>

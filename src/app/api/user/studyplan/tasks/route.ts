@@ -7,18 +7,22 @@ import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import { z } from 'zod'
 
+// Complete a task
 export const POST = async (req: NextRequest) => {
-  let taskIndexes: number[]
+  const supabase = createServerComponentClient({ cookies })
+
+  let newStudyplan: DBUserStudyplan
+  let taskIndex: number
 
   try {
-    const data = await req.json()
-    taskIndexes = z.array(z.number()).parse(data)
+    const { index } = (await req.json()) as { index?: number }
+    taskIndex = await z.number().parseAsync(index)
   } catch {
     return Response(false, 401)
   }
 
-  const supabase = createServerComponentClient({ cookies })
-  let newStudyplan: DBUserStudyplan
+  const userId = await getUserId({ supabase })
+  if (userId === null) return Response(false, 401)
 
   // Fetch values from database
   try {
@@ -34,16 +38,11 @@ export const POST = async (req: NextRequest) => {
     const { day } = current_studyplan_day
 
     // Update tasks value
-    studyplan.daily_lessons[day - 1].tasks = studyplan.daily_lessons[day - 1].tasks.map(
-      (task, i) => (taskIndexes.includes(i) ? { ...task, done: true } : task)
-    )
+    studyplan.daily_lessons[day - 1].tasks[taskIndex].done = true
     newStudyplan = studyplan
   } catch {
     return Response(false, 500)
   }
-
-  const userId = await getUserId({ supabase })
-  if (userId === null) return Response(false, 401)
 
   // Update values on database
   try {
