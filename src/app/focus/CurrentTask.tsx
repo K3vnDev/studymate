@@ -1,5 +1,6 @@
 import { Badge } from '@/components/Badge'
 import { CONTENT_JSON } from '@/consts'
+import { useVerticalNavigation } from '@/hooks/useVerticalNavigation'
 import { TasksContext } from '@/lib/context/TasksContext'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useUserStore } from '@/store/useUserStore'
@@ -57,6 +58,12 @@ export const CurrentTask = ({ tasks }: Props) => {
       }
     })
   }
+
+  useVerticalNavigation({
+    currentIndex: selectedTask,
+    maxIndex: tasks.length - 1,
+    action: newIndex => swapTask(newIndex)
+  })
 
   const asideGap = tasks.length < 4 ? 'gap-5' : tasks.length < 6 ? 'gap-4' : 'gap-2'
 

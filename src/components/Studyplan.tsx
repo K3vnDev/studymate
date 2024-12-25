@@ -1,13 +1,14 @@
 import { TodaysLesson } from '@/app/studyplan/TodaysLesson'
 import { CONTENT_JSON, FONTS } from '@/consts'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
+import { useVerticalNavigation } from '@/hooks/useVerticalNavigation'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { getCategoryValues } from '@/lib/utils/getCategoryValues'
 import { parseDays } from '@/lib/utils/parseDays'
 import { useUserStore } from '@/store/useUserStore'
 import type { StudyplanSaved, UserStudyplan } from '@/types.d'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Badge } from './Badge'
 import { ChipButton } from './ChipButton'
 import { DailyLesson } from './DailyLesson'
@@ -29,23 +30,11 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
 
   const userStudyplan = useUserStore(s => s.studyplan)
 
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [])
-
-  // Change selected daily lesson on arrow keys pressed
-  const handleKeyDown = ({ key }: KeyboardEvent) => {
-    if (key === 'ArrowUp') {
-      setExtendedLesson(ex => {
-        return ex <= 0 ? daily_lessons.length - 1 : ex - 1
-      })
-    } else if (key === 'ArrowDown') {
-      setExtendedLesson(ex => {
-        return ex >= daily_lessons.length - 1 ? 0 : ex + 1
-      })
-    }
-  }
+  useVerticalNavigation({
+    currentIndex: extendedLesson,
+    maxIndex: daily_lessons.length - 1,
+    action: newIndex => setExtendedLesson(newIndex)
+  })
 
   return (
     <>
