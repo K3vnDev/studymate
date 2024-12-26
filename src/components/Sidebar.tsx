@@ -34,10 +34,12 @@ const RouteButton = ({ route, icon }: RouteButtonParams) => {
   const [isSelected, setIsSelected] = useState(false)
   const routeLowerCase = route.toLowerCase()
 
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : ''
+
   useEffect(() => {
-    const [, routeName] = location.pathname.split('/')
+    const [, routeName] = pathname.split('/')
     setIsSelected(routeName === routeLowerCase)
-  }, [location.pathname])
+  }, [pathname])
 
   const style = isSelected ? 'text-white scale-[1.1] bg-gray-10/[.04]' : 'text-gray-10 button'
 

@@ -7,9 +7,11 @@ export const LoginButton = () => {
   const supabase = createClientComponentClient()
 
   const handleSignIn = async () => {
+    if (typeof window === 'undefined') return
+
     await supabase.auth.signInWithOAuth({
       provider: 'github',
-      options: { redirectTo: `${location.origin}/auth/callback` }
+      options: { redirectTo: `${window.location.origin}/auth/callback` }
     })
   }
 

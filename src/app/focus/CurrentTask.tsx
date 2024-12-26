@@ -31,7 +31,8 @@ export const CurrentTask = ({ todaysTasks: tasks, isOnLastDay }: Props) => {
 
   // Load task recieved on query params
   useEffect(() => {
-    const url = new URL(location.href)
+    if (typeof window === 'undefined') return
+    const url = new URL(window.location.href)
     const taskIndex = Number(url.searchParams.get('task'))
 
     if (taskIndex && !Number.isNaN(taskIndex) && taskIndex <= tasks.length) {
