@@ -12,24 +12,31 @@ import { NavigationButton } from './NavigationButton'
 import { Task } from './Task'
 
 interface Props {
-  tasks: UserStudyplan['daily_lessons'][number]['tasks']
+  todaysTasks: UserStudyplan['daily_lessons'][number]['tasks']
+  isOnLastDay: boolean
 }
 
-export const CurrentTask = ({ tasks }: Props) => {
+export const CurrentTask = ({ todaysTasks: tasks, isOnLastDay }: Props) => {
   const [selectedTask, setSelectedTask] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
+  const [isShowingCompletedMessage, setIsShowingCompletedMessage] = useState(false)
+
   const ulRef = useRef<HTMLUListElement>(null)
   const setTaskDone = useUserStore(s => s.setTaskDone)
   const router = useRouter()
+
+  const allTasksAreDone = tasks.every(t => t.done)
 
   // Load task recieved on query params
   useEffect(() => {
     const url = new URL(location.href)
     const taskIndex = Number(url.searchParams.get('task'))
 
-    if (Number.isNaN(taskIndex) || !taskIndex || taskIndex > tasks.length) return
+    if (taskIndex && !Number.isNaN(taskIndex) && taskIndex <= tasks.length) {
+      swapTask(taskIndex - 1)
+    }
 
-    swapTask(taskIndex - 1)
+    setIsShowingCompletedMessage(allTasksAreDone)
   }, [])
 
   const swapTask = (index: number) => {
@@ -67,12 +74,14 @@ export const CurrentTask = ({ tasks }: Props) => {
 
   const asideGap = tasks.length < 4 ? 'gap-5' : tasks.length < 6 ? 'gap-4' : 'gap-2'
 
-  return (
+  return !isShowingCompletedMessage ? (
     <TasksContext.Provider
       value={{
         tasks,
         selectedTask,
         selectedTaskIsDone: tasks[selectedTask].done,
+        allTasksAreDone,
+        isOnLastDay,
         swapTask,
         completeTask,
         isLoading
@@ -81,7 +90,7 @@ export const CurrentTask = ({ tasks }: Props) => {
       <article
         className={`
           flex bg-card-background border border-card-border 
-          rounded-2xl px-7 py-6 gap-7 w-[40rem]
+          rounded-2xl px-7 py-6 gap-7 w-[40rem] animate-fade-in-fast
         `}
       >
         <main className='flex flex-col gap-3 w-full'>
@@ -105,5 +114,9 @@ export const CurrentTask = ({ tasks }: Props) => {
         </aside>
       </article>
     </TasksContext.Provider>
+  ) : (
+    <span className='text-lg text-white/50 text-center mb-1 animate-fade-in-fast'>
+      You have completed all your tasks of today, Good job!
+    </span>
   )
 }

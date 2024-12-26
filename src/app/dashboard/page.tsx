@@ -8,7 +8,7 @@ import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
 import { ViewStudyplansSection } from '@/components/ViewStudyplansSection'
 import { MagicWandIcon, MessageIcon } from '@/components/icons'
-import { MATE_MEET_MESSAGE } from '@/consts'
+import { MATE_MESSAGES } from '@/consts'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 
@@ -20,7 +20,7 @@ export default function DashboardPage() {
     <>
       <Main className='gap-12 px-24 py-12 h-full'>
         {!userStudyplan && !isLoading ? (
-          <CardMate message={MATE_MEET_MESSAGE} onClick={prompts.blank}>
+          <CardMate message={MATE_MESSAGES.MEET}>
             <ChipButton empty onClick={prompts.createStudyplan}>
               <MagicWandIcon />
               Create a studyplan

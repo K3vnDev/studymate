@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEvent } from './useEvent'
 
 interface Params {
   minIndex?: number
@@ -8,21 +8,21 @@ interface Params {
 }
 
 export const useVerticalNavigation = ({ minIndex = 0, maxIndex, currentIndex, action }: Params) => {
-  useEffect(() => {
-    const handleKeyDown = ({ key, ctrlKey, shiftKey }: KeyboardEvent) => {
+  useEvent<KeyboardEvent>(
+    'keydown',
+    ({ key, ctrlKey, shiftKey }) => {
       if (!ctrlKey && !shiftKey) return
 
       // biome-ignore format: <>
       if (key === 'ArrowUp') {
-        const newIndex = currentIndex <= minIndex ? maxIndex : currentIndex - 1
-        action(newIndex)
-
-      } else if (key === 'ArrowDown') {
-        const newIndex = currentIndex >= maxIndex ? minIndex : currentIndex + 1
-        action(newIndex)
-      }
+      const newIndex = currentIndex <= minIndex ? maxIndex : currentIndex - 1
+      action(newIndex)
+      
+    } else if (key === 'ArrowDown') {
+      const newIndex = currentIndex >= maxIndex ? minIndex : currentIndex + 1
+      action(newIndex)
     }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [currentIndex])
+    },
+    [currentIndex]
+  )
 }

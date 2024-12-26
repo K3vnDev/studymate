@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 
-export const useEvent = (
+export const useEvent = <T>(
   eventName: string,
-  eventHandler: (e: CustomEvent) => void,
-  dependencyArray: unknown[]
+  eventHandler: (e: T) => void,
+  dependencyArray: unknown[] = []
 ) => {
   useEffect(() => {
     document.addEventListener(eventName, eventHandler as NormalEventHandler)

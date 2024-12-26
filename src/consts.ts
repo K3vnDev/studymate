@@ -59,8 +59,15 @@ export const CATEGORIES = [
 ] as const
 
 // Virtual assistant
-export const MATE_MEET_MESSAGE =
-  "Hey there! I'm Mate. I'll be helping you out with everything you need."
+export const MATE_MESSAGES = {
+  MEET: "Hey there! I'm Mate. I'll be helping you out with everything you need.",
+
+  TASKS: {
+    DONE: "Congrats on finishing your tasks! 🎉 That's awesome! You've put in some great work, and it totally pays off.",
+    NOT_DONE:
+      "Hey there! Do you need any help with today's tasks? I'm here to support you and make it easier!"
+  }
+}
 
 export const MAX_MESSAGES_ON_PROMPT = 8
 

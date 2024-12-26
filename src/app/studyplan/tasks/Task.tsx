@@ -13,7 +13,7 @@ export const Task = ({ goal, done, index }: Props) => {
   const router = useRouter()
 
   const handleClick = () => {
-    if (!done) router.push(`/focus?task=${index + 1}`)
+    router.push(`/focus?task=${index + 1}`)
   }
 
   const [text, background] = done

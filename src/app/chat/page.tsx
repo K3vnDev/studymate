@@ -6,7 +6,7 @@ import { Loading } from '@/components/Loading'
 import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
 import { MagicWandIcon } from '@/components/icons'
-import { MATE_MEET_MESSAGE } from '@/consts'
+import { MATE_MESSAGES } from '@/consts'
 import { useChatCustomScroll } from '@/hooks/useChatCustomScroll'
 import { useChatMessages } from '@/hooks/useChatMessages'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
@@ -40,8 +40,7 @@ export default function ChatPage() {
               </>
             ) : (
               <CardMate
-                message={MATE_MEET_MESSAGE}
-                onClick={prompt.blank}
+                message={MATE_MESSAGES.MEET}
                 className='absolute top-1/2 -translate-y-[calc(100%+.75rem)]'
               >
                 <ChipButton onClick={prompt.createStudyplan} empty>

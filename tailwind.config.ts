@@ -25,8 +25,9 @@ const config: Config = {
       },
       animation: {
         'spin-pulse': 'spin-pulse 1.5s linear both infinite',
-        'fade-in-fast': 'fade-in-fast .1s ease-in both',
-        'pounce-once': 'pounce-once 1s ease-in-out'
+        'fade-in-fast': 'fade-in 0.1s ease-in both',
+        'fade-in-very-fast': 'fade-in 0.05s ease-in both',
+        'bounce-once': 'bounce-once 1s ease-in-out'
       },
       keyframes: {
         'spin-pulse': {
@@ -34,11 +35,11 @@ const config: Config = {
           '50%': { opacity: '.8' },
           '100%': { rotate: '360deg', opacity: '1' }
         },
-        'fade-in-fast': {
+        'fade-in': {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' }
         },
-        'pounce-once': {
+        'bounce-once': {
           '0%': { translate: '0 0' },
           '50%': { translate: '0 -20%' },
           '100%': { translate: '0 0' }

@@ -36,7 +36,7 @@ export const Input = () => {
   const [gradientBorderOpacity, formBorder, pounceAnimation] =
     highlightedMessage === null
       ? ['opacity-0', 'border', 'animate-none']
-      : ['opacity-100', 'border-none', 'animate-pounce-once']
+      : ['opacity-100', 'border-none', 'animate-bounce-once']
 
   const yPosition = messages?.length ? 'bottom-5' : 'bottom-1/2 translate-y-[calc(100%+.75rem)]'
 

@@ -39,6 +39,16 @@ export const useUserStudyplan = (params?: Params) => {
     })
   }
 
+  const getUtilityValues = () => {
+    if (!userStudyplan) return null
+
+    const { daily_lessons, current_day } = userStudyplan
+    return {
+      todaysTasks: daily_lessons[current_day - 1].tasks,
+      isOnLastDay: daily_lessons.length === current_day
+    }
+  }
+
   const navigateToOriginal = () => {
     if (!userStudyplan) return
     const { original_id } = userStudyplan
@@ -48,6 +58,7 @@ export const useUserStudyplan = (params?: Params) => {
   return {
     userStudyplan: userStudyplan ?? null,
     isLoading: userStudyplan === undefined,
+    getUtilityValues,
     abandonStudyplan,
     navigateToOriginal
   }
