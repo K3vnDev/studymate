@@ -1,3 +1,5 @@
+'use client'
+
 import { FONTS } from '@/consts'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'

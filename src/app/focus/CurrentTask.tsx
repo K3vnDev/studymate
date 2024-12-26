@@ -1,3 +1,5 @@
+'use client'
+
 import { Badge } from '@/components/Badge'
 import { CONTENT_JSON } from '@/consts'
 import { useVerticalNavigation } from '@/hooks/useVerticalNavigation'
