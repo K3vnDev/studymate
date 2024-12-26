@@ -7,7 +7,7 @@ import { TasksContext } from '@/lib/context/TasksContext'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useUserStore } from '@/store/useUserStore'
 import type { UserStudyplan } from '@/types.d'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { Buttons } from './Buttons'
 import { NavigationButton } from './NavigationButton'
@@ -28,25 +28,24 @@ export const CurrentTask = ({ todaysTasks: tasks, isOnLastDay }: Props) => {
   const router = useRouter()
 
   const allTasksAreDone = tasks.every(t => t.done)
+  const searchParams = useSearchParams()
 
   // Load task recieved on query params
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    const url = new URL(window.location.href)
-    const taskIndex = Number(url.searchParams.get('task'))
+    const taskIndex = Number(searchParams.get('task'))
 
     if (taskIndex && !Number.isNaN(taskIndex) && taskIndex <= tasks.length) {
-      swapTask(taskIndex - 1)
+      swapTask(taskIndex - 1, 'instant')
     }
 
     setIsShowingCompletedMessage(allTasksAreDone)
   }, [])
 
-  const swapTask = (index: number) => {
+  const swapTask = (index: number, behavior: ScrollBehavior = 'smooth') => {
     if (!ulRef.current) return
 
     const { height } = ulRef.current.getBoundingClientRect()
-    ulRef.current.scrollTo({ top: height * index - 2, behavior: 'smooth' })
+    ulRef.current.scrollTo({ top: height * index - 2, behavior })
 
     setSelectedTask(index)
     router.replace(`/focus?task=${selectedTask}`)

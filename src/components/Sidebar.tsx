@@ -2,6 +2,7 @@
 
 import { FONTS } from '@/consts'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { AppIcon, BookIcon, ClockIcon, HomeIcon, MessageIcon, ProfileIcon } from './icons'
 
@@ -33,8 +34,7 @@ interface RouteButtonParams {
 const RouteButton = ({ route, icon }: RouteButtonParams) => {
   const [isSelected, setIsSelected] = useState(false)
   const routeLowerCase = route.toLowerCase()
-
-  const pathname = typeof window !== 'undefined' ? window.location.pathname : ''
+  const pathname = usePathname()
 
   useEffect(() => {
     const [, routeName] = pathname.split('/')
