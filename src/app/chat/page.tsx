@@ -41,7 +41,7 @@ export default function ChatPage() {
             ) : (
               <CardMate
                 message={MATE_MESSAGES.MEET}
-                className='absolute top-1/2 -translate-y-[calc(100%+.75rem)]'
+                className={{ main: 'absolute top-1/2 -translate-y-[calc(100%+.75rem)]' }}
               >
                 <ChipButton onClick={prompt.createStudyplan} empty>
                   <MagicWandIcon />

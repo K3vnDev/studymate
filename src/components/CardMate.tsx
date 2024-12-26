@@ -1,5 +1,3 @@
-'use client'
-
 import { useUserPrompts } from '@/hooks/useUserPrompts'
 import Image from 'next/image'
 import { Paragraph } from './Paragraph'
@@ -7,19 +5,22 @@ import { Paragraph } from './Paragraph'
 interface Props {
   message: string
   children?: React.ReactNode
-  className?: string
+  className?: {
+    main?: string
+    image?: string
+  }
   onClick?: () => void
 }
 
-export const CardMate = ({ message, children, onClick, className = '' }: Props) => {
+export const CardMate = ({ message, children, onClick, className }: Props) => {
   const prompts = useUserPrompts({ redirect: true })
 
   return (
     <article
       className={`
-    ${className} bg-card-background border border-card-border w-fit max-w-[40rem] 
-    rounded-2xl flex items-center px-8 gap-4 card
-    `}
+        ${className?.main ?? ''} bg-card-background border border-card-border w-fit max-w-[40rem] 
+        rounded-2xl flex items-center px-8 gap-4 card
+      `}
       onClick={onClick ?? prompts.blank}
     >
       <div className='h-full min-w-40 self-end aspect-square'>
@@ -29,7 +30,7 @@ export const CardMate = ({ message, children, onClick, className = '' }: Props) 
           draggable={false}
           width={150}
           height={150}
-          className='h-full scale-[1.15] object-cover self-end origin-bottom'
+          className={`${className?.image ?? ''} h-full [scale:1.15] object-cover self-end origin-bottom`}
         />
       </div>
 

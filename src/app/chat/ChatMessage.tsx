@@ -1,5 +1,6 @@
 import { CardStudyplan } from '@/components/CardStudyplan'
 import { EVENTS, FONTS } from '@/consts'
+import { dispatchEvent } from '@/lib/utils/dispatchEvent'
 import { repeat } from '@/lib/utils/repeat'
 import { useUserStore } from '@/store/useUserStore'
 import type { ChatMessage as ChatMessageType, StudyplanUnSaved } from '@/types.d'
@@ -60,7 +61,7 @@ interface ChildrenProps {
 
 export const ChatError = ({ children }: ChildrenProps) => {
   const handleClick = () => {
-    document.dispatchEvent(new Event(EVENTS.ON_CHAT_TRY_AGAIN, {}))
+    dispatchEvent(EVENTS.ON_CHAT_TRY_AGAIN)
   }
 
   return (
@@ -88,7 +89,5 @@ const UserOverlay = ({ children }: ChildrenProps) => (
   <li className={`${overlaysBase} bg-blue-20 text-white rounded-se-none self-end`}>{children}</li>
 )
 const AssistantOverlay = ({ children }: ChildrenProps) => (
-  <li className={`${overlaysBase} bg-gray-40 text-gray-10 rounded-ss-none self-start`}>
-    {children}
-  </li>
+  <li className={`${overlaysBase} bg-gray-40 text-gray-10 rounded-ss-none self-start`}>{children}</li>
 )

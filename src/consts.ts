@@ -21,7 +21,8 @@ export const CONTENT_JSON = {
 }
 
 export const EVENTS = {
-  ON_CHAT_TRY_AGAIN: 'onchattryagain'
+  ON_CHAT_TRY_AGAIN: 'onchattryagain',
+  ON_HIGHLIGHT_BORDER: 'onhighlightborder'
 }
 
 export const CATEGORIES = [
