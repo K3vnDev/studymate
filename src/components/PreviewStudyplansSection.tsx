@@ -13,33 +13,35 @@ import { ClockIcon } from './icons'
 
 interface Props {
   title: string
-  storeKey: keyof UserStore['studyplans']
+  storeKey: keyof UserStore['studyplansLists']
   maxItems: number
 }
 
 export const PreviewStudyplansSection = ({ title, storeKey, maxItems }: Props) => {
-  const setStudyplans = useUserStore(s => s.setStudyplans)
-  const studyplans = useUserStore(s => s.studyplans[storeKey])
+  const setStudyplans = useUserStore(s => s.setStudyplansLists)
+  const studyplans = useUserStore(s => s.studyplansLists[storeKey])
 
   useEffect(() => {
     if (studyplans) {
       return
     }
 
-    const url: Record<typeof storeKey, string> = {
-      recomended: '/api/studyplans',
-      completed: ''
-    }
+    // const url: Record<typeof storeKey, string> = {
+    //   recomended: '/api/studyplans',
+    //   completed: ''
+    // }
 
-    dataFetch<StudyplanSaved[]>({
-      url: url[storeKey],
-      onSuccess: data => {
-        setStudyplans(studyplans => {
-          studyplans[storeKey] = data
-          return studyplans
-        })
-      }
-    })
+    if (storeKey === 'recomended') {
+      dataFetch<StudyplanSaved[]>({
+        url: '/api/studyplans?limit=6',
+        onSuccess: data => {
+          setStudyplans(studyplans => {
+            studyplans[storeKey] = data
+            return studyplans
+          })
+        }
+      })
+    }
   }, [])
 
   return (

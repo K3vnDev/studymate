@@ -1,7 +1,7 @@
 import { useUserStore } from '@/store/useUserStore'
 
 export const useSearchStudyplan = () => {
-  const studyplans = useUserStore(s => s.studyplans)
+  const studyplans = useUserStore(s => s.studyplansLists)
 
   const searchStudyplan = (id: string) => {
     for (const [, studyplansArray] of Object.entries(studyplans)) {

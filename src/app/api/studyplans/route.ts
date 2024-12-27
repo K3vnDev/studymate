@@ -1,33 +1,55 @@
 import type { StudyplanSaved } from '@/types.d'
+import { Response } from '@api/utils/Response'
+import { databaseQuery } from '@api/utils/databaseQuery'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
-import { Response } from '../utils/Response'
-import { databaseQuery } from '../utils/databaseQuery'
-import { getStudyplan } from '../utils/getStudyplan'
+import { z } from 'zod'
 
+// Get all studyplans
 export const GET = async (req: NextRequest) => {
-  const supabase = createServerComponentClient({ cookies })
+  let limit = 9999
 
-  const url = new URL(req.url)
-  const id = url.searchParams.get('id')
-
-  // Get a single studyplan
   try {
-    if (id !== null) {
-      const studyplan = await getStudyplan({ id, supabase })
+    const url = new URL(req.url)
+    const data = url.searchParams.get('limit')
 
-      if (studyplan === null) return Response(false, 404)
-      return Response(true, 200, { data: studyplan })
+    if (data !== null) {
+      limit = await z.coerce.number().positive().parseAsync(data)
     }
   } catch {
-    return Response(false, 404)
+    return Response(false, 400)
   }
 
-  // Get all studyplans
+  const supabase = createServerComponentClient({ cookies })
+
   try {
     const data = await databaseQuery<StudyplanSaved[]>({
-      query: s => s.from('studyplans').select('id, name, desc, category, daily_lessons'),
+      query: s => s.from('studyplans').select('id, name, desc, category, daily_lessons').limit(limit),
+      supabase
+    })
+    return Response(true, 200, { data })
+  } catch {
+    return Response(false, 500)
+  }
+}
+
+// Get studyplans by ids
+export const POST = async (req: NextRequest) => {
+  let idList: string[]
+
+  try {
+    const data = await req.json()
+    idList = await z.array(z.string()).parseAsync(data)
+  } catch {
+    return Response(false, 400)
+  }
+
+  const supabase = createServerComponentClient({ cookies })
+
+  try {
+    const data = await databaseQuery<StudyplanSaved[]>({
+      query: s => s.from('studyplans').select('id, name, desc, category, daily_lessons').in('id', idList),
       supabase
     })
     return Response(true, 200, { data })

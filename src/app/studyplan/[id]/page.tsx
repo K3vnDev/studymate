@@ -4,6 +4,7 @@ import { Loadable } from '@/components/Loadable'
 import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
 import { Studyplan } from '@/components/Studyplan'
+import { CONTENT_JSON } from '@/consts'
 import { useSearchStudyplan } from '@/hooks/useSearchStudyplan'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
@@ -38,9 +39,10 @@ export default function PublicStudyplanPage() {
 
     setStudyplan(null)
 
-    dataFetch<StudyplanSaved>({
-      url: `/api/studyplans?id=${id}`,
-      onSuccess: data => {
+    dataFetch<StudyplanSaved[]>({
+      url: '/api/studyplans',
+      options: { method: 'POST', headers: CONTENT_JSON, body: JSON.stringify([id]) },
+      onSuccess: ([data]) => {
         setStudyplan(data)
       }
     })

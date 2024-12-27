@@ -7,11 +7,13 @@ export interface UserStore {
 
   setTaskDone: (index: number, value: boolean) => void
 
-  studyplans: {
+  studyplansLists: {
     recomended?: StudyplanSaved[]
     completed?: StudyplanSaved[]
   }
-  setStudyplans: (callback: (studyplans: UserStore['studyplans']) => UserStore['studyplans']) => void
+  setStudyplansLists: (
+    callback: (studyplans: UserStore['studyplansLists']) => UserStore['studyplansLists']
+  ) => void
 }
 
 export const useUserStore = create<UserStore>(set => ({
@@ -27,10 +29,10 @@ export const useUserStore = create<UserStore>(set => ({
       return { studyplan: newStudyplan }
     }),
 
-  studyplans: {},
+  studyplansLists: {},
 
-  setStudyplans: callback =>
-    set(({ studyplans }) => {
-      return { studyplans: callback({ ...studyplans }) }
+  setStudyplansLists: callback =>
+    set(({ studyplansLists: studyplans }) => {
+      return { studyplansLists: callback({ ...studyplans }) }
     })
 }))

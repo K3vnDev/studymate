@@ -18,12 +18,12 @@ export const FONTS = {
 
 export const CONTENT_JSON = {
   'Content-Type': 'application/json'
-}
+} as const
 
 export const EVENTS = {
   ON_CHAT_TRY_AGAIN: 'onchattryagain',
   ON_HIGHLIGHT_BORDER: 'onhighlightborder'
-}
+} as const
 
 export const CATEGORIES = [
   '2D Animation',

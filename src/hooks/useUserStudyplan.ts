@@ -46,14 +46,16 @@ export const useUserStudyplan = (params?: Params) => {
   }
 
   const getUtilityValues = () => {
-    if (!userStudyplan) return null
+    if (userStudyplan) {
+      const { daily_lessons, current_day } = userStudyplan
 
-    const { daily_lessons, current_day } = userStudyplan
-    return {
-      todaysTasks: daily_lessons[current_day - 1].tasks,
-      isOnLastDay: daily_lessons.length === current_day,
-      allTasksAreCompleted: daily_lessons.every(d => d.tasks.every(t => t.done))
+      return {
+        todaysTasks: daily_lessons[current_day - 1].tasks,
+        isOnLastDay: daily_lessons.length === current_day,
+        allTasksAreCompleted: daily_lessons.every(d => d.tasks.every(t => t.done))
+      }
     }
+    return null
   }
 
   return {

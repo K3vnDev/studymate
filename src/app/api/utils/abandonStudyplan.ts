@@ -17,7 +17,8 @@ export const abandonStudyplan = async ({
       query: s => s
         .from('users')
         .update({ studyplan: null, current_studyplan_day: null })
-        .eq('id', userId)
+        .eq('id', userId),
+        supabase
     })
     return true
   } catch {
