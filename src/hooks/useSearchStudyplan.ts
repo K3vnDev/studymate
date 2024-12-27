@@ -1,7 +1,7 @@
-import { useStudyplansStore } from '@/store/useStudyplansStore'
+import { useUserStore } from '@/store/useUserStore'
 
 export const useSearchStudyplan = () => {
-  const studyplans = useStudyplansStore(s => s.studyplans)
+  const studyplans = useUserStore(s => s.studyplans)
 
   const searchStudyplan = (id: string) => {
     for (const [, studyplansArray] of Object.entries(studyplans)) {

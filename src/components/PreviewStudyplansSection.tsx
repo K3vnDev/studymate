@@ -3,7 +3,7 @@ import { dataFetch } from '@/lib/utils/dataFetch'
 import { getCategoryValues } from '@/lib/utils/getCategoryValues'
 import { parseDays } from '@/lib/utils/parseDays'
 import { repeat } from '@/lib/utils/repeat'
-import { type StudyplansStore, useStudyplansStore } from '@/store/useStudyplansStore'
+import { type UserStore, useUserStore } from '@/store/useUserStore'
 import type { Category, StudyplanSaved } from '@/types.d'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,20 +13,20 @@ import { ClockIcon } from './icons'
 
 interface Props {
   title: string
-  storeKey: keyof StudyplansStore['studyplans']
+  storeKey: keyof UserStore['studyplans']
   maxItems: number
 }
 
 export const PreviewStudyplansSection = ({ title, storeKey, maxItems }: Props) => {
-  const setStudyplans = useStudyplansStore(s => s.setStudyplans)
-  const studyplans = useStudyplansStore(s => s.studyplans[storeKey])
+  const setStudyplans = useUserStore(s => s.setStudyplans)
+  const studyplans = useUserStore(s => s.studyplans[storeKey])
 
   useEffect(() => {
     if (studyplans) {
       return
     }
 
-    const url: Record<keyof StudyplansStore['studyplans'], string> = {
+    const url: Record<typeof storeKey, string> = {
       recomended: '/api/studyplans',
       completed: ''
     }

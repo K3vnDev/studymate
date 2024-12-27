@@ -1,4 +1,4 @@
-import type { UserStudyplan } from '@/types.d'
+import type { StudyplanSaved, UserStudyplan } from '@/types.d'
 import { create } from 'zustand'
 
 export interface UserStore {
@@ -6,6 +6,12 @@ export interface UserStore {
   setStudyplan: (studyplan: UserStudyplan | null) => void
 
   setTaskDone: (index: number, value: boolean) => void
+
+  studyplans: {
+    recomended?: StudyplanSaved[]
+    completed?: StudyplanSaved[]
+  }
+  setStudyplans: (callback: (studyplans: UserStore['studyplans']) => UserStore['studyplans']) => void
 }
 
 export const useUserStore = create<UserStore>(set => ({
@@ -19,5 +25,12 @@ export const useUserStore = create<UserStore>(set => ({
 
       newStudyplan.daily_lessons[newStudyplan.current_day - 1].tasks[index].done = value
       return { studyplan: newStudyplan }
+    }),
+
+  studyplans: {},
+
+  setStudyplans: callback =>
+    set(({ studyplans }) => {
+      return { studyplans: callback({ ...studyplans }) }
     })
 }))

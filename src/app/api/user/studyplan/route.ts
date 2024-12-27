@@ -133,7 +133,7 @@ export const POST = async (req: NextRequest) => {
   }
 }
 
-// Abandon a studyplan
+// Abandon studyplan
 export const DELETE = async () => {
   const supabase = createServerComponentClient({ cookies })
 
@@ -148,7 +148,7 @@ export const DELETE = async () => {
   }
 }
 
-// Complete a studyplan
+// Complete studyplan
 export const PATCH = async () => {
   const supabase = createServerComponentClient({ cookies })
 
@@ -168,6 +168,7 @@ export const PATCH = async () => {
     const [{ studyplan }] = data
     originalId = studyplan.original_id
 
+    // Check if all tasks are done
     if (!studyplan.daily_lessons.every(d => d.tasks.every(t => t.done))) {
       return Response(false, 403)
     }
