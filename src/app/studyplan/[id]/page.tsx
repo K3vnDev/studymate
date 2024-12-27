@@ -1,6 +1,6 @@
 'use client'
 
-import { Loading } from '@/components/Loading'
+import { Loadable } from '@/components/Loadable'
 import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
 import { Studyplan } from '@/components/Studyplan'
@@ -42,9 +42,6 @@ export default function PublicStudyplanPage() {
       url: `/api/studyplans?id=${id}`,
       onSuccess: data => {
         setStudyplan(data)
-      },
-      onError: () => {
-        // TODO: show error to user
       }
     })
   }, [])
@@ -52,7 +49,7 @@ export default function PublicStudyplanPage() {
   return (
     <>
       <Main className='gap-12 px-24 py-12 h-full relative'>
-        {studyplan !== null ? <Studyplan {...{ studyplan }} /> : <Loading />}
+        <Loadable isLoading={!studyplan}>{studyplan && <Studyplan {...{ studyplan }} />}</Loadable>
       </Main>
 
       <Sidebar />

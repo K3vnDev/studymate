@@ -1,6 +1,6 @@
 'use client'
 
-import { Loading } from '@/components/Loading'
+import { Loadable } from '@/components/Loadable'
 import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
@@ -9,21 +9,21 @@ import { InfoHeader } from './InfoHeader'
 import { Timer } from './Timer'
 
 export default function FocusPage() {
-  const { userStudyplan, getUtilityValues } = useUserStudyplan()
+  const { userStudyplan, getUtilityValues, isLoading } = useUserStudyplan()
   const currentTaskValues = getUtilityValues()
 
   return (
     <>
       <Main className='gap-12 px-24 py-12 max-h-full min-h-full relative'>
-        {userStudyplan && currentTaskValues ? (
-          <div className='flex flex-col items-center h-full justify-between'>
-            <InfoHeader {...userStudyplan} />
-            <Timer />
-            <CurrentTask {...currentTaskValues} />
-          </div>
-        ) : (
-          <Loading />
-        )}
+        <Loadable isLoading={isLoading}>
+          {userStudyplan && currentTaskValues && (
+            <div className='flex flex-col items-center h-full justify-between'>
+              <InfoHeader {...userStudyplan} />
+              <Timer />
+              <CurrentTask {...currentTaskValues} />
+            </div>
+          )}
+        </Loadable>
       </Main>
       <Sidebar />
     </>

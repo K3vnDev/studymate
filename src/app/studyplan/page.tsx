@@ -1,6 +1,6 @@
 'use client'
 
-import { Loading } from '@/components/Loading'
+import { Loadable } from '@/components/Loadable'
 import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
 import { Studyplan } from '@/components/Studyplan'
@@ -12,13 +12,13 @@ export default function UserStudyplanPage() {
   return (
     <>
       <Main className='gap-12 px-24 py-12 h-full relative'>
-        {userStudyplan ? (
-          <Studyplan studyplan={userStudyplan} usersCurrent />
-        ) : isLoading ? (
-          <Loading />
-        ) : (
-          <span className='text-xl text-white font-semibold'>You have no studyplan</span>
-        )}
+        <Loadable isLoading={isLoading}>
+          {userStudyplan ? (
+            <Studyplan studyplan={userStudyplan} usersCurrent />
+          ) : (
+            <span className='text-xl text-white font-semibold'>You have no studyplan</span>
+          )}
+        </Loadable>
       </Main>
 
       <Sidebar />

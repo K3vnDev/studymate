@@ -66,7 +66,7 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
                 <StartStudyplanButton studyplan={studyplan} />
               </>
             )}
-            {justCompleted && <FinishStudyplanButton />}
+            {justCompleted && usersCurrent && <FinishStudyplanButton />}
           </div>
         </div>
       </section>
@@ -113,9 +113,8 @@ const StartStudyplanButton = ({ studyplan }: Props) => {
   }
 
   return (
-    <ChipButton onClick={handleStartStudyplan} disabled={isLoading}>
-      {isLoading ? <LoadingIcon className='animate-spin' /> : <RocketIcon />}
-      Start this studyplan
+    <ChipButton onClick={handleStartStudyplan} isLoading={isLoading}>
+      <RocketIcon /> Start this studyplan
     </ChipButton>
   )
 }

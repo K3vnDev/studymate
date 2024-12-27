@@ -2,7 +2,7 @@
 
 import { CardMate } from '@/components/CardMate'
 import { ChipButton } from '@/components/ChipButton'
-import { Loading } from '@/components/Loading'
+import { Loadable } from '@/components/Loadable'
 import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
 import { MagicWandIcon } from '@/components/icons'
@@ -31,32 +31,29 @@ export default function ChatPage() {
   return (
     <ChatContext.Provider value={{ ...chatMessagesValues, ...customScrollValues }}>
       <Main className='items-center h-[calc(100vh-3rem)] flex-col justify-between fixed right-48 top-6 px-48 w-[calc(100%-56rem)]'>
-        {messages !== null ? (
-          <>
-            {messages.length ? (
-              <>
-                <Header />
-                <MessagesList />
-              </>
-            ) : (
-              <CardMate
-                message={MATE_MESSAGES.MEET}
-                className={{ main: 'absolute top-1/2 -translate-y-[calc(100%+.75rem)]' }}
-              >
-                <ChipButton onClick={prompt.createStudyplan} empty>
-                  <MagicWandIcon />
-                  Create a studyplan
-                </ChipButton>
-              </CardMate>
-            )}
+        <Loadable isLoading={!messages}>
+          {messages?.length ? (
+            <>
+              <Header />
+              <MessagesList />
+            </>
+          ) : (
+            <CardMate
+              message={MATE_MESSAGES.MEET}
+              className={{ main: 'absolute top-1/2 -translate-y-[calc(100%+.75rem)]' }}
+            >
+              <ChipButton onClick={prompt.createStudyplan} empty>
+                <MagicWandIcon />
+                Create a studyplan
+              </ChipButton>
+            </CardMate>
+          )}
 
-            <Input />
-            <ScrollDownButton />
-          </>
-        ) : (
-          <Loading />
-        )}
+          <Input />
+          <ScrollDownButton />
+        </Loadable>
       </Main>
+
       <div className='w-8 bg-transparent pointer-events-none' ref={customScrollValues.scrollRef} />
 
       <Sidebar />

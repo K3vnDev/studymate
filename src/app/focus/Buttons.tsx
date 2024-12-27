@@ -76,14 +76,8 @@ const CompleteTaskButton = () => {
   }, [selectedTask])
 
   return (
-    <ChipButton onClick={completeTask} disabled={isLoading || justLoaded}>
-      {
-        // biome-ignore format: <>
-        !isLoading 
-        ? <CheckIcon className='stroke-[3px]' /> 
-        : <LoadingIcon className='animate-spin' />
-      }
-      I'm done
+    <ChipButton onClick={completeTask} disabled={justLoaded} isLoading={isLoading}>
+      <CheckIcon className='stroke-[3px]' /> I'm done
     </ChipButton>
   )
 }

@@ -51,7 +51,8 @@ export const GET = async () => {
       const current_studyplan_day = generateCurrentStudyplanDay(day + 1)
 
       try {
-        const data = await databaseQuery<Array<UserStudyplanAndCurrentDayResponse['current_studyplan_day']>>({
+        type QueryResponse = UserStudyplanAndCurrentDayResponse['current_studyplan_day']
+        const data = await databaseQuery<QueryResponse[]>({
           query: s => s.from('users').update({ current_studyplan_day }).eq('id', userId).select(),
           supabase
         })
@@ -115,7 +116,7 @@ export const POST = async (req: NextRequest) => {
     const current_studyplan_day = generateCurrentStudyplanDay(1)
 
     // biome-ignore format: <>
-    const data = await databaseQuery<any>({
+    const data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>({
       query: s => s
         .from('users')
         .update({ studyplan: { ...studyplanFromReq, original_id }, current_studyplan_day })
@@ -166,6 +167,10 @@ export const PATCH = async () => {
     })
     const [{ studyplan }] = data
     originalId = studyplan.original_id
+
+    if (!studyplan.daily_lessons.every(d => d.tasks.every(t => t.done))) {
+      return Response(false, 403)
+    }
 
     // Abandon studyplan
     await abandonStudyplan({ supabase, userId })
