@@ -17,33 +17,41 @@ interface Props {
   maxItems: number
 }
 
-export const ViewStudyplansSection = ({ title, storeKey, maxItems }: Props) => {
-  const setStoreStudyplans = useStudyplansStore(s => s.setStudyplans)
-  const storeStudyplans = useStudyplansStore(s => s.studyplans[storeKey])
+export const PreviewStudyplansSection = ({ title, storeKey, maxItems }: Props) => {
+  const setStudyplans = useStudyplansStore(s => s.setStudyplans)
+  const studyplans = useStudyplansStore(s => s.studyplans[storeKey])
 
   useEffect(() => {
-    if (storeStudyplans.length) {
+    if (studyplans) {
       return
     }
 
+    const url: Record<keyof StudyplansStore['studyplans'], string> = {
+      recomended: '/api/studyplans',
+      completed: ''
+    }
+
     dataFetch<StudyplanSaved[]>({
-      url: '/api/studyplans',
+      url: url[storeKey],
       onSuccess: data => {
-        setStoreStudyplans(storeKey, data)
+        setStudyplans(studyplans => {
+          studyplans[storeKey] = data
+          return studyplans
+        })
       }
     })
   }, [])
 
   return (
     <section className='flex flex-col gap-4'>
-      {storeStudyplans.length > 0 ? (
+      {studyplans ? (
         <Header>{title}</Header>
       ) : (
         <div className='bg-zinc-700 animate-pulse rounded-lg w-48 h-8' />
       )}
       <ul className='flex flex-wrap gap-4'>
-        {storeStudyplans.length > 0
-          ? storeStudyplans.map(({ daily_lessons, created_by, desc, ...studyplan }) => (
+        {studyplans
+          ? studyplans.map(({ daily_lessons, created_by, desc, ...studyplan }) => (
               <ViewStudyPlan key={studyplan.id} {...{ ...studyplan, days: daily_lessons.length }} />
             ))
           : repeat(maxItems, i => <ViewStudyPlanFallback key={i} />)}

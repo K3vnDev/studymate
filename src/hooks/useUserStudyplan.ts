@@ -1,6 +1,7 @@
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useUserStore } from '@/store/useUserStore'
 import type { UserStudyplan } from '@/types.d'
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -33,10 +34,15 @@ export const useUserStudyplan = (params?: Params) => {
     dataFetch({
       url: '/api/user/studyplan',
       options: { method: 'DELETE' },
-      onSuccess: () => {
-        setUserStudyplan(null)
-      }
+      onSuccess: () => setUserStudyplan(null)
     })
+  }
+
+  const navigateToOriginal = (method: keyof AppRouterInstance = 'push') => {
+    if (!userStudyplan) return
+    const { original_id } = userStudyplan
+
+    router[method](`/studyplan/${original_id}`)
   }
 
   const getUtilityValues = () => {
@@ -45,14 +51,9 @@ export const useUserStudyplan = (params?: Params) => {
     const { daily_lessons, current_day } = userStudyplan
     return {
       todaysTasks: daily_lessons[current_day - 1].tasks,
-      isOnLastDay: daily_lessons.length === current_day
+      isOnLastDay: daily_lessons.length === current_day,
+      allTasksAreCompleted: daily_lessons.every(d => d.tasks.every(t => t.done))
     }
-  }
-
-  const navigateToOriginal = () => {
-    if (!userStudyplan) return
-    const { original_id } = userStudyplan
-    router.push(`/studyplan/${original_id}`)
   }
 
   return {

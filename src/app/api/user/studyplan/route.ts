@@ -2,12 +2,14 @@ import { StudyplanSchema } from '@/lib/schemas/Studyplan'
 import type {
   StudyplanSaved,
   StudyplanUnSaved,
+  UserStudyplan,
   UserStudyplanAndCurrentDayResponse
 } from '@/types.d'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import { Response } from '../../utils/Response'
+import { abandonStudyplan } from '../../utils/abandonStudyplan'
 import { dataParser } from '../../utils/dataParser'
 import { databaseQuery } from '../../utils/databaseQuery'
 import { dateSubstraction } from '../../utils/dateSubstraction'
@@ -49,9 +51,7 @@ export const GET = async () => {
       const current_studyplan_day = generateCurrentStudyplanDay(day + 1)
 
       try {
-        const data = await databaseQuery<
-          Array<UserStudyplanAndCurrentDayResponse['current_studyplan_day']>
-        >({
+        const data = await databaseQuery<Array<UserStudyplanAndCurrentDayResponse['current_studyplan_day']>>({
           query: s => s.from('users').update({ current_studyplan_day }).eq('id', userId).select(),
           supabase
         })
@@ -140,14 +140,66 @@ export const DELETE = async () => {
   if (userId === null) return Response(false, 401)
 
   try {
+    await abandonStudyplan({ supabase, userId })
+    return Response(true, 204)
+  } catch {
+    return Response(false, 500)
+  }
+}
+
+// Complete a studyplan
+export const PATCH = async () => {
+  const supabase = createServerComponentClient({ cookies })
+
+  const userId = await getUserId({ supabase })
+  if (userId === null) return Response(false, 401)
+
+  let userCompletedStudyplans: string[]
+  let originalId: string
+
+  try {
+    // Get original id
+    type QueryResponse = { studyplan: UserStudyplan }
+    const data = await databaseQuery<QueryResponse[]>({
+      query: s => s.from('users').select('studyplan'),
+      supabase
+    })
+    const [{ studyplan }] = data
+    originalId = studyplan.original_id
+
+    // Abandon studyplan
+    await abandonStudyplan({ supabase, userId })
+  } catch {
+    return Response(false, 400)
+  }
+
+  // Get completed studyplans
+  try {
+    type QueryResponse = { completed_studyplans: string[] }
+    const data = await databaseQuery<QueryResponse[]>({
+      query: s => s.from('users').select('completed_studyplans'),
+      supabase
+    })
+    const [{ completed_studyplans }] = data
+    userCompletedStudyplans = completed_studyplans
+  } catch {
+    return Response(false, 500)
+  }
+
+  // Update completed studyplans list
+  try {
+    const newValue = userCompletedStudyplans
+    if (!newValue.find(v => v === originalId)) newValue.push(originalId)
+
     // biome-ignore format: <>
     await databaseQuery({
       query: s => s
         .from('users')
-        .update({ studyplan: null, current_studyplan_day: null })
-        .eq('id', userId)
+        .update({ completed_studyplans: newValue })
+        .eq('id', userId),
+      supabase
     })
-    return Response(true, 200)
+    return Response(true, 200, { data: originalId })
   } catch {
     return Response(false, 500)
   }

@@ -3,23 +3,23 @@ import { create } from 'zustand'
 
 export interface StudyplansStore {
   studyplans: {
-    recomended: StudyplanSaved[]
+    recomended?: StudyplanSaved[]
+    completed?: StudyplanSaved[]
   }
-  setStudyplans: (key: keyof StudyplansStore['studyplans'], value: StudyplanSaved[]) => void
+  setStudyplans: (
+    callback: (studyplans: StudyplansStore['studyplans']) => StudyplansStore['studyplans']
+  ) => void
 
   studyplan: StudyplanSaved | StudyplanUnSaved | UserStudyplan | null
   setStudyplan: (value: StudyplansStore['studyplan']) => void
 }
 
 export const useStudyplansStore = create<StudyplansStore>(set => ({
-  studyplans: { recomended: [] },
+  studyplans: {},
 
-  setStudyplans: (key, value) =>
+  setStudyplans: callback =>
     set(({ studyplans }) => {
-      const newStudyplans = { ...studyplans }
-      newStudyplans[key] = value
-
-      return { studyplans: newStudyplans }
+      return { studyplans: callback({ ...studyplans }) }
     }),
 
   studyplan: null,

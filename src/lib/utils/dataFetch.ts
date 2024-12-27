@@ -3,6 +3,7 @@ interface Params<T> {
   options?: RequestInit
   onSuccess?: (data: T, message?: string, status?: number) => void
   onError?: (message?: string, status?: number) => void
+  onFinish?: () => void
 }
 
 interface JSONResponse<T> {
@@ -15,7 +16,8 @@ export const dataFetch = async <T>({
   url,
   options,
   onSuccess = () => {},
-  onError = () => {}
+  onError = () => {},
+  onFinish = () => {}
 }: Params<T>) => {
   try {
     const res = await fetch(url, options)
@@ -27,5 +29,7 @@ export const dataFetch = async <T>({
     onSuccess(data, message, res.status)
   } catch (err) {
     onError(err as string)
+  } finally {
+    onFinish()
   }
 }

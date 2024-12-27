@@ -31,6 +31,10 @@ const ProceedButton = () => {
   const router = useRouter()
 
   const handleFinishDay = () => {
+    if (isOnLastDay) {
+      router.push('/studyplan')
+      return
+    }
     router.push('/studyplan/tasks')
   }
 

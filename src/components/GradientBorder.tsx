@@ -4,8 +4,10 @@ import { useEffect, useRef, useState } from 'react'
 
 interface Props {
   className?: {
-    gradient?: string
     main?: string
+    contentWrapper?: string
+    gradientWrapper?: string
+    gradient?: string
   }
   children: React.ReactNode
   color: keyof typeof colors
@@ -32,6 +34,7 @@ export const GradientBorder = ({ children, className, constant = false, color }:
       opacity: 'opacity-100 [transition:opacity_0.7s_ease]',
       animation: 'animate-bounce-once'
     })
+    clearTimeout(timeout.current)
     timeout.current = setTimeout(() => {
       setAnimationValues(initialAnimationValues)
     }, ANIMATION_DURATION)
@@ -41,10 +44,15 @@ export const GradientBorder = ({ children, className, constant = false, color }:
 
   return (
     <div className={`${className?.main ?? ''} ${animation} rounded-2xl overflow-clip`}>
-      <div className='relative'>
+      <div className={`${className?.contentWrapper ?? ''} relative`}>
         {children}
 
-        <div className='absolute aspect-square w-[calc(200%)] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-[1]'>
+        <div
+          className={`
+            ${className?.gradientWrapper ?? ''} absolute aspect-square w-[calc(200%)] 
+            top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-[1]
+          `}
+        >
           <div
             className={`
               ${className?.gradient ?? ''} ${colors[color]} w-full h-full 

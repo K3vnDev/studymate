@@ -9,16 +9,15 @@ interface Params {
   supabase?: SupabaseClient<any, 'public', any>
 }
 
-export const getStudyplan = async ({
-  id,
-  supabase = createServerComponentClient({ cookies })
-}: Params) => {
-  const data = await databaseQuery<StudyplanSaved[]>({
-    query: s => s.from('studyplans').select('id, name, desc, category, daily_lessons').eq('id', id),
-    safeMode: true,
-    supabase
-  })
-
-  if (data === null || !data.length) return null
-  return data[0]
+export const getStudyplan = async ({ id, supabase = createServerComponentClient({ cookies }) }: Params) => {
+  try {
+    const data = await databaseQuery<StudyplanSaved[]>({
+      query: s => s.from('studyplans').select('id, name, desc, category, daily_lessons').eq('id', id),
+      supabase
+    })
+    if (data === null || !data.length) return null
+    return data[0]
+  } catch {
+    return null
+  }
 }

@@ -9,6 +9,7 @@ import { useUserStore } from '@/store/useUserStore'
 import type { StudyplanSaved, UserStudyplan } from '@/types.d'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { FinishStudyplanButton } from '../app/studyplan/FinishStudyplanButton'
 import { Badge } from './Badge'
 import { ChipButton } from './ChipButton'
 import { DailyLesson } from './DailyLesson'
@@ -28,7 +29,8 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
   const { name, desc, category, daily_lessons } = studyplan
   const [extendedLesson, setExtendedLesson] = useState(-1)
 
-  const userStudyplan = useUserStore(s => s.studyplan)
+  const { userStudyplan, getUtilityValues } = useUserStudyplan()
+  const justCompleted = (getUtilityValues()?.allTasksAreCompleted ?? false) && usersCurrent
 
   useVerticalNavigation({
     currentIndex: extendedLesson,
@@ -44,20 +46,27 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
           <Header s={3}>{name}</Header>
           <Paragraph className='w-4/5'>{desc}</Paragraph>
 
-          <MoreButton usersCurrent={usersCurrent} />
+          <OptionsButton usersCurrent={usersCurrent} />
         </div>
 
         <div className='w-full flex justify-between items-center'>
           <span
-            className={`text-gray-10 $${FONTS.INTER} font-medium text-lg flex gap-2 items-center`}
+            className={`
+              text-gray-10 $${FONTS.INTER} font-medium text-lg 
+              flex gap-2 items-center text-nowrap
+            `}
           >
             {getCategoryValues(category).icon}
             {category}
           </span>
-          <div className='flex flex-row-reverse gap-4 items-center'>
-            {!usersCurrent && <StartStudyplanButton studyplan={studyplan} />}
-
-            <BookmarkIcon className='size-9 text-blue-20 stroke-[1.5px]' />
+          <div className='flex gap-4 items-center'>
+            {!usersCurrent && (
+              <>
+                <BookmarkIcon className='size-9 text-blue-20 stroke-[1.5px]' />
+                <StartStudyplanButton studyplan={studyplan} />
+              </>
+            )}
+            {justCompleted && <FinishStudyplanButton />}
           </div>
         </div>
       </section>
@@ -111,7 +120,7 @@ const StartStudyplanButton = ({ studyplan }: Props) => {
   )
 }
 
-const MoreButton = ({ usersCurrent = false }) => {
+const OptionsButton = ({ usersCurrent = false }) => {
   const { abandonStudyplan, navigateToOriginal } = useUserStudyplan({ fetchOnAwake: false })
 
   const handleClick = () => {

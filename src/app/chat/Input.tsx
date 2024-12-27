@@ -20,16 +20,23 @@ export const Input = () => {
       if (highlightedMessage !== '') {
         setUserInput(highlightedMessage)
       }
-      if (inputRef.current) {
-        inputRef.current.focus()
-        const { length } = inputRef.current.value
-        inputRef.current.setSelectionRange(length, length)
-      }
+      focusInput()
       dispatchEvent(EVENTS.ON_HIGHLIGHT_BORDER)
       setHighlihtedMessage(null)
     }
   }, [highlightedMessage])
-  useEffect(() => () => setHighlihtedMessage(null), [])
+  useEffect(() => {
+    focusInput()
+    return () => setHighlihtedMessage(null)
+  }, [])
+
+  const focusInput = () => {
+    if (!inputRef.current) return
+
+    inputRef.current.focus()
+    const { length } = inputRef.current.value
+    inputRef.current.setSelectionRange(length, length)
+  }
 
   const yPosition = messages?.length ? 'bottom-5' : 'bottom-1/2 translate-y-[calc(100%+.75rem)]'
 

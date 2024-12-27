@@ -8,16 +8,10 @@ interface Props {
   className?: string
 }
 
-export const ChipButton = ({
-  children,
-  onClick,
-  empty,
-  disabled = false,
-  className = ''
-}: Props) => {
-  const style: React.CSSProperties = empty
-    ? { background: 'transparent', borderColor: '#CED1FF', color: '#CED1FF' }
-    : { background: '#1820B4', borderColor: '#6168E8', color: '#FFF' }
+export const ChipButton = ({ children, onClick, empty, disabled = false, className = '' }: Props) => {
+  const style = empty
+    ? 'bg-transparent border-blue-10 text-blue-10'
+    : 'bg-blue-30 border-[#6168E8] text-white'
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -27,11 +21,11 @@ export const ChipButton = ({
   return (
     <button
       className={`
-        ${className} border rounded-full py-1 px-5 font-medium text-lg button 
+        ${className} ${style} border rounded-full py-1 px-5 font-medium text-lg button 
         flex gap-2 items-center *:size-6 text-nowrap
       `}
       onClick={handleClick}
-      {...{ style, disabled }}
+      disabled={disabled}
     >
       {children}
     </button>

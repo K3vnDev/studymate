@@ -5,8 +5,8 @@ import { CardStudyplan } from '@/components/CardStudyplan'
 import { ChipButton } from '@/components/ChipButton'
 import { FallbackZone } from '@/components/FallbackZone'
 import { Main } from '@/components/Main'
+import { PreviewStudyplansSection } from '@/components/PreviewStudyplansSection'
 import { Sidebar } from '@/components/Sidebar'
-import { ViewStudyplansSection } from '@/components/ViewStudyplansSection'
 import { MagicWandIcon, MessageIcon } from '@/components/icons'
 import { MATE_MESSAGES } from '@/consts'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
@@ -36,7 +36,7 @@ export default function DashboardPage() {
           <FallbackZone className='w-[32rem] h-40 bg-zinc-600' />
         )}
 
-        <ViewStudyplansSection title='Studyplans for you' storeKey='recomended' maxItems={5} />
+        <PreviewStudyplansSection title='Studyplans for you' storeKey='recomended' maxItems={5} />
       </Main>
 
       <Sidebar />
