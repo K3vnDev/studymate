@@ -6,6 +6,7 @@ import { Sidebar } from '@/components/Sidebar'
 import { Studyplan } from '@/components/Studyplan'
 import { CONTENT_JSON } from '@/consts'
 import { useSearchStudyplan } from '@/hooks/useSearchStudyplan'
+import { useUserData } from '@/hooks/useUserData'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import type { StudyplanSaved } from '@/types.d'
@@ -17,6 +18,7 @@ export default function PublicStudyplanPage() {
   const setStudyplan = useStudyplansStore(s => s.setStudyplan)
   const router = useRouter()
   const { searchStudyplan } = useSearchStudyplan()
+  useUserData()
 
   const { id } = useParams()
 

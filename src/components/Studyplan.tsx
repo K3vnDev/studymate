@@ -1,21 +1,24 @@
 import { TodaysLesson } from '@/app/studyplan/TodaysLesson'
 import { CONTENT_JSON, FONTS } from '@/consts'
+import { useUserData } from '@/hooks/useUserData'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { useVerticalNavigation } from '@/hooks/useVerticalNavigation'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { getCategoryValues } from '@/lib/utils/getCategoryValues'
 import { parseDays } from '@/lib/utils/parseDays'
+import { throwConfetti } from '@/lib/utils/throwConfetti'
 import { useUserStore } from '@/store/useUserStore'
 import type { StudyplanSaved, UserStudyplan } from '@/types.d'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FinishStudyplanButton } from '../app/studyplan/FinishStudyplanButton'
 import { Badge } from './Badge'
 import { ChipButton } from './ChipButton'
 import { DailyLesson } from './DailyLesson'
+import { GradientBorder } from './GradientBorder'
 import { Header } from './Header'
 import { Paragraph } from './Paragraph'
-import { BookmarkIcon, ClockIcon, LoadingIcon, MoreIcon, RocketIcon } from './icons'
+import { BookmarkIcon, ClockIcon, MoreIcon, RocketIcon } from './icons'
 
 interface Props {
   studyplan: Omit<StudyplanSaved, 'id' | 'created_by'> & {
@@ -26,11 +29,14 @@ interface Props {
 }
 
 export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
-  const { name, desc, category, daily_lessons } = studyplan
+  const { id, name, desc, category, daily_lessons } = studyplan
   const [extendedLesson, setExtendedLesson] = useState(-1)
+  const { completed } = useUserStore(s => s.studyplansLists)
 
   const { userStudyplan, getUtilityValues } = useUserStudyplan()
   const justCompleted = (getUtilityValues()?.allTasksAreCompleted ?? false) && usersCurrent
+
+  const isCompleted = completed?.some(completedId => completedId === id) ?? false
 
   useVerticalNavigation({
     currentIndex: extendedLesson,
@@ -63,7 +69,7 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
             {!usersCurrent && (
               <>
                 <BookmarkIcon className='size-9 text-blue-20 stroke-[1.5px]' />
-                <StartStudyplanButton studyplan={studyplan} />
+                {isCompleted ? <CompletedBadge /> : <StartButton studyplan={studyplan} />}
               </>
             )}
             {justCompleted && usersCurrent && <FinishStudyplanButton />}
@@ -93,7 +99,35 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
   )
 }
 
-const StartStudyplanButton = ({ studyplan }: Props) => {
+const CompletedBadge = () => {
+  const timeout = useRef<NodeJS.Timeout>()
+  const [isDisabled, setIsDisabled] = useState(false)
+
+  useEffect(() => () => clearTimeout(timeout.current), [])
+
+  const handleClick = () => {
+    throwConfetti()
+    setIsDisabled(true)
+
+    timeout.current = setTimeout(() => {
+      setIsDisabled(false)
+    }, 5000)
+  }
+
+  return (
+    <button className='card' onClick={handleClick} disabled={isDisabled}>
+      <GradientBorder
+        color='blues'
+        className={{ main: 'py-1 px-4 rounded-lg', gradientWrapper: 'brightness-90' }}
+        constant
+      >
+        <span className={`${FONTS.POPPINS} text-2xl font-semibold text-white`}>COMPLETED</span>
+      </GradientBorder>
+    </button>
+  )
+}
+
+const StartButton = ({ studyplan }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const setUserStudyplan = useUserStore(s => s.setStudyplan)
   const router = useRouter()

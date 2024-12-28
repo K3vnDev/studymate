@@ -1,5 +1,6 @@
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { dataFetch } from '@/lib/utils/dataFetch'
+import { throwConfetti } from '@/lib/utils/throwConfetti'
 import { useUserStore } from '@/store/useUserStore'
 import { useEffect, useRef, useState } from 'react'
 import { GradientBorder } from '../../components/GradientBorder'
@@ -7,6 +8,7 @@ import { LoadingIcon, RocketIcon } from '../../components/icons'
 
 export const FinishStudyplanButton = () => {
   const setUserStudyplan = useUserStore(s => s.setStudyplan)
+  const setStudyplansLists = useUserStore(s => s.setStudyplansLists)
 
   const { navigateToOriginal } = useUserStudyplan({ fetchOnAwake: false })
   const [isLoading, setIsLoading] = useState(false)
@@ -16,25 +18,39 @@ export const FinishStudyplanButton = () => {
 
     dataFetch<string>({
       url: '/api/user/studyplan',
-      options: { method: 'PATCH' },
-      onSuccess: () => {
+      options: { method: 'PUT' },
+      onSuccess: originalId => {
         if (!userHasLeft.current) {
           navigateToOriginal('replace')
-          setTimeout(() => setUserStudyplan(null), 500)
-          return
+
+          setTimeout(() => {
+            setUserStudyplan(null)
+            throwConfetti()
+          }, 650)
+        } else {
+          setUserStudyplan(null)
         }
-        setUserStudyplan(null)
+
+        setStudyplansLists(studyplansLists => {
+          const { completed } = studyplansLists
+          if (!completed) return studyplansLists
+
+          if (!completed.some(id => id === originalId)) {
+            completed.push(originalId)
+          }
+          return { ...studyplansLists, completed }
+        })
       },
       onFinish: () => setIsLoading(false)
     })
-
-    // TODO: add id to user completed plans list
   }
 
-  const userHasLeft = useRef(false)
-
   // biome-ignore format: <>
-  useEffect(() => () => { userHasLeft.current = true }, [])
+  useEffect(() => {
+    userHasLeft.current = false
+    return () => { userHasLeft.current = true }
+  }, [])
+  const userHasLeft = useRef(false)
 
   return (
     <button className='button rounded-full' onClick={handleClick} disabled={isLoading}>

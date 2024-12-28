@@ -150,7 +150,7 @@ export const DELETE = async () => {
 }
 
 // Complete studyplan
-export const PATCH = async () => {
+export const PUT = async () => {
   const supabase = createServerComponentClient({ cookies })
 
   const userId = await getUserId({ supabase })
