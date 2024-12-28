@@ -16,6 +16,7 @@ import { dateSubstraction } from '../../utils/dateSubstraction'
 import { generateCurrentStudyplanDay } from '../../utils/generateCurrentStudyplanDay'
 import { getStudyplan } from '../../utils/getStudyplan'
 import { getUserId } from '../../utils/getUserId'
+import { modifyStudyplansLists } from '../../utils/modifyStudyplansLists'
 
 // Get user studyplan and current day
 export const GET = async () => {
@@ -155,7 +156,6 @@ export const PATCH = async () => {
   const userId = await getUserId({ supabase })
   if (userId === null) return Response(false, 401)
 
-  let userCompletedStudyplans: string[]
   let originalId: string
 
   try {
@@ -179,32 +179,8 @@ export const PATCH = async () => {
     return Response(false, 400)
   }
 
-  // Get completed studyplans
   try {
-    type QueryResponse = { completed_studyplans: string[] }
-    const data = await databaseQuery<QueryResponse[]>({
-      query: s => s.from('users').select('completed_studyplans'),
-      supabase
-    })
-    const [{ completed_studyplans }] = data
-    userCompletedStudyplans = completed_studyplans
-  } catch {
-    return Response(false, 500)
-  }
-
-  // Update completed studyplans list
-  try {
-    const newValue = userCompletedStudyplans
-    if (!newValue.find(v => v === originalId)) newValue.push(originalId)
-
-    // biome-ignore format: <>
-    await databaseQuery({
-      query: s => s
-        .from('users')
-        .update({ completed_studyplans: newValue })
-        .eq('id', userId),
-      supabase
-    })
+    await modifyStudyplansLists({ supabase, id: originalId, key: 'completed', userId }).add()
     return Response(true, 200, { data: originalId })
   } catch {
     return Response(false, 500)

@@ -3,11 +3,11 @@ import { dataFetch } from '@/lib/utils/dataFetch'
 import { getCategoryValues } from '@/lib/utils/getCategoryValues'
 import { parseDays } from '@/lib/utils/parseDays'
 import { repeat } from '@/lib/utils/repeat'
-import { type UserStore, useUserStore } from '@/store/useUserStore'
+import type { UserStore } from '@/store/useUserStore'
 import type { Category, StudyplanSaved } from '@/types.d'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Header } from './Header'
 import { ClockIcon } from './icons'
 
@@ -18,30 +18,16 @@ interface Props {
 }
 
 export const PreviewStudyplansSection = ({ title, storeKey, maxItems }: Props) => {
-  const setStudyplans = useUserStore(s => s.setStudyplansLists)
-  const studyplans = useUserStore(s => s.studyplansLists[storeKey])
+  const [studyplans, setStudyplans] = useState<StudyplanSaved[] | null>(null)
 
+  // THIS IS TEMPORARY
   useEffect(() => {
-    if (studyplans) {
-      return
-    }
-
-    // const url: Record<typeof storeKey, string> = {
-    //   recomended: '/api/studyplans',
-    //   completed: ''
-    // }
-
-    if (storeKey === 'recomended') {
-      dataFetch<StudyplanSaved[]>({
-        url: '/api/studyplans?limit=6',
-        onSuccess: data => {
-          setStudyplans(studyplans => {
-            studyplans[storeKey] = data
-            return studyplans
-          })
-        }
-      })
-    }
+    dataFetch<StudyplanSaved[]>({
+      url: '/api/studyplans?limit=6',
+      onSuccess: data => {
+        setStudyplans(data)
+      }
+    })
   }, [])
 
   return (

@@ -9,12 +9,14 @@ import { PreviewStudyplansSection } from '@/components/PreviewStudyplansSection'
 import { Sidebar } from '@/components/Sidebar'
 import { MagicWandIcon, MessageIcon } from '@/components/icons'
 import { MATE_MESSAGES } from '@/consts'
+import { useUserData } from '@/hooks/useUserData'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 
 export default function DashboardPage() {
   const prompts = useUserPrompts({ redirect: true })
   const { userStudyplan, isLoading } = useUserStudyplan()
+  useUserData()
 
   return (
     <>

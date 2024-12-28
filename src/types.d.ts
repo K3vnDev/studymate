@@ -35,6 +35,14 @@ export interface UserStudyplanAndCurrentDayResponse {
   }
 }
 
+export interface StudyplansListsResponse {
+  studyplans_lists: {
+    recommended: string[]
+    completed: string[]
+    saved: string[]
+  }
+}
+
 // Schemas
 export type ChatMessageSchema = z.infer<typeof ChatMessageSchemaType>
 export type MateResponseSchema = z.infer<typeof MateResponseSchemaType>
