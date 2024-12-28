@@ -26,10 +26,9 @@ export const GET = async () => {
   if (userId === null) return Response(false, 401)
 
   try {
-    let data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>({
-      query: s => s.from('users').select('studyplan, current_studyplan_day'),
-      supabase
-    })
+    let data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>(
+      supabase.from('users').select('studyplan, current_studyplan_day')
+    )
 
     if (data === null || data.length === 0) {
       return Response(false, 500)
@@ -53,10 +52,9 @@ export const GET = async () => {
 
       try {
         type QueryResponse = UserStudyplanAndCurrentDayResponse['current_studyplan_day']
-        const data = await databaseQuery<QueryResponse[]>({
-          query: s => s.from('users').update({ current_studyplan_day }).eq('id', userId).select(),
-          supabase
-        })
+        const data = await databaseQuery<QueryResponse[]>(
+          supabase.from('users').update({ current_studyplan_day }).eq('id', userId).select()
+        )
         if (!data) return Response(false, 500)
       } catch {
         return Response(false, 500)
@@ -93,10 +91,9 @@ export const POST = async (req: NextRequest) => {
     const existingStudyplan = await getStudyplan({ id: reqData.id, supabase })
 
     if (existingStudyplan === null) {
-      const data = await databaseQuery<StudyplanSaved[]>({
-        query: s => s.from('studyplans').insert(studyplanFromReq).select(),
-        supabase
-      })
+      const data = await databaseQuery<StudyplanSaved[]>(
+        supabase.from('studyplans').insert(studyplanFromReq).select()
+      )
 
       if (data === null) {
         return Response(false, 500)
@@ -116,14 +113,13 @@ export const POST = async (req: NextRequest) => {
   try {
     const current_studyplan_day = generateCurrentStudyplanDay(1)
 
-    // biome-ignore format: <>
-    const data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>({
-      query: s => s
+    const data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>(
+      supabase
         .from('users')
         .update({ studyplan: { ...studyplanFromReq, original_id }, current_studyplan_day })
         .eq('id', userId)
         .select()
-    })
+    )
 
     if (data === null) {
       return Response(false, 500)
@@ -161,11 +157,8 @@ export const PUT = async () => {
   try {
     // Get original id
     type QueryResponse = { studyplan: UserStudyplan }
-    const data = await databaseQuery<QueryResponse[]>({
-      query: s => s.from('users').select('studyplan'),
-      supabase
-    })
-    const [{ studyplan }] = data
+    const [{ studyplan }] = await databaseQuery<QueryResponse[]>(supabase.from('users').select('studyplan'))
+
     originalId = studyplan.original_id
 
     // Check if all tasks are done

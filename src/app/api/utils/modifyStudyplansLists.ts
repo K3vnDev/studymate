@@ -18,18 +18,14 @@ export const modifyStudyplansLists = ({
 }: Params) => {
   // Get studyplans list
   const getStudyplansList = async () => {
-    const data = await databaseQuery<StudyplansListsResponse[]>({
-      query: s => s.from('users').select('studyplans_lists'),
-      supabase
-    })
+    const data = await databaseQuery<StudyplansListsResponse[]>(
+      supabase.from('users').select('studyplans_lists')
+    )
     return data[0].studyplans_lists
   }
 
   const saveChanges = async (studyplans_lists: StudyplansListsResponse['studyplans_lists']) => {
-    await databaseQuery({
-      query: s => s.from('users').update({ studyplans_lists }).eq('id', userId),
-      supabase
-    })
+    await databaseQuery(supabase.from('users').update({ studyplans_lists }).eq('id', userId))
   }
 
   return {

@@ -1,6 +1,5 @@
 import { TodaysLesson } from '@/app/studyplan/TodaysLesson'
 import { CONTENT_JSON, FONTS } from '@/consts'
-import { useUserData } from '@/hooks/useUserData'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { useVerticalNavigation } from '@/hooks/useVerticalNavigation'
 import { dataFetch } from '@/lib/utils/dataFetch'

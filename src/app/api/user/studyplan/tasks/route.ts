@@ -26,11 +26,9 @@ export const POST = async (req: NextRequest) => {
 
   // Fetch values from database
   try {
-    const data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>({
-      query: s => s.from('users').select('studyplan, current_studyplan_day'),
-      supabase
-    })
-    if (data === null) return Response(false, 500)
+    const data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>(
+      supabase.from('users').select('studyplan, current_studyplan_day')
+    )
 
     const [{ studyplan, current_studyplan_day }] = data
     if (!studyplan || !current_studyplan_day) return Response(false, 405)
@@ -46,10 +44,7 @@ export const POST = async (req: NextRequest) => {
 
   // Update values on database
   try {
-    await databaseQuery({
-      query: s => s.from('users').update({ studyplan: newStudyplan }).eq('id', userId),
-      supabase
-    })
+    await databaseQuery(supabase.from('users').update({ studyplan: newStudyplan }).eq('id', userId))
     return Response(true, 201)
   } catch {
     return Response(false, 500)

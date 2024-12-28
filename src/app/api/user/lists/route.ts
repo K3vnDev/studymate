@@ -8,10 +8,9 @@ export const GET = async () => {
   const supabase = createServerComponentClient({ cookies })
 
   try {
-    const data = await databaseQuery<StudyplansListsResponse[]>({
-      query: s => s.from('users').select('studyplans_lists'),
-      supabase
-    })
+    const data = await databaseQuery<StudyplansListsResponse[]>(
+      supabase.from('users').select('studyplans_lists')
+    )
     return Response(true, 200, { data: data[0].studyplans_lists })
   } catch {
     return Response(false, 500)

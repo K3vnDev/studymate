@@ -24,10 +24,9 @@ export const GET = async (req: NextRequest) => {
   const supabase = createServerComponentClient({ cookies })
 
   try {
-    const data = await databaseQuery<StudyplanSaved[]>({
-      query: s => s.from('studyplans').select('id, name, desc, category, daily_lessons').limit(limit),
-      supabase
-    })
+    const data = await databaseQuery<StudyplanSaved[]>(
+      supabase.from('studyplans').select('id, name, desc, category, daily_lessons').limit(limit)
+    )
     return Response(true, 200, { data })
   } catch {
     return Response(false, 500)
@@ -48,10 +47,9 @@ export const POST = async (req: NextRequest) => {
   const supabase = createServerComponentClient({ cookies })
 
   try {
-    const data = await databaseQuery<StudyplanSaved[]>({
-      query: s => s.from('studyplans').select('id, name, desc, category, daily_lessons').in('id', idList),
-      supabase
-    })
+    const data = await databaseQuery<StudyplanSaved[]>(
+      supabase.from('studyplans').select('id, name, desc, category, daily_lessons').in('id', idList)
+    )
     return Response(true, 200, { data })
   } catch {
     return Response(false, 500)

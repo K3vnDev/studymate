@@ -11,10 +11,9 @@ interface Params {
 
 export const getStudyplan = async ({ id, supabase = createServerComponentClient({ cookies }) }: Params) => {
   try {
-    const data = await databaseQuery<StudyplanSaved[]>({
-      query: s => s.from('studyplans').select('id, name, desc, category, daily_lessons').eq('id', id),
-      supabase
-    })
+    const data = await databaseQuery<StudyplanSaved[]>(
+      supabase.from('studyplans').select('id, name, desc, category, daily_lessons').eq('id', id)
+    )
     if (data === null || !data.length) return null
     return data[0]
   } catch {

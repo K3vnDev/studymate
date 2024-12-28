@@ -12,14 +12,9 @@ export const abandonStudyplan = async ({
   userId
 }: Params) => {
   try {
-    // biome-ignore format: <>
-    await databaseQuery({
-      query: s => s
-        .from('users')
-        .update({ studyplan: null, current_studyplan_day: null })
-        .eq('id', userId),
-        supabase
-    })
+    await databaseQuery(
+      supabase.from('users').update({ studyplan: null, current_studyplan_day: null }).eq('id', userId)
+    )
     return true
   } catch {
     throw new Error()
