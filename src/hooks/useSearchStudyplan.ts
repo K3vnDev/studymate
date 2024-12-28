@@ -1,14 +1,17 @@
-import { useUserStore } from '@/store/useUserStore'
+import { useStudyplansStore } from '@/store/useStudyplansStore'
+import type { StudyplanSaved } from '@/types.d'
+import { useEffect, useState } from 'react'
 
-export const useSearchStudyplan = () => {
-  const studyplans = useUserStore(s => s.studyplansLists)
+export const useSearchStudyplan = (id?: string) => {
+  const searchStudyplan = (id: string) => storedStudyplans.find(s => s.id === id) ?? null
+  const storedStudyplans = useStudyplansStore(s => s.studyplans)
 
-  const searchStudyplan = (id: string) => {
-    for (const [, studyplansArray] of Object.entries(studyplans)) {
-      const studyplan = studyplansArray.find(s => s.id === id)
-      if (studyplan !== undefined) return studyplan
-    }
-    return null
-  }
-  return { searchStudyplan }
+  const initialState = id ? searchStudyplan(id) : null
+  const [studyplan, setStudyplan] = useState<StudyplanSaved | null>(initialState)
+
+  useEffect(() => {
+    if (studyplan === null && id) setStudyplan(searchStudyplan(id))
+  }, [storedStudyplans])
+
+  return { studyplan, searchStudyplan } as const
 }

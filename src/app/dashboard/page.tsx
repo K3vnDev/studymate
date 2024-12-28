@@ -38,7 +38,7 @@ export default function DashboardPage() {
           <FallbackZone className='w-[32rem] h-40 bg-zinc-600' />
         )}
 
-        <GalleryStudyplans title='Studyplans for you' storeKey='recomended' maxItems={5} />
+        <GalleryStudyplans title='Studyplans for you' storeKey='recomended' maxItems={6} />
       </Main>
 
       <Sidebar />

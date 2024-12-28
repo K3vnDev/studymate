@@ -1,13 +1,15 @@
-import { FONTS } from '@/consts'
+import { CONTENT_JSON, FONTS } from '@/consts'
+import { useSearchStudyplan } from '@/hooks/useSearchStudyplan'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { getCategoryValues } from '@/lib/utils/getCategoryValues'
 import { parseDays } from '@/lib/utils/parseDays'
 import { repeat } from '@/lib/utils/repeat'
-import type { UserStore } from '@/store/useUserStore'
-import type { Category, StudyplanSaved } from '@/types.d'
+import { useStudyplansStore } from '@/store/useStudyplansStore'
+import { type UserStore, useUserStore } from '@/store/useUserStore'
+import type { StudyplanSaved } from '@/types.d'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Header } from './Header'
 import { ClockIcon } from './icons'
 
@@ -18,31 +20,35 @@ interface Props {
 }
 
 export const GalleryStudyplans = ({ title, storeKey, maxItems }: Props) => {
-  const [studyplans, setStudyplans] = useState<StudyplanSaved[] | null>(null)
+  const studyplansLists = useUserStore(s => s.studyplansLists)
+  const addStudyplans = useStudyplansStore(s => s.addStudyplans)
+  const studyplans = studyplansLists[storeKey]?.slice(0, maxItems)
 
-  // THIS IS TEMPORARY
   useEffect(() => {
+    if (!studyplansLists[storeKey]) return
+
     dataFetch<StudyplanSaved[]>({
-      url: '/api/studyplans?limit=6',
-      onSuccess: data => {
-        setStudyplans(data)
-      }
+      url: '/api/studyplans',
+      options: {
+        method: 'POST',
+        headers: CONTENT_JSON,
+        body: JSON.stringify(studyplansLists[storeKey])
+      },
+      onSuccess: data => addStudyplans(...data)
     })
-  }, [])
+  }, [studyplansLists[storeKey]])
 
   return (
     <section className='flex flex-col gap-4'>
-      {studyplans ? (
+      {studyplansLists[storeKey] ? (
         <Header>{title}</Header>
       ) : (
         <div className='bg-zinc-700 animate-pulse rounded-lg w-48 h-8' />
       )}
       <ul className='flex flex-wrap gap-4'>
         {studyplans
-          ? studyplans.map(({ daily_lessons, created_by, desc, ...studyplan }) => (
-              <ViewStudyPlan key={studyplan.id} {...{ ...studyplan, days: daily_lessons.length }} />
-            ))
-          : repeat(maxItems, i => <ViewStudyPlanFallback key={i} />)}
+          ? studyplans.map(id => <GalleryStudyPlan key={id} id={id} />)
+          : repeat(maxItems - 1, i => <GalleryStudyPlanFallback key={i} />)}
       </ul>
     </section>
   )
@@ -50,43 +56,47 @@ export const GalleryStudyplans = ({ title, storeKey, maxItems }: Props) => {
 
 interface ViewStudyPlanProps {
   id: string
-  name: string
-  category: Category
-  days: number
 }
 
-const ViewStudyPlan = ({ id, name, category, days }: ViewStudyPlanProps) => {
-  const { image } = getCategoryValues(category)
+const GalleryStudyPlan = ({ id }: ViewStudyPlanProps) => {
+  const { studyplan } = useSearchStudyplan(id)
 
-  return (
-    <li className='flex flex-col w-56 button' title={name}>
-      <Link href={`/studyplan/${id}`}>
-        <Image
-          src={`/studyplan/${image}.webp`}
-          alt='Studyplan category'
-          width={250}
-          height={200}
-          className='object-cover w-full h-44 rounded-lg mb-2'
-          draggable={false}
-        />
-        <span
-          className={`
+  if (studyplan) {
+    const { name, category, daily_lessons } = studyplan
+    const { image } = getCategoryValues(category)
+
+    return (
+      <li className='flex flex-col w-56 button' title={name}>
+        <Link href={`/studyplan/${id}`}>
+          <Image
+            src={`/studyplan/${image}.webp`}
+            alt='Studyplan category'
+            width={250}
+            height={200}
+            className='object-cover w-full h-44 rounded-lg mb-2'
+            draggable={false}
+          />
+          <span
+            className={`
             ${FONTS.POPPINS} text-lg text-white w-full inline-block text-nowrap 
             whitespace-nowrap overflow-hidden text-ellipsis h-7
-          `}
-        >
-          {name}
-        </span>
-        <span className='flex items-center gap-1 text-gray-10 -translate-y-1'>
-          <ClockIcon className='size-5' />
-          {parseDays(days)}
-        </span>
-      </Link>
-    </li>
-  )
+            `}
+          >
+            {name}
+          </span>
+          <span className='flex items-center gap-1 text-gray-10 -translate-y-1'>
+            <ClockIcon className='size-5' />
+            {parseDays(daily_lessons.length)}
+          </span>
+        </Link>
+      </li>
+    )
+  }
+
+  return <GalleryStudyPlanFallback />
 }
 
-const ViewStudyPlanFallback = () => (
+const GalleryStudyPlanFallback = () => (
   <li className='flex flex-col w-56 gap-2 animate-pulse'>
     <div className='bg-zinc-600 w-full h-44 rounded-lg' />
     <span className='bg-zinc-700 w-full h-7 rounded-lg' />

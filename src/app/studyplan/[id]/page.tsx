@@ -16,10 +16,11 @@ import { useEffect } from 'react'
 export default function PublicStudyplanPage() {
   const studyplan = useStudyplansStore(s => s.studyplan)
   const setStudyplan = useStudyplansStore(s => s.setStudyplan)
-  const router = useRouter()
+  const addStudyplans = useStudyplansStore(s => s.addStudyplans)
   const { searchStudyplan } = useSearchStudyplan()
   useUserData()
 
+  const router = useRouter()
   const { id } = useParams()
 
   useEffect(() => {
@@ -46,6 +47,7 @@ export default function PublicStudyplanPage() {
       options: { method: 'POST', headers: CONTENT_JSON, body: JSON.stringify([id]) },
       onSuccess: ([data]) => {
         setStudyplan(data)
+        addStudyplans(data)
       }
     })
   }, [])

@@ -39,6 +39,7 @@ export const POST = async (req: NextRequest) => {
 
   try {
     const data = await req.json()
+
     idList = await z.array(z.string()).parseAsync(data)
   } catch {
     return Response(false, 400)
