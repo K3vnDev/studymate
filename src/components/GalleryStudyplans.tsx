@@ -17,7 +17,7 @@ interface Props {
   maxItems: number
 }
 
-export const PreviewStudyplansSection = ({ title, storeKey, maxItems }: Props) => {
+export const GalleryStudyplans = ({ title, storeKey, maxItems }: Props) => {
   const [studyplans, setStudyplans] = useState<StudyplanSaved[] | null>(null)
 
   // THIS IS TEMPORARY

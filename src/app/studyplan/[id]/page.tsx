@@ -3,7 +3,7 @@
 import { Loadable } from '@/components/Loadable'
 import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
-import { Studyplan } from '@/components/Studyplan'
+import { Studyplan } from '@/components/Studyplan/Studyplan'
 import { CONTENT_JSON } from '@/consts'
 import { useSearchStudyplan } from '@/hooks/useSearchStudyplan'
 import { useUserData } from '@/hooks/useUserData'

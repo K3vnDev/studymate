@@ -4,8 +4,8 @@ import { CardMate } from '@/components/CardMate'
 import { CardStudyplan } from '@/components/CardStudyplan'
 import { ChipButton } from '@/components/ChipButton'
 import { FallbackZone } from '@/components/FallbackZone'
+import { GalleryStudyplans } from '@/components/GalleryStudyplans'
 import { Main } from '@/components/Main'
-import { PreviewStudyplansSection } from '@/components/PreviewStudyplansSection'
 import { Sidebar } from '@/components/Sidebar'
 import { MagicWandIcon, MessageIcon } from '@/components/icons'
 import { MATE_MESSAGES } from '@/consts'
@@ -38,7 +38,7 @@ export default function DashboardPage() {
           <FallbackZone className='w-[32rem] h-40 bg-zinc-600' />
         )}
 
-        <PreviewStudyplansSection title='Studyplans for you' storeKey='recomended' maxItems={5} />
+        <GalleryStudyplans title='Studyplans for you' storeKey='recomended' maxItems={5} />
       </Main>
 
       <Sidebar />

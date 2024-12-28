@@ -15,6 +15,8 @@ export interface UserStore {
   setStudyplansLists: (
     callback: (studyplans: UserStore['studyplansLists']) => UserStore['studyplansLists']
   ) => void
+
+  addToCompletedList: (id: string) => void
 }
 
 export const useUserStore = create<UserStore>(set => ({
@@ -35,5 +37,16 @@ export const useUserStore = create<UserStore>(set => ({
   setStudyplansLists: callback =>
     set(({ studyplansLists: studyplans }) => {
       return { studyplansLists: callback({ ...studyplans }) }
+    }),
+
+  addToCompletedList: id =>
+    set(({ studyplansLists }) => {
+      const { completed } = { ...studyplansLists }
+      if (!completed) return {}
+
+      const doesntExistAlready = !completed.some(completedId => completedId === id)
+      if (doesntExistAlready) completed.push(id)
+
+      return { studyplansLists: { ...studyplansLists, completed } }
     })
 }))

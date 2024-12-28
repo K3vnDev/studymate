@@ -3,12 +3,12 @@ import { dataFetch } from '@/lib/utils/dataFetch'
 import { throwConfetti } from '@/lib/utils/throwConfetti'
 import { useUserStore } from '@/store/useUserStore'
 import { useEffect, useRef, useState } from 'react'
-import { GradientBorder } from '../../components/GradientBorder'
-import { LoadingIcon, RocketIcon } from '../../components/icons'
+import { GradientBorder } from '../GradientBorder'
+import { LoadingIcon, RocketIcon } from '../icons'
 
-export const FinishStudyplanButton = () => {
+export const FinishButton = () => {
   const setUserStudyplan = useUserStore(s => s.setStudyplan)
-  const setStudyplansLists = useUserStore(s => s.setStudyplansLists)
+  const addToCompletedList = useUserStore(s => s.addToCompletedList)
 
   const { navigateToOriginal } = useUserStudyplan({ fetchOnAwake: false })
   const [isLoading, setIsLoading] = useState(false)
@@ -30,16 +30,7 @@ export const FinishStudyplanButton = () => {
         } else {
           setUserStudyplan(null)
         }
-
-        setStudyplansLists(studyplansLists => {
-          const { completed } = studyplansLists
-          if (!completed) return studyplansLists
-
-          if (!completed.some(id => id === originalId)) {
-            completed.push(originalId)
-          }
-          return { ...studyplansLists, completed }
-        })
+        addToCompletedList(originalId)
       },
       onFinish: () => setIsLoading(false)
     })

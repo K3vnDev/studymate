@@ -2,7 +2,7 @@
 
 import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
-import { Studyplan } from '@/components/Studyplan'
+import { Studyplan } from '@/components/Studyplan/Studyplan'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'

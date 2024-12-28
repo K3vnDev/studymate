@@ -3,7 +3,7 @@
 import { Loadable } from '@/components/Loadable'
 import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
-import { Studyplan } from '@/components/Studyplan'
+import { Studyplan } from '@/components/Studyplan/Studyplan'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 
 export default function UserStudyplanPage() {
