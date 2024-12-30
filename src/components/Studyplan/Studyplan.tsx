@@ -33,11 +33,12 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
   return (
     <>
       <section className='flex flex-col gap-9'>
-        <div className='flex flex-col gap-3 relative'>
-          <Badge>STUDYPLAN</Badge>
-          <Header s={3}>{name}</Header>
-          <Paragraph className='w-4/5'>{desc}</Paragraph>
-
+        <div className='flex justify-between items-start'>
+          <div className='flex flex-col gap-3 relative'>
+            <Badge>STUDYPLAN</Badge>
+            <Header s={3}>{name}</Header>
+            <Paragraph className='w-4/5'>{desc}</Paragraph>
+          </div>
           <OptionsButton usersCurrent={usersCurrent} />
         </div>
 
