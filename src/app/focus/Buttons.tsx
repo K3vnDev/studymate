@@ -1,7 +1,7 @@
 import { ChipButton } from '@/components/ChipButton'
-import { ArrowIcon, CheckIcon, LoadingIcon, MagicWandIcon, RocketIcon } from '@/components/icons'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
 import { TasksContext } from '@/lib/context/TasksContext'
+import { ArrowIcon, CheckIcon, MagicWandIcon, RocketIcon } from '@icons'
 import { useRouter } from 'next/navigation'
 import { useContext, useEffect, useRef, useState } from 'react'
 

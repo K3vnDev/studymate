@@ -4,8 +4,8 @@ import { dispatchEvent } from '@/lib/utils/dispatchEvent'
 import { repeat } from '@/lib/utils/repeat'
 import { useUserStore } from '@/store/useUserStore'
 import type { ChatMessage as ChatMessageType, StudyplanUnSaved } from '@/types.d'
+import { ErrorIcon, ReloadIcon } from '@icons'
 import { isEqual } from 'lodash'
-import { ErrorIcon, ReloadIcon } from '../../components/icons'
 
 interface Props {
   role: ChatMessageType['role'] | 'bubbles'

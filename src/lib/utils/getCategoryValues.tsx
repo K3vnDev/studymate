@@ -1,3 +1,4 @@
+import type { Category } from '@/types.d'
 import {
   CameraIcon,
   CodeIcon,
@@ -10,8 +11,7 @@ import {
   PhotoAndVideoIcon,
   RobotIcon,
   SpeakerIcon
-} from '@/components/icons'
-import type { Category } from '@/types.d'
+} from '@icons'
 
 type CategoryValues = {
   categories: Category[]

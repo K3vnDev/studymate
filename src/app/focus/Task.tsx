@@ -1,4 +1,4 @@
-import { CheckIcon } from '@/components/icons'
+import { CheckIcon } from '@icons'
 
 interface Props {
   done: boolean

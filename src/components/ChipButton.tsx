@@ -1,7 +1,7 @@
 'use client'
 
+import { LoadingIcon } from '@icons'
 import { useEffect, useRef, useState } from 'react'
-import { LoadingIcon } from './icons'
 
 interface Props {
   children: React.ReactNode

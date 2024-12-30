@@ -1,10 +1,10 @@
 'use client'
 
 import { FONTS } from '@/consts'
+import { AppIcon, BookIcon, ClockIcon, HomeIcon, MessageIcon, ProfileIcon } from '@icons'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { AppIcon, BookIcon, ClockIcon, HomeIcon, MessageIcon, ProfileIcon } from './icons'
 
 export const Sidebar = () => {
   return (

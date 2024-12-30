@@ -2,9 +2,9 @@ import { FONTS } from '@/consts'
 import { useVerticalNavigation } from '@/hooks/useVerticalNavigation'
 import { parseDays } from '@/lib/utils/parseDays'
 import type { StudyplanSaved } from '@/types.d'
+import { CheckIcon, ChevronIcon, ClockIcon } from '@icons'
 import { useState } from 'react'
 import { Header } from '../Header'
-import { CheckIcon, ChevronIcon, ClockIcon } from '../icons'
 
 interface Props {
   daily_lessons: StudyplanSaved['daily_lessons']

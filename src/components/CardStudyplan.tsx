@@ -2,13 +2,13 @@ import { parseDays } from '@/lib/utils/parseDays'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import { useUserStore } from '@/store/useUserStore'
 import type { StudyplanUnSaved, UserStudyplan } from '@/types.d'
+import { ClockIcon, RocketIcon } from '@icons'
 import { useRouter } from 'next/navigation'
 import { Badge } from './Badge'
 import { ChipButton } from './ChipButton'
 import { GradientBorder } from './GradientBorder'
 import { Header } from './Header'
 import { Paragraph } from './Paragraph'
-import { ClockIcon, RocketIcon } from './icons'
 
 interface Props {
   studyplan: StudyplanUnSaved | UserStudyplan

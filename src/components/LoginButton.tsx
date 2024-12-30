@@ -1,7 +1,7 @@
 'use client'
 
+import { GithubIcon } from '@icons'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { GithubIcon } from './icons'
 
 export const LoginButton = () => {
   const supabase = createClientComponentClient()

@@ -7,11 +7,11 @@ import { FallbackZone } from '@/components/FallbackZone'
 import { GalleryStudyplans } from '@/components/GalleryStudyplans'
 import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
-import { MagicWandIcon, MessageIcon } from '@/components/icons'
 import { MATE_MESSAGES } from '@/consts'
 import { useUserData } from '@/hooks/useUserData'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
+import { MagicWandIcon, MessageIcon } from '@icons'
 
 export default function DashboardPage() {
   const prompts = useUserPrompts({ redirect: true })

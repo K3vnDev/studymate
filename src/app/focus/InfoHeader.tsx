@@ -1,6 +1,6 @@
 import { Header } from '@/components/Header'
-import { MoreIcon } from '@/components/icons'
 import type { UserStudyplan } from '@/types.d'
+import { MoreIcon } from '@icons'
 
 export const InfoHeader = ({ name, current_day }: UserStudyplan) => {
   return (

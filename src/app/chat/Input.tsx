@@ -1,9 +1,9 @@
 import { GradientBorder } from '@/components/GradientBorder'
-import { ChevronIcon } from '@/components/icons'
 import { EVENTS } from '@/consts'
 import { ChatContext } from '@/lib/context/ChatContext'
 import { dispatchEvent } from '@/lib/utils/dispatchEvent'
 import { useChatStore } from '@/store/useChatStore'
+import { ChevronIcon } from '@icons'
 import { useContext, useEffect, useRef } from 'react'
 
 export const Input = () => {

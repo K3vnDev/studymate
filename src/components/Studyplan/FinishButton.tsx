@@ -1,7 +1,7 @@
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
+import { LoadingIcon, RocketIcon } from '@icons'
 import { useState } from 'react'
 import { GradientBorder } from '../GradientBorder'
-import { LoadingIcon, RocketIcon } from '../icons'
 
 export const FinishButton = () => {
   const { finishStudyplan } = useUserStudyplan({ fetchOnAwake: false })

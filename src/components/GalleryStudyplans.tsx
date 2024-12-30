@@ -7,11 +7,11 @@ import { repeat } from '@/lib/utils/repeat'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import { type UserStore, useUserStore } from '@/store/useUserStore'
 import type { StudyplanSaved } from '@/types.d'
+import { ClockIcon } from '@icons'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { Header } from './Header'
-import { ClockIcon } from './icons'
 
 interface Props {
   title: string

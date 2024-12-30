@@ -1,7 +1,7 @@
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
+import { RocketIcon } from '@icons'
 import { useState } from 'react'
 import { ChipButton } from '../ChipButton'
-import { RocketIcon } from '../icons'
 
 export const StartButton = () => {
   const [isLoading, setIsLoading] = useState(false)

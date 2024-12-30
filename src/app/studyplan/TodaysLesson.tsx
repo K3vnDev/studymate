@@ -1,8 +1,8 @@
 import { Badge } from '@/components/Badge'
 import { ChipButton } from '@/components/ChipButton'
 import { Paragraph } from '@/components/Paragraph'
-import { CheckIcon, RocketIcon } from '@/components/icons'
 import type { UserStudyplan } from '@/types.d'
+import { CheckIcon, RocketIcon } from '@icons'
 import { useRouter } from 'next/navigation'
 
 interface Props {

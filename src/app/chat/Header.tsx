@@ -1,5 +1,5 @@
-import { AppIcon } from '@/components/icons'
 import { FONTS } from '@/consts'
+import { AppIcon } from '@icons'
 
 export const Header = () => (
   <div

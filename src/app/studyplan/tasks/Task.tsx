@@ -1,6 +1,6 @@
 import { ChipButton } from '@/components/ChipButton'
-import { CheckIcon, RocketIcon } from '@/components/icons'
 import { FONTS } from '@/consts'
+import { CheckIcon, RocketIcon } from '@icons'
 import { useRouter } from 'next/navigation'
 
 type Props = {

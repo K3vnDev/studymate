@@ -1,5 +1,5 @@
-import { ArrowIcon } from '@/components/icons'
 import { ChatContext } from '@/lib/context/ChatContext'
+import { ArrowIcon } from '@icons'
 import { useContext } from 'react'
 
 export const ScrollDownButton = () => {

@@ -27,7 +27,7 @@
         "./src/*"
       ],
       "@icons": [
-        "./src/icons.tsx"
+        "./src/components/icons.tsx"
       ],
       "@components/*": [
         "./src/components/*"
