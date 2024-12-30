@@ -50,7 +50,7 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
             {!usersCurrent ? (
               <>
                 <BookmarkIcon className='size-9 text-blue-20 stroke-[1.5px]' />
-                {isCompleted ? <CompletedBadge /> : <StartButton studyplan={studyplan} />}
+                {isCompleted ? <CompletedBadge /> : <StartButton />}
               </>
             ) : (
               justCompleted && <FinishButton />

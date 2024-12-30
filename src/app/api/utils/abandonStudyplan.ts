@@ -15,7 +15,7 @@ export const abandonStudyplan = async ({
     await databaseQuery(
       supabase.from('users').update({ studyplan: null, current_studyplan_day: null }).eq('id', userId)
     )
-    return true
+    return
   } catch {
     throw new Error()
   }

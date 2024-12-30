@@ -1,47 +1,17 @@
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
-import { dataFetch } from '@/lib/utils/dataFetch'
-import { throwConfetti } from '@/lib/utils/throwConfetti'
-import { useUserStore } from '@/store/useUserStore'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { GradientBorder } from '../GradientBorder'
 import { LoadingIcon, RocketIcon } from '../icons'
 
 export const FinishButton = () => {
-  const setUserStudyplan = useUserStore(s => s.setStudyplan)
-  const addToCompletedList = useUserStore(s => s.addToCompletedList)
-
-  const { navigateToOriginal } = useUserStudyplan({ fetchOnAwake: false })
+  const { finishStudyplan } = useUserStudyplan({ fetchOnAwake: false })
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleClick = () => {
+  const handleClick = async () => {
     setIsLoading(true)
-
-    dataFetch<string>({
-      url: '/api/user/studyplan',
-      options: { method: 'PUT' },
-      onSuccess: originalId => {
-        if (!userHasLeft.current) {
-          navigateToOriginal('replace')
-
-          setTimeout(() => {
-            setUserStudyplan(null)
-            throwConfetti()
-          }, 650)
-        } else {
-          setUserStudyplan(null)
-        }
-        addToCompletedList(originalId)
-      },
-      onFinish: () => setIsLoading(false)
-    })
+    await finishStudyplan()
+    setIsLoading(false)
   }
-
-  // biome-ignore format: <>
-  useEffect(() => {
-    userHasLeft.current = false
-    return () => { userHasLeft.current = true }
-  }, [])
-  const userHasLeft = useRef(false)
 
   return (
     <button className='button rounded-full' onClick={handleClick} disabled={isLoading}>

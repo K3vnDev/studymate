@@ -1,32 +1,16 @@
-import { CONTENT_JSON } from '@/consts'
-import { dataFetch } from '@/lib/utils/dataFetch'
-import { useUserStore } from '@/store/useUserStore'
-import type { UserStudyplan } from '@/types.d'
-import { useRouter } from 'next/navigation'
+import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { useState } from 'react'
 import { ChipButton } from '../ChipButton'
 import { RocketIcon } from '../icons'
-import type { Props as StudyplanProps } from './Studyplan'
 
-type Props = Omit<StudyplanProps, 'usersCurrent'>
-
-export const StartButton = ({ studyplan }: Props) => {
+export const StartButton = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const setUserStudyplan = useUserStore(s => s.setStudyplan)
-  const router = useRouter()
+  const { startStudyplan } = useUserStudyplan()
 
-  const handleStartStudyplan = () => {
+  const handleStartStudyplan = async () => {
     setIsLoading(true)
-
-    dataFetch<UserStudyplan | null>({
-      url: '/api/user/studyplan',
-      options: { method: 'POST', headers: CONTENT_JSON, body: JSON.stringify(studyplan) },
-
-      onSuccess: data => {
-        setUserStudyplan(data)
-        router.replace('/studyplan')
-      }
-    })
+    await startStudyplan()
+    setIsLoading(false)
   }
 
   return (

@@ -13,7 +13,7 @@ import { abandonStudyplan } from '../../utils/abandonStudyplan'
 import { dataParser } from '../../utils/dataParser'
 import { databaseQuery } from '../../utils/databaseQuery'
 import { dateSubstraction } from '../../utils/dateSubstraction'
-import { generateCurrentStudyplanDay } from '../../utils/generateCurrentStudyplanDay'
+import { formatCurrentStudyplanDay } from '../../utils/formatCurrentStudyplanDay'
 import { getStudyplan } from '../../utils/getStudyplan'
 import { getUserId } from '../../utils/getUserId'
 import { modifyStudyplansLists } from '../../utils/modifyStudyplansLists'
@@ -48,7 +48,7 @@ export const GET = async () => {
 
     // Increase studyplan current day if its allowed
     if (todaysTasksAreDone && !isOnLastDay && tasksWereCompletedBeforeToday) {
-      const current_studyplan_day = generateCurrentStudyplanDay(day + 1)
+      const current_studyplan_day = formatCurrentStudyplanDay(day + 1)
 
       try {
         type QueryResponse = UserStudyplanAndCurrentDayResponse['current_studyplan_day']
@@ -111,7 +111,7 @@ export const POST = async (req: NextRequest) => {
 
   // Save a copy of the studyplan on the user
   try {
-    const current_studyplan_day = generateCurrentStudyplanDay(1)
+    const current_studyplan_day = formatCurrentStudyplanDay(1)
 
     const data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>(
       supabase
@@ -139,8 +139,9 @@ export const DELETE = async () => {
 
   try {
     await abandonStudyplan({ supabase, userId })
-    return Response(true, 204)
-  } catch {
+    return Response(true, 200)
+  } catch (ErrorTrace) {
+    console.log({ ErrorTrace })
     return Response(false, 500)
   }
 }
