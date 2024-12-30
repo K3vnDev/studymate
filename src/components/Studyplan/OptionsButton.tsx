@@ -2,7 +2,7 @@ import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { DropdownMenu } from '@components/DropdownMenu/DropdownMenu'
 import { Line } from '@components/DropdownMenu/Line'
 import { Option } from '@components/DropdownMenu/Option'
-import { CloudIcon, MoreIcon, ReloadIcon, RocketIcon, TrashIcon } from '../icons'
+import { CloudIcon, MoreIcon, ReloadIcon, RocketIcon, TrashIcon } from '@icons'
 
 export const OptionsButton = ({ usersCurrent = false }) => {
   const { abandonStudyplan, seeOriginalStudyplan, startStudyplan } = useUserStudyplan({ fetchOnAwake: false })
@@ -19,7 +19,7 @@ export const OptionsButton = ({ usersCurrent = false }) => {
 
       <Line />
 
-      <Option action={startStudyplan} danger>
+      <Option danger action={startStudyplan}>
         <ReloadIcon /> Restart studyplan
       </Option>
 

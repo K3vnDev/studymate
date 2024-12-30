@@ -6,7 +6,8 @@ import { useUserStore } from '@/store/useUserStore'
 import type { UserStudyplan } from '@/types.d'
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { useRouter } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
+import { useOnUser } from './useOnUser'
 
 interface Params {
   fetchOnAwake?: boolean
@@ -19,6 +20,7 @@ export const useUserStudyplan = (params?: Params) => {
   const addToCompletedList = useUserStore(s => s.addToCompletedList)
   const stateStudyplan = useStudyplansStore(s => s.studyplan)
 
+  const onUser = useOnUser()
   const router = useRouter()
 
   // Initial fetch of user studyplan
@@ -38,15 +40,6 @@ export const useUserStudyplan = (params?: Params) => {
     }
   }, [userStudyplan])
 
-  // Check if the user has left the current route
-  useEffect(() => {
-    userHasLeft.current = false
-    return () => {
-      userHasLeft.current = true
-    }
-  }, [])
-  const userHasLeft = useRef(false)
-
   const getUtilityValues = () => {
     if (userStudyplan) {
       const { daily_lessons, current_day } = userStudyplan
@@ -61,72 +54,46 @@ export const useUserStudyplan = (params?: Params) => {
   }
 
   const start = () =>
-    new Promise<void>(res => {
-      const onSuccess = (data: UserStudyplan) => {
+    dataFetchHandler<UserStudyplan>({
+      url: '/api/user/studyplan',
+      options: { method: 'POST', headers: CONTENT_JSON, body: JSON.stringify(stateStudyplan) },
+      onSuccess: data => {
         setUserStudyplan(data)
         onUser({ stayed: () => router.replace('/studyplan') })
       }
-
-      dataFetch<UserStudyplan>({
-        url: '/api/user/studyplan',
-        options: { method: 'POST', headers: CONTENT_JSON, body: JSON.stringify(stateStudyplan) },
-        onSuccess,
-        onFinish: res
-      })
     })
 
   const abandon = () =>
-    new Promise<void>(res => {
-      const onSuccess = () =>
+    dataFetchHandler({
+      url: '/api/user/studyplan',
+      options: { method: 'DELETE' },
+      onSuccess: () =>
         onUser({
           stayed: () => seeOriginal('replace'),
           gone: () => setUserStudyplan(null)
         })
-
-      dataFetch({
-        url: '/api/user/studyplan',
-        options: { method: 'DELETE' },
-        onSuccess,
-        onFinish: res
-      })
     })
 
   const finish = () =>
-    new Promise<void>(res => {
-      const onSuccess = (id: string) => {
-        addToCompletedList(id)
-
+    dataFetchHandler<string>({
+      url: '/api/user/studyplan',
+      options: { method: 'PUT' },
+      onSuccess: id =>
         onUser({
           stayed: () => seeOriginal('replace'),
           afterTimeout: throwConfetti,
-          gone: () => setUserStudyplan(null)
+          gone: () => {
+            setUserStudyplan(null)
+            addToCompletedList(id)
+          }
         })
-      }
-
-      dataFetch<string>({
-        url: '/api/user/studyplan',
-        options: { method: 'PUT' },
-        onSuccess,
-        onFinish: res
-      })
     })
 
   const seeOriginal = (method: keyof AppRouterInstance = 'push') => {
-    if (!userStudyplan) return
-    const { original_id } = userStudyplan
-
-    router[method](`/studyplan/${original_id}`)
-  }
-
-  // Offers different actions based on user staying or leaving the current route
-  const onUser = ({ gone = () => {}, stayed = () => {}, afterTimeout = () => {}, waitTime = 650 }) => {
-    if (!userHasLeft.current) {
-      stayed()
-      setTimeout(() => {
-        afterTimeout()
-        gone()
-      }, waitTime)
-    } else gone()
+    if (userStudyplan) {
+      const { original_id } = userStudyplan
+      router[method](`/studyplan/${original_id}`)
+    }
   }
 
   return {
@@ -140,3 +107,14 @@ export const useUserStudyplan = (params?: Params) => {
     seeOriginalStudyplan: seeOriginal
   }
 }
+
+interface DataFetchHandlerParams<T> {
+  url: string
+  options?: RequestInit
+  onSuccess?: (data: T) => void
+}
+
+const dataFetchHandler = <T>({ url, options, onSuccess }: DataFetchHandlerParams<T>) =>
+  new Promise<void>(res => {
+    dataFetch<T>({ url, options, onSuccess, onFinish: res })
+  })
