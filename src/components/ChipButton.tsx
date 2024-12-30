@@ -1,7 +1,6 @@
 'use client'
 
-import { LoadingIcon } from '@icons'
-import { useEffect, useRef, useState } from 'react'
+import { useLoadingIcon } from '@/hooks/useLoadingIcon'
 
 interface Props {
   children: React.ReactNode
@@ -12,26 +11,24 @@ interface Props {
   isLoading?: boolean
 }
 
-export const ChipButton = ({ children, onClick, empty, isLoading, disabled, className = '' }: Props) => {
+export const ChipButton = ({
+  children,
+  onClick = () => {},
+  empty,
+  isLoading = false,
+  disabled,
+  className = ''
+}: Props) => {
+  const { parsedChilren } = useLoadingIcon({ children, isLoading })
+
   const style = empty
     ? 'bg-transparent border-blue-10 text-blue-10'
     : 'bg-blue-30 border-[#6168E8] text-white'
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()
-    if (onClick) onClick()
+    onClick()
   }
-
-  const initialChildren = useRef(children)
-  const [parsedChilren, setParsedChilren] = useState(children)
-
-  useEffect(() => {
-    setParsedChilren(() =>
-      isLoading && Array.isArray(children) && children.length === 2
-        ? [<LoadingIcon className='animate-spin' key={0} />, children[1]]
-        : initialChildren.current
-    )
-  }, [isLoading])
 
   return (
     <button

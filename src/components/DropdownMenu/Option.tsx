@@ -1,18 +1,25 @@
 import { FONTS } from '@/consts'
+import { useLoadingIcon } from '@/hooks/useLoadingIcon'
 import { DropdownMenuContext } from '@/lib/context/DropdownMenuContext'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 
 interface Props {
   children: React.ReactNode
-  action: () => void
+  action: (() => Promise<void>) | (() => void)
   danger?: boolean
 }
 
 export const Option = ({ children, action, danger = false }: Props) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const { parsedChilren } = useLoadingIcon({ children, isLoading })
   const { manage } = useContext(DropdownMenuContext)
 
-  const handleClick = () => {
-    action()
+  const handleClick = async () => {
+    setIsLoading(true)
+
+    await action()
+
+    setIsLoading(false)
     manage.close()
   }
 
@@ -20,10 +27,16 @@ export const Option = ({ children, action, danger = false }: Props) => {
 
   return (
     <button
-      className={`${FONTS.INTER} ${style} py-3 pl-4 pr-9 w-full flex text-nowrap card group`}
+      className={`
+        ${FONTS.INTER} ${style} py-3 pl-4 pr-9 w-full flex text-nowrap card group 
+        disabled:brightness-75 disabled:pointer-events-none
+      `}
       onClick={handleClick}
+      disabled={isLoading}
     >
-      <span className='group-active:scale-95 transition flex gap-2 items-center *:size-6'>{children}</span>
+      <span className='group-active:scale-95 transition flex gap-2 items-center *:size-6'>
+        {parsedChilren}
+      </span>
     </button>
   )
 }
