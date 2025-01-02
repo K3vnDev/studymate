@@ -39,7 +39,8 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
             <Header s={3}>{name}</Header>
             <Paragraph className='w-4/5'>{desc}</Paragraph>
           </div>
-          <OptionsButton usersCurrent={usersCurrent} />
+
+          {(isCompleted || usersCurrent) && <OptionsButton {...{ isCompleted, usersCurrent }} />}
         </div>
 
         {/* Buttons section */}

@@ -2,30 +2,41 @@ import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { DropdownMenu } from '@components/DropdownMenu/DropdownMenu'
 import { Line } from '@components/DropdownMenu/Line'
 import { Option } from '@components/DropdownMenu/Option'
-import { CloudIcon, MoreIcon, ReloadIcon, RocketIcon, TrashIcon } from '@icons'
+import { CloudIcon, ReloadIcon, RocketIcon, TrashIcon } from '@icons'
 
-export const OptionsButton = ({ usersCurrent = false }) => {
+interface Props {
+  usersCurrent: boolean
+  isCompleted: boolean
+}
+
+export const OptionsButton = ({ usersCurrent, isCompleted }: Props) => {
   const { abandonStudyplan, seeOriginalStudyplan, startStudyplan } = useUserStudyplan({ fetchOnAwake: false })
 
   return (
-    <DropdownMenu icon={<MoreIcon />}>
-      <Option action={seeOriginalStudyplan}>
-        <CloudIcon /> See original
-      </Option>
+    <DropdownMenu>
+      {isCompleted && (
+        <Option action={startStudyplan}>
+          <RocketIcon /> Start studyplan again
+        </Option>
+      )}
 
-      <Option action={startStudyplan}>
-        <RocketIcon /> Start studyplan again
-      </Option>
+      {usersCurrent && (
+        <>
+          <Option action={seeOriginalStudyplan}>
+            <CloudIcon /> See original
+          </Option>
 
-      <Line />
+          <Line />
 
-      <Option danger action={startStudyplan}>
-        <ReloadIcon /> Restart studyplan
-      </Option>
+          <Option danger action={startStudyplan}>
+            <ReloadIcon /> Restart studyplan
+          </Option>
 
-      <Option danger action={abandonStudyplan}>
-        <TrashIcon /> Abandon studyplan
-      </Option>
+          <Option danger action={abandonStudyplan}>
+            <TrashIcon /> Abandon studyplan
+          </Option>
+        </>
+      )}
     </DropdownMenu>
   )
 }
