@@ -59,6 +59,23 @@ export const CATEGORIES = [
   'Study Techniques'
 ] as const
 
+export const MATE_VALUES = {
+  MESSAGE: {
+    MAX: 350
+  },
+  STUDYPLAN: {
+    NAME: { MIN: 10, MAX: 30 },
+    DESC: { MIN: 70, MAX: 150 },
+    TASKGOAL: { MIN: 25, MAX: 60 },
+    MAX_DAYS: 10
+  }
+}
+
+export const MAX_MESSAGES_ON_PROMPT = 8
+
+// Chat
+export const CHAT_ERROR_MESSAGE = "Sorry, I'm having some trouble right now :("
+
 // Virtual assistant
 export const MATE_MESSAGES = {
   MEET: "Hey there! I'm Mate. I'll be helping you out with everything you need.",
@@ -70,23 +87,6 @@ export const MATE_MESSAGES = {
   }
 }
 
-export const MAX_MESSAGES_ON_PROMPT = 8
-
 export const USER_PROMPTS = {
   GENERATE_STUDYPLAN: 'Hey Mate, Would you help me to create a new studyplan?'
-}
-
-// Chat
-export const CHAT_ERROR_MESSAGE = "Sorry, I'm having some trouble right now"
-
-export const MATE_VALUES = {
-  MESSAGE: {
-    MAX: 350
-  },
-  STUDYPLAN: {
-    NAME: { MIN: 10, MAX: 30 },
-    DESC: { MIN: 70, MAX: 150 },
-    TASKGOAL: { MIN: 25, MAX: 60 },
-    MAX_DAYS: 10
-  }
 }

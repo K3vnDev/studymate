@@ -7,18 +7,18 @@ import { useContext } from 'react'
 
 export const MessagesList = () => {
   const messages = useChatStore(s => s.messages) as ChatMessageType[]
-  const { isWaitingResponse, isOnError, listRef } = useContext(ChatContext)
+  const { isWaitingResponse, isOnChatError, listRef } = useContext(ChatContext)
 
   return (
     <ul
-      className='w-full max-h-full flex flex-col gap-4 py-28 overflow-y-hidden animate-fade-in-fast'
+      className='w-full max-h-full flex flex-col gap-4 py-28 overflow-hidden animate-fade-in-fast'
       ref={listRef}
     >
       {messages.map((chatMessage, i) => (
         <ChatMessage {...chatMessage} key={i} />
       ))}
       {isWaitingResponse && <ChatMessage role='bubbles' content='' />}
-      {isOnError && <ChatMessage role='error' content={CHAT_ERROR_MESSAGE} />}
+      {isOnChatError && <ChatMessage role='error' content={CHAT_ERROR_MESSAGE} />}
     </ul>
   )
 }

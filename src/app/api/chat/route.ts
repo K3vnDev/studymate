@@ -18,7 +18,12 @@ import { saveChatMessagesToDatabase } from '../utils/saveChatMessagesToDabatase'
 
 // Get all previous chat messages
 export const GET = async () => {
-  const prevChatMessages = await getPrevChatMessages()
+  const supabase = createServerComponentClient({ cookies })
+
+  const userId = await getUserId({ supabase })
+  if (userId === null) return Response(false, 401)
+
+  const prevChatMessages = await getPrevChatMessages({ supabase })
   if (prevChatMessages === null) return Response(false, 500)
   return Response(true, 200, { data: prevChatMessages })
 }

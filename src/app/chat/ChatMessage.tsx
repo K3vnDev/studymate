@@ -67,8 +67,8 @@ export const ChatError = ({ children }: ChildrenProps) => {
   return (
     <li
       className={`
-        ${FONTS.INTER} bg-red-700/15 border border-red-500/45 rounded-md py-5 px-7 group
-         w-fit flex gap-4 text-red-500 items-center justify-center relative button cursor-pointer
+        ${FONTS.INTER} error rounded-md py-5 px-7 group
+         w-fit flex gap-4 items-center justify-center relative button cursor-pointer
       `}
       onClick={handleClick}
     >

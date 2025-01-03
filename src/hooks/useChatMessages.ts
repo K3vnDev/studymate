@@ -14,7 +14,8 @@ export const useChatMessages = () => {
   const setUserInput = useChatStore(s => s.setUserInput)
 
   const [isWaitingResponse, setIsWaitingRespose] = useState(false)
-  const [isOnError, setIsOnError] = useState(false)
+  const [isOnChatError, setIsOnChatError] = useState(false)
+  const [isOnLoadingError, setIsOnLoadingError] = useState(false)
 
   const tryAgainCallback = useRef<() => void>(() => {})
 
@@ -26,22 +27,23 @@ export const useChatMessages = () => {
       url: '/api/chat',
       onSuccess: data => {
         const newMessages = data.map(msg => {
-          return msg.role === 'system'
-            ? { role: 'studyplan', content: JSON.parse(msg.content) }
-            : msg
+          return msg.role === 'system' ? { role: 'studyplan', content: JSON.parse(msg.content) } : msg
         }) as ChatMessage[]
 
         setMessages(newMessages)
+      },
+      onError: () => {
+        setIsOnLoadingError(true)
       }
     })
   }, [])
 
   // Resend message when user presses try again
-  useEvent(EVENTS.ON_CHAT_TRY_AGAIN, tryAgainCallback.current, [isOnError])
+  useEvent(EVENTS.ON_CHAT_TRY_AGAIN, tryAgainCallback.current, [isOnChatError])
 
   const messageMate = (message: string) => {
     setIsWaitingRespose(true)
-    setIsOnError(false)
+    setIsOnChatError(false)
 
     dataFetch<MateResponseSchema['responses']>({
       url: '/api/chat',
@@ -49,9 +51,7 @@ export const useChatMessages = () => {
         headers: CONTENT_JSON,
         method: 'POST',
         body: JSON.stringify({
-          prevMessages: messages?.filter(({ role }) =>
-            ['studyplan', 'user', 'assistant'].includes(role)
-          ),
+          prevMessages: messages?.filter(({ role }) => ['studyplan', 'user', 'assistant'].includes(role)),
           newMessage: message
         })
       },
@@ -65,7 +65,7 @@ export const useChatMessages = () => {
         setIsWaitingRespose(false)
       },
       onError: () => {
-        setIsOnError(true)
+        setIsOnChatError(true)
         setIsWaitingRespose(false)
 
         tryAgainCallback.current = () => messageMate(message)
@@ -99,7 +99,8 @@ export const useChatMessages = () => {
   return {
     handleSubmit,
     isWaitingResponse,
-    isOnError,
+    isOnChatError,
+    isOnLoadingError,
     inputProps: {
       onChange: handleChange,
       onKeyDown: handleKeyDown,

@@ -3,7 +3,8 @@ import { createContext } from 'react'
 interface ChatContext {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
   isWaitingResponse: boolean
-  isOnError: boolean
+  isOnChatError: boolean
+  isOnLoadingError: boolean
   inputProps: {
     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
     onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void
@@ -20,7 +21,8 @@ interface ChatContext {
 export const ChatContext = createContext<ChatContext>({
   handleSubmit: () => {},
   isWaitingResponse: false,
-  isOnError: false,
+  isOnChatError: false,
+  isOnLoadingError: false,
   inputProps: {
     onChange: () => {},
     onKeyDown: () => {},

@@ -10,6 +10,10 @@
   @apply hover:brightness-110 cursor-pointer select-none active:brightness-95 transition;
 }
 
+.error{
+  @apply bg-red-700/15 border border-red-500/45 text-red-500;
+}
+
 @keyframes chat-message-bubbles-pounce {
   from {
     transform: translateY(2px);

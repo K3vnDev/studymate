@@ -13,6 +13,7 @@ import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { ChatContext } from '@/lib/context/ChatContext'
 import { useChatStore } from '@/store/useChatStore'
 import { MagicWandIcon } from '@icons'
+import { ErrorCard } from '../../components/ErrorCard'
 import { Header } from './Header'
 import { Input } from './Input'
 import { MessagesList } from './MessagesList'
@@ -24,34 +25,39 @@ export default function ChatPage() {
   const chatMessagesValues = useChatMessages()
   useUserStudyplan()
 
+  const { isWaitingResponse, isOnChatError, isOnLoadingError } = chatMessagesValues
   const customScrollValues = useChatCustomScroll({
-    updateScrollOn: [chatMessagesValues.isWaitingResponse, chatMessagesValues.isOnError]
+    updateScrollOn: [isWaitingResponse, isOnChatError]
   })
 
   return (
     <ChatContext.Provider value={{ ...chatMessagesValues, ...customScrollValues }}>
       <Main className='items-center h-[calc(100vh-3rem)] flex-col justify-between fixed right-48 top-6 px-48 w-[calc(100%-56rem)]'>
-        <Loadable isLoading={!messages}>
-          {messages?.length ? (
-            <>
-              <Header />
-              <MessagesList />
-            </>
-          ) : (
-            <CardMate
-              message={MATE_MESSAGES.MEET}
-              className={{ main: 'absolute top-1/2 -translate-y-[calc(100%+.75rem)]' }}
-            >
-              <ChipButton onClick={prompt.createStudyplan} empty>
-                <MagicWandIcon />
-                Create a studyplan
-              </ChipButton>
-            </CardMate>
-          )}
+        {!isOnLoadingError ? (
+          <Loadable isLoading={!messages}>
+            {messages?.length ? (
+              <>
+                <Header />
+                <MessagesList />
+              </>
+            ) : (
+              <CardMate
+                message={MATE_MESSAGES.MEET}
+                className={{ main: 'absolute top-1/2 -translate-y-[calc(100%+.75rem)]' }}
+              >
+                <ChipButton onClick={prompt.createStudyplan} empty>
+                  <MagicWandIcon />
+                  Create a studyplan
+                </ChipButton>
+              </CardMate>
+            )}
 
-          <Input />
-          <ScrollDownButton />
-        </Loadable>
+            <Input />
+            <ScrollDownButton />
+          </Loadable>
+        ) : (
+          <ErrorCard />
+        )}
       </Main>
 
       <div className='w-8 bg-transparent pointer-events-none' ref={customScrollValues.scrollRef} />

@@ -1,18 +1,21 @@
 import type { ChatMessageSchema } from '@/types'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { databaseQuery } from './databaseQuery'
 
-export const getPrevChatMessages = async () => {
+interface Params {
+  supabase: SupabaseClient
+}
+
+export const getPrevChatMessages = async ({ supabase }: Params) => {
   try {
-    const { data, error } = await createServerComponentClient({ cookies })
-      .from('users')
-      .select('chat_with_mate')
+    const data = await databaseQuery<{ chat_with_mate: ChatMessageSchema[] }[]>(
+      supabase.from('users').select('chat_with_mate')
+    )
+    if (!data.length) return null
+    const [{ chat_with_mate }] = data
 
-    if (error !== null) return null
-    const { chat_with_mate } = data[0]
-
-    if (chat_with_mate === null || data === null) return []
-    return chat_with_mate as ChatMessageSchema[]
+    if (chat_with_mate === null) return []
+    return chat_with_mate
   } catch {
     return null
   }
