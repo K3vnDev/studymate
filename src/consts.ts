@@ -59,6 +59,16 @@ export const CATEGORIES = [
   'Study Techniques'
 ] as const
 
+// Virtual assistant
+export const MATE_MESSAGES = {
+  MEET: "Hey there! I'm Mate. I'll be helping you out with everything you need.",
+
+  TASKS: {
+    DONE: "Congrats on finishing your tasks! 🎉 That's awesome! You've put in some great work, and it totally pays off.",
+    NOT_DONE:
+      "Hey there! Do you need any help with today's tasks? I'm here to support you and make it easier!"
+  }
+}
 export const MATE_VALUES = {
   MESSAGE: {
     MAX: 350
@@ -70,23 +80,20 @@ export const MATE_VALUES = {
     MAX_DAYS: 10
   }
 }
-
 export const MAX_MESSAGES_ON_PROMPT = 8
+
+export const PROTECTED_ROUTES = [
+  '/studyplan',
+  '/studyplan/tasks',
+  '/focus',
+  '/dashboard',
+  '/chat',
+  '/chat/studyplan',
+  '/profile'
+]
 
 // Chat
 export const CHAT_ERROR_MESSAGE = "Sorry, I'm having some trouble right now :("
-
-// Virtual assistant
-export const MATE_MESSAGES = {
-  MEET: "Hey there! I'm Mate. I'll be helping you out with everything you need.",
-
-  TASKS: {
-    DONE: "Congrats on finishing your tasks! 🎉 That's awesome! You've put in some great work, and it totally pays off.",
-    NOT_DONE:
-      "Hey there! Do you need any help with today's tasks? I'm here to support you and make it easier!"
-  }
-}
-
 export const USER_PROMPTS = {
   GENERATE_STUDYPLAN: 'Hey Mate, Would you help me to create a new studyplan?'
 }

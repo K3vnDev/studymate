@@ -20,10 +20,11 @@ import { MessagesList } from './MessagesList'
 import { ScrollDownButton } from './ScrollDownButton'
 
 export default function ChatPage() {
+  useUserStudyplan()
+
   const messages = useChatStore(s => s.messages)
   const prompt = useUserPrompts()
   const chatMessagesValues = useChatMessages()
-  useUserStudyplan()
 
   const { isWaitingResponse, isOnChatError, isOnLoadingError } = chatMessagesValues
   const customScrollValues = useChatCustomScroll({
