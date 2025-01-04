@@ -9,12 +9,12 @@ export async function middleware(req: NextRequest) {
   const reqUrl = new URL(req.url)
   const { pathname } = reqUrl
 
-  const {
-    data: { session }
-  } = await supabase.auth.getSession()
+  if (isOnProtectedRoute(pathname)) {
+    const {
+      data: { session }
+    } = await supabase.auth.getSession()
 
-  if (!session && isOnProtectedRoute(pathname)) {
-    return NextResponse.redirect(new URL('/', req.url))
+    if (!session) return NextResponse.redirect(new URL('/', req.url))
   }
   return NextResponse.next()
 }

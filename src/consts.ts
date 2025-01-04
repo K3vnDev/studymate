@@ -81,6 +81,10 @@ export const MATE_VALUES = {
   }
 }
 export const MAX_MESSAGES_ON_PROMPT = 8
+export const MATE_IMAGES_ALT = {
+  GREETING: 'Your virtual assistant, Mate, waving its hand at you',
+  SITTING: 'Your virtual assistant, Mate, sitting on the floor and looking down'
+}
 
 export const PROTECTED_ROUTES = [
   '/studyplan',

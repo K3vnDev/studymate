@@ -1,3 +1,4 @@
+import { MATE_IMAGES_ALT } from '@/consts'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
 import Image from 'next/image'
 import { Paragraph } from './Paragraph'
@@ -25,8 +26,8 @@ export const CardMate = ({ message, children, onClick, className }: Props) => {
     >
       <div className='h-full min-w-40 self-end aspect-square'>
         <Image
-          src='/mate-image.webp'
-          alt='Your virtual assistant, Mate, waving its hand at you'
+          src='/mate/greeting.webp'
+          alt={MATE_IMAGES_ALT.GREETING}
           draggable={false}
           width={150}
           height={150}

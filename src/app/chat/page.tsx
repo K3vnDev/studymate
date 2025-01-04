@@ -12,8 +12,8 @@ import { useUserPrompts } from '@/hooks/useUserPrompts'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { ChatContext } from '@/lib/context/ChatContext'
 import { useChatStore } from '@/store/useChatStore'
-import { MagicWandIcon } from '@icons'
-import { ErrorCard } from '../../components/ErrorCard'
+import { Button, ErrorCard, Message } from '@components/ErrorCard'
+import { MagicWandIcon, ReloadIcon } from '@icons'
 import { Header } from './Header'
 import { Input } from './Input'
 import { MessagesList } from './MessagesList'
@@ -21,12 +21,12 @@ import { ScrollDownButton } from './ScrollDownButton'
 
 export default function ChatPage() {
   useUserStudyplan()
-
   const messages = useChatStore(s => s.messages)
   const prompt = useUserPrompts()
-  const chatMessagesValues = useChatMessages()
 
+  const { loadPreviousMessages, ...chatMessagesValues } = useChatMessages()
   const { isWaitingResponse, isOnChatError, isOnLoadingError } = chatMessagesValues
+
   const customScrollValues = useChatCustomScroll({
     updateScrollOn: [isWaitingResponse, isOnChatError]
   })
@@ -57,7 +57,13 @@ export default function ChatPage() {
             <ScrollDownButton />
           </Loadable>
         ) : (
-          <ErrorCard />
+          <ErrorCard>
+            <Message>Sorry, couldn't load your messages</Message>
+            <Button onClick={loadPreviousMessages}>
+              <ReloadIcon className='size-7 group-active:rotate-90 transition' />
+              Try again
+            </Button>
+          </ErrorCard>
         )}
       </Main>
 

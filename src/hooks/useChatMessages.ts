@@ -19,24 +19,22 @@ export const useChatMessages = () => {
 
   const tryAgainCallback = useRef<() => void>(() => {})
 
-  // Load previous messages
-  useEffect(() => {
+  const loadPreviousMessages = () => {
     if (messages !== null) return
+    setIsOnLoadingError(false)
 
     dataFetch<ChatMessagesDBResponse[]>({
       url: '/api/chat',
       onSuccess: data => {
-        const newMessages = data.map(msg => {
-          return msg.role === 'system' ? { role: 'studyplan', content: JSON.parse(msg.content) } : msg
-        }) as ChatMessage[]
-
-        setMessages(newMessages)
+        const newMessages = data.map(msg =>
+          msg.role === 'system' ? { role: 'studyplan', content: JSON.parse(msg.content) } : msg
+        )
+        setMessages(newMessages as ChatMessage[])
       },
-      onError: () => {
-        setIsOnLoadingError(true)
-      }
+      onError: () => setIsOnLoadingError(true)
     })
-  }, [])
+  }
+  useEffect(loadPreviousMessages, [])
 
   // Resend message when user presses try again
   useEvent(EVENTS.ON_CHAT_TRY_AGAIN, tryAgainCallback.current, [isOnChatError])
@@ -101,6 +99,7 @@ export const useChatMessages = () => {
     isWaitingResponse,
     isOnChatError,
     isOnLoadingError,
+    loadPreviousMessages,
     inputProps: {
       onChange: handleChange,
       onKeyDown: handleKeyDown,
