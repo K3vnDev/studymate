@@ -10,6 +10,8 @@ interface Params {
 }
 
 export const getStudyplan = async ({ id, supabase = createServerComponentClient({ cookies }) }: Params) => {
+  if (typeof id !== 'string') return null
+
   try {
     const data = await databaseQuery<StudyplanSaved[]>(
       supabase.from('studyplans').select('id, name, desc, category, daily_lessons').eq('id', id)

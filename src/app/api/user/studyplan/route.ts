@@ -30,10 +30,6 @@ export const GET = async () => {
       supabase.from('users').select('studyplan, current_studyplan_day')
     )
 
-    if (data === null || data.length === 0) {
-      return Response(false, 500)
-    }
-
     const [{ studyplan, current_studyplan_day }] = data
 
     if (!studyplan || !current_studyplan_day) {
@@ -83,21 +79,17 @@ export const POST = async (req: NextRequest) => {
   try {
     studyplanFromReq = await StudyplanSchema.parseAsync(reqData)
   } catch {
-    return Response(false, 400)
+    return Response(false, 400, { msg: "Sent studyplan doesn't follow the schema" })
   }
 
   // Create a new studyplan if no one matches the id
   try {
-    const existingStudyplan = await getStudyplan({ id: reqData.id, supabase })
+    const existingStudyplan = await getStudyplan({ id: reqData?.id, supabase })
 
     if (existingStudyplan === null) {
       const data = await databaseQuery<StudyplanSaved[]>(
         supabase.from('studyplans').insert(studyplanFromReq).select()
       )
-
-      if (data === null) {
-        return Response(false, 500)
-      }
       original_id = data[0].id
     } else {
       const { id, ...studyplan } = existingStudyplan
@@ -120,10 +112,6 @@ export const POST = async (req: NextRequest) => {
         .eq('id', userId)
         .select()
     )
-
-    if (data === null) {
-      return Response(false, 500)
-    }
     return Response(true, 201, { data: dataParser.DBResponseToUserStudyplan(data) })
   } catch {
     return Response(false, 500)
@@ -140,8 +128,7 @@ export const DELETE = async () => {
   try {
     await abandonStudyplan({ supabase, userId })
     return Response(true, 200)
-  } catch (ErrorTrace) {
-    console.log({ ErrorTrace })
+  } catch {
     return Response(false, 500)
   }
 }
@@ -157,20 +144,24 @@ export const PUT = async () => {
 
   try {
     // Get original id
-    type QueryResponse = { studyplan: UserStudyplan }
+    type QueryResponse = { studyplan: UserStudyplan | null }
     const [{ studyplan }] = await databaseQuery<QueryResponse[]>(supabase.from('users').select('studyplan'))
+    if (studyplan === null) {
+      return Response(false, 405, { msg: "User doesn't have a studyplan" })
+    }
 
-    originalId = studyplan.original_id
+    const { original_id, daily_lessons } = studyplan
+    originalId = original_id
 
     // Check if all tasks are done
-    if (!studyplan.daily_lessons.every(d => d.tasks.every(t => t.done))) {
-      return Response(false, 403)
+    if (!daily_lessons.every(d => d.tasks.every(t => t.done))) {
+      return Response(false, 403, { msg: 'All tasks must be done' })
     }
 
     // Abandon studyplan
     await abandonStudyplan({ supabase, userId })
   } catch {
-    return Response(false, 400)
+    return Response(false, 500)
   }
 
   try {

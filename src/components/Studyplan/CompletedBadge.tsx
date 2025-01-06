@@ -7,7 +7,12 @@ export const CompletedBadge = () => {
   const timeout = useRef<NodeJS.Timeout>()
   const [isDisabled, setIsDisabled] = useState(false)
 
-  useEffect(() => () => clearTimeout(timeout.current), [])
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeout.current)
+      setIsDisabled(false)
+    }
+  }, [])
 
   const handleClick = () => {
     throwConfetti()
@@ -19,7 +24,11 @@ export const CompletedBadge = () => {
   }
 
   return (
-    <button className='card' onClick={handleClick} disabled={isDisabled}>
+    <button
+      className='card disabled:brightness-75 disabled:cursor-default'
+      onClick={handleClick}
+      disabled={isDisabled}
+    >
       <GradientBorder
         color='blues'
         className={{ main: 'py-1 px-4 rounded-lg', gradientWrapper: 'brightness-90' }}

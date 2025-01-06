@@ -12,13 +12,13 @@ export const GET = async (req: NextRequest) => {
 
   try {
     const url = new URL(req.url)
-    const data = url.searchParams.get('limit')
+    const limitFromSearchParams = url.searchParams.get('limit')
 
-    if (data !== null) {
-      limit = await z.coerce.number().positive().parseAsync(data)
+    if (limitFromSearchParams !== null) {
+      limit = await z.coerce.number().positive().parseAsync(limitFromSearchParams)
     }
   } catch {
-    return Response(false, 400)
+    return Response(false, 400, { msg: 'Invalid limit' })
   }
 
   const supabase = createServerComponentClient({ cookies })
@@ -39,10 +39,9 @@ export const POST = async (req: NextRequest) => {
 
   try {
     const data = await req.json()
-
     idList = await z.array(z.string()).parseAsync(data)
   } catch {
-    return Response(false, 400)
+    return Response(false, 400, { msg: 'Id list is missing or invalid' })
   }
 
   const supabase = createServerComponentClient({ cookies })

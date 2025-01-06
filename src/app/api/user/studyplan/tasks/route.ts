@@ -16,22 +16,24 @@ export const POST = async (req: NextRequest) => {
 
   try {
     const { index } = (await req.json()) as { index?: number }
-    taskIndex = await z.number().parseAsync(index)
+    taskIndex = await z.number().positive().parseAsync(index)
   } catch {
-    return Response(false, 401)
+    return Response(false, 401, { msg: 'Task index is missing or invalid' })
   }
 
   const userId = await getUserId({ supabase })
   if (userId === null) return Response(false, 401)
 
-  // Fetch values from database
   try {
+    // Fetch studyplan and current day from database
     const data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>(
       supabase.from('users').select('studyplan, current_studyplan_day')
     )
-
     const [{ studyplan, current_studyplan_day }] = data
-    if (!studyplan || !current_studyplan_day) return Response(false, 405)
+
+    if (!studyplan || !current_studyplan_day) {
+      return Response(false, 405, { msg: "User doesn't have a studyplan" })
+    }
 
     const { day } = current_studyplan_day
 

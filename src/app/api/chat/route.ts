@@ -1,6 +1,6 @@
 import { dataParser } from '@/app/api/utils/dataParser'
 import { MATE_VALUES, MAX_MESSAGES_ON_PROMPT } from '@/consts'
-import { ChatMessageSchema } from '@/lib/schemas/ChatMessage'
+import { ChatMessageSchema, MessageContentSchema } from '@/lib/schemas/ChatMessage'
 import { MateResponseSchema } from '@/lib/schemas/MateResponse'
 import type { MessageAssistantData } from '@/types.d'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
@@ -18,14 +18,16 @@ import { saveChatMessagesToDatabase } from '../utils/saveChatMessagesToDabatase'
 
 // Get all previous chat messages
 export const GET = async () => {
-  const supabase = createServerComponentClient({ cookies })
+  try {
+    const supabase = createServerComponentClient({ cookies })
 
-  const userId = await getUserId({ supabase })
-  if (userId === null) return Response(false, 401)
+    const prevChatMessages = await getPrevChatMessages({ supabase })
+    if (prevChatMessages === null) return Response(false, 401)
 
-  const prevChatMessages = await getPrevChatMessages({ supabase })
-  if (prevChatMessages === null) return Response(false, 500)
-  return Response(true, 200, { data: prevChatMessages })
+    return Response(true, 200, { data: prevChatMessages })
+  } catch {
+    return Response(false, 500)
+  }
 }
 
 // Send a message to mate and get a response
@@ -33,8 +35,8 @@ export const POST = async (req: NextRequest) => {
   const openai = new OpenAI()
   openai.apiKey = process.env.OPENAI_API_KEY ?? ''
 
-  let chatMessages: ChatCompletionMessageParam[] = []
-  let userMessage = ''
+  let chatMessages: ChatCompletionMessageParam[]
+  let userMessage: string
 
   const supabase = createServerComponentClient({ cookies })
 
@@ -45,16 +47,14 @@ export const POST = async (req: NextRequest) => {
   try {
     // Extract user message
     const { prevMessages, newMessage }: MessageAssistantData = await req.json()
-    if (!prevMessages || !newMessage || typeof newMessage !== 'string') return Response(false, 400)
 
-    userMessage = newMessage.trim()
-    if (userMessage === '') return Response(false, 400)
+    userMessage = await MessageContentSchema.parseAsync(newMessage)
+    const validatedMessages = await z.array(ChatMessageSchema).parseAsync(prevMessages)
 
-    const validatedMessages = z.array(ChatMessageSchema).parse(prevMessages)
     const parsedMessages = dataParser.clientToPrompt(validatedMessages)
     chatMessages = parsedMessages as ChatCompletionMessageParam[]
   } catch {
-    return Response(false, 400)
+    return Response(false, 400, { msg: 'Messages are missing or invalid' })
   }
 
   try {
@@ -73,18 +73,19 @@ export const POST = async (req: NextRequest) => {
     const assistantResponse = completion.choices[0].message.parsed
     if (!assistantResponse) return Response(false, 500)
 
-    // Remove extra messages
-    const assistantMessages = assistantResponse.responses.map(r => {
-      if (r.type === 'message') return r
+    // Remove extra daily lessons
+    const assistantMessages = assistantResponse.responses.map(assistantMessage => {
+      const { type, data } = assistantMessage
+      if (type === 'message') return assistantMessage
 
-      const slicedDailyLessons = r.data.daily_lessons.slice(0, MATE_VALUES.STUDYPLAN.MAX_DAYS)
-      return { ...r, data: { ...r.data, daily_lessons: slicedDailyLessons } }
+      const slicedDailyLessons = data.daily_lessons.slice(0, MATE_VALUES.STUDYPLAN.MAX_DAYS)
+      return { ...assistantMessage, data: { ...data, daily_lessons: slicedDailyLessons } }
     })
 
     // Save messages to database
     saveChatMessagesToDatabase({ supabase, assistantMessages, userMessage, userId })
 
-    return Response(true, 201, { data: assistantMessages, msg: 'Hello' })
+    return Response(true, 201, { data: assistantMessages })
   } catch {
     return Response(false, 500)
   }

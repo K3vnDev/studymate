@@ -1,7 +1,6 @@
 import { dataParser } from '@/app/api/utils/dataParser'
 import type { MateResponseSchema } from '@/types.d'
-import { type SupabaseClient, createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { getPrevChatMessages } from './getPrevChatMessages'
 
 interface Params {
@@ -17,17 +16,23 @@ export const saveChatMessagesToDatabase = async ({
   userId,
   supabase
 }: Params) => {
-  const prevChatMessages = await getPrevChatMessages({ supabase })
-  if (prevChatMessages === null) return
+  try {
+    const prevChatMessages = await getPrevChatMessages({ supabase })
+    if (prevChatMessages === null) return
 
-  const messagesToInsert = [
-    ...prevChatMessages,
-    { role: 'user', content: userMessage },
-    ...dataParser.mateResponseToDB(assistantMessages)
-  ]
+    const messagesToInsert = [
+      ...prevChatMessages,
+      { role: 'user', content: userMessage },
+      ...dataParser.mateResponseToDB(assistantMessages)
+    ]
 
-  await createServerComponentClient({ cookies })
-    .from('users')
-    .update([{ chat_with_mate: messagesToInsert }])
-    .eq('id', userId)
+    await supabase
+      .from('users')
+      .update([{ chat_with_mate: messagesToInsert }])
+      .eq('id', userId)
+
+    return
+  } catch {
+    throw new Error()
+  }
 }
