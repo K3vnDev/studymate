@@ -6,25 +6,23 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export const Sidebar = () => {
-  return (
-    <aside className='w-[32rem] flex flex-col gap-16 justify-center items-start fixed left-48 top-1/2 -translate-y-1/2'>
-      <h2 className={`text-white text-3xl flex gap-5 items-center ml-4 ${FONTS.POPPINS}`}>
-        <AppIcon width={40} height={40} />
-        <div>
-          <span className='font-semibold'>STUDY</span>
-          <span className='italic'>MATE</span>
-        </div>
-      </h2>
+export const Sidebar = () => (
+  <aside className='w-[32rem] flex flex-col gap-16 justify-center items-start fixed left-48 top-1/2 -translate-y-1/2'>
+    <h2 className={`text-white text-3xl flex gap-5 items-center ml-4 ${FONTS.POPPINS}`}>
+      <AppIcon width={40} height={40} />
+      <div>
+        <span className='font-semibold'>STUDY</span>
+        <span className='italic'>MATE</span>
+      </div>
+    </h2>
 
-      <ul className='flex flex-col items-start gap-4'>
-        {PATHS.map(({ name, icon }, i) => (
-          <RouteButton route={name} icon={icon} key={i} />
-        ))}
-      </ul>
-    </aside>
-  )
-}
+    <ul className='flex flex-col items-start gap-4'>
+      {PATHS.map(({ name, icon }, i) => (
+        <RouteButton route={name} icon={icon} key={i} />
+      ))}
+    </ul>
+  </aside>
+)
 
 interface RouteButtonParams {
   route: string
