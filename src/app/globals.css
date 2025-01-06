@@ -24,3 +24,8 @@
     opacity: 1;
   }
 }
+
+nextjs-portal {
+  position: absolute;
+  opacity: 0;
+}
