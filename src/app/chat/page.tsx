@@ -12,7 +12,7 @@ import { useUserPrompts } from '@/hooks/useUserPrompts'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { ChatContext } from '@/lib/context/ChatContext'
 import { useChatStore } from '@/store/useChatStore'
-import { Button, ErrorCard, Message } from '@components/ErrorCard'
+import { Button, ErrorCard, Gigant, Message } from '@components/ErrorCard'
 import { MagicWandIcon, ReloadIcon } from '@icons'
 import { Header } from './Header'
 import { Input } from './Input'
@@ -58,6 +58,7 @@ export default function ChatPage() {
           </Loadable>
         ) : (
           <ErrorCard>
+            <Gigant />
             <Message>Sorry, couldn't load your messages</Message>
             <Button onClick={loadPreviousMessages}>
               <ReloadIcon className='size-7 group-active:rotate-90 transition' />

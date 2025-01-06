@@ -82,7 +82,7 @@ export const POST = async (req: NextRequest) => {
     })
 
     // Save messages to database
-    saveChatMessagesToDatabase({ assistantMessages, userMessage, userId })
+    saveChatMessagesToDatabase({ supabase, assistantMessages, userMessage, userId })
 
     return Response(true, 201, { data: assistantMessages, msg: 'Hello' })
   } catch {

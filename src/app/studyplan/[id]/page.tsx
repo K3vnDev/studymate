@@ -1,9 +1,11 @@
 'use client'
 
+import { Button, ErrorCard, Gigant, Message } from '@/components/ErrorCard'
 import { Loadable } from '@/components/Loadable'
 import { Main } from '@/components/Main'
 import { Sidebar } from '@/components/Sidebar'
 import { Studyplan } from '@/components/Studyplan/Studyplan'
+import { ArrowIcon } from '@/components/icons'
 import { CONTENT_JSON } from '@/consts'
 import { useSearchStudyplan } from '@/hooks/useSearchStudyplan'
 import { useUserData } from '@/hooks/useUserData'
@@ -19,6 +21,8 @@ export default function PublicStudyplanPage() {
   const setStudyplan = useStudyplansStore(s => s.setStudyplan)
   const addStudyplans = useStudyplansStore(s => s.addStudyplans)
   const [hasSession, setHasSession] = useState<boolean | undefined>(undefined)
+
+  const [isOnError, setIsOnError] = useState(false)
 
   const { id } = useParams()
   const router = useRouter()
@@ -59,7 +63,8 @@ export default function PublicStudyplanPage() {
       onSuccess: ([data]) => {
         setStudyplan(data)
         addStudyplans(data)
-      }
+      },
+      onError: () => setIsOnError(true)
     })
   }
 
@@ -70,14 +75,27 @@ export default function PublicStudyplanPage() {
 
   const justifySelf = !hasSession ? 'justify-self-center' : ''
 
+  const goHome = () => router.replace('/dashboard')
+
   if (hasSession === undefined) {
     return null
   }
 
   return (
     <>
-      <Main className={`${justifySelf} gap-12 px-24 py-12 h-full relative`}>
-        <Loadable isLoading={!studyplan}>{studyplan && <Studyplan {...{ studyplan }} />}</Loadable>
+      <Main className={`${justifySelf} gap-12 px-24 py-12 h-full relative justify-center`}>
+        {!isOnError ? (
+          <Loadable isLoading={!studyplan}>{studyplan && <Studyplan {...{ studyplan }} />}</Loadable>
+        ) : (
+          <ErrorCard className='self-center'>
+            <Gigant>Uh oh... 404</Gigant>
+            <Message>That studyplan doesn't exist</Message>
+            <Button onClick={goHome}>
+              <ArrowIcon className='rotate-90 group-active:-translate-x-1.5 transition' />
+              Go home
+            </Button>
+          </ErrorCard>
+        )}
       </Main>
 
       {hasSession && <Sidebar />}

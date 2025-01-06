@@ -53,6 +53,6 @@ export const POST = async (req: NextRequest) => {
     )
     return Response(true, 200, { data })
   } catch {
-    return Response(false, 500)
+    return Response(false, 404)
   }
 }
