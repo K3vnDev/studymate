@@ -1,5 +1,4 @@
 import { MATE_IMAGES_ALT } from '@/consts'
-import { useChatMessages } from '@/hooks/useChatMessages'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
 import Image from 'next/image'
 import { Paragraph } from './Paragraph'
@@ -16,7 +15,6 @@ interface Props {
 
 export const CardMate = ({ message, children, onClick, className }: Props) => {
   const prompts = useUserPrompts({ redirect: true })
-  useChatMessages()
 
   return (
     <article

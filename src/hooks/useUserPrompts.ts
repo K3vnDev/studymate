@@ -1,6 +1,7 @@
 import { USER_PROMPTS } from '@/consts'
 import { useChatStore } from '@/store/useChatStore'
 import { useRouter } from 'next/navigation'
+import { useChatMessages } from './useChatMessages'
 
 interface Params {
   redirect?: boolean
@@ -8,6 +9,7 @@ interface Params {
 
 export const useUserPrompts = (params: Params = { redirect: false }) => {
   const setHighlihtedMessage = useChatStore(s => s.setHighlihtedMessage)
+  useChatMessages()
   const router = useRouter()
 
   const callback = (message: string) => {
