@@ -1,14 +1,13 @@
-import type {
-  ChatMessageSchema,
-  MateResponseSchema,
-  UserStudyplanAndCurrentDayResponse
-} from '@/types.d'
+import type { ChatMessageSchema, MateResponseSchema, UserStudyplanAndCurrentDayResponse } from '@/types.d'
 
 export const dataParser = {
   clientToPrompt: (messages: ChatMessageSchema[]) =>
-    messages.map(msg =>
-      msg.role === 'studyplan' ? { role: 'system', content: JSON.stringify(msg.content) } : msg
-    ),
+    messages.map(msg => {
+      if (msg.role !== 'studyplan') return msg
+
+      const content = `Mate sent the following studyplan: ${JSON.stringify(msg.content)}`
+      return { role: 'system', content }
+    }),
 
   mateResponseToDB: (messages: MateResponseSchema['responses']) =>
     messages.map(({ type, data }) =>

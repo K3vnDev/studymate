@@ -37,7 +37,6 @@ export const CurrentTask = ({ todaysTasks: tasks, isOnLastDay }: Props) => {
     if (taskIndex && !Number.isNaN(taskIndex) && taskIndex <= tasks.length) {
       swapTask(taskIndex - 1, 'instant')
     }
-
     setIsShowingCompletedMessage(allTasksAreDone)
   }, [])
 
@@ -61,10 +60,8 @@ export const CurrentTask = ({ todaysTasks: tasks, isOnLastDay }: Props) => {
         headers: CONTENT_JSON,
         body: JSON.stringify({ index: selectedTask })
       },
-      onSuccess: () => {
-        setTaskDone(selectedTask, true)
-        setIsLoading(false)
-      }
+      onSuccess: () => setTaskDone(selectedTask, true),
+      onFinish: () => setIsLoading(false)
     })
   }
 

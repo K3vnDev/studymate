@@ -46,6 +46,7 @@ export const Input = () => {
       className={{
         main: `absolute ${yPosition} left-1/2 -translate-x-1/2 w-[calc(100%-23.5rem)] p-1 rounded-[1.625rem]`
       }}
+      bouncy
     >
       <form
         className={`

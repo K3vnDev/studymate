@@ -15,10 +15,10 @@ export const POST = async (req: NextRequest) => {
   let taskIndex: number
 
   try {
-    const { index } = (await req.json()) as { index?: number }
-    taskIndex = await z.number().positive().parseAsync(index)
+    const { index } = await req.json()
+    taskIndex = await z.number().nonnegative().parseAsync(index)
   } catch {
-    return Response(false, 401, { msg: 'Task index is missing or invalid' })
+    return Response(false, 400, { msg: 'Task index is missing or invalid' })
   }
 
   const userId = await getUserId({ supabase })
@@ -35,10 +35,15 @@ export const POST = async (req: NextRequest) => {
       return Response(false, 405, { msg: "User doesn't have a studyplan" })
     }
 
-    const { day } = current_studyplan_day
+    const dayIndex = current_studyplan_day.day - 1
+    const { tasks } = studyplan.daily_lessons[dayIndex]
+
+    if (taskIndex > tasks.length - 1) {
+      return Response(false, 405, { msg: 'Task index is out of bounds' })
+    }
 
     // Update tasks value
-    studyplan.daily_lessons[day - 1].tasks[taskIndex].done = true
+    studyplan.daily_lessons[dayIndex].tasks[taskIndex].done = true
     newStudyplan = studyplan
   } catch {
     return Response(false, 500)

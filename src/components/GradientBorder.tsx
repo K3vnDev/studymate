@@ -12,6 +12,7 @@ interface Props {
   children: React.ReactNode
   color: keyof typeof colors
   constant?: boolean
+  bouncy?: boolean
 }
 
 const initialAnimationValues = {
@@ -24,12 +25,14 @@ const colors = {
   blues: 'bg-gradient-to-r from-blue-30 to-blue-20 animate-spin'
 }
 
-export const GradientBorder = ({ children, className, constant = false, color }: Props) => {
+export const GradientBorder = ({ children, className, constant = false, bouncy = false, color }: Props) => {
   const [{ opacity, animation }, setAnimationValues] = useState(initialAnimationValues)
   const timeout = useRef<NodeJS.Timeout>()
   const ANIMATION_DURATION = 2000
 
   useEvent(EVENTS.ON_HIGHLIGHT_BORDER, () => {
+    if (!bouncy) return
+
     setAnimationValues({
       opacity: 'opacity-100 [transition:opacity_0.7s_ease]',
       animation: 'animate-bounce-once'

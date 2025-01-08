@@ -87,10 +87,10 @@ export const POST = async (req: NextRequest) => {
     const existingStudyplan = await getStudyplan({ id: reqData?.id, supabase })
 
     if (existingStudyplan === null) {
-      const data = await databaseQuery<StudyplanSaved[]>(
+      const [data] = await databaseQuery<StudyplanSaved[]>(
         supabase.from('studyplans').insert(studyplanFromReq).select()
       )
-      original_id = data[0].id
+      original_id = data.id
     } else {
       const { id, ...studyplan } = existingStudyplan
 
@@ -105,10 +105,18 @@ export const POST = async (req: NextRequest) => {
   try {
     const current_studyplan_day = formatCurrentStudyplanDay(1)
 
+    // Undone all daily lessons
+    const daily_lessons = studyplanFromReq.daily_lessons.map(d => {
+      return { ...d, tasks: d.tasks.map(t => ({ ...t, done: false })) }
+    })
+
     const data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>(
       supabase
         .from('users')
-        .update({ studyplan: { ...studyplanFromReq, original_id }, current_studyplan_day })
+        .update({
+          studyplan: { ...studyplanFromReq, daily_lessons, original_id },
+          current_studyplan_day
+        })
         .eq('id', userId)
         .select()
     )

@@ -1,8 +1,10 @@
 import { TodaysLesson } from '@/app/studyplan/TodaysLesson'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
+import { useStudyplansStore } from '@/store/useStudyplansStore'
 import { useUserStore } from '@/store/useUserStore'
 import type { StudyplanSaved } from '@/types.d'
 import { BookmarkIcon } from '@icons'
+import { useEffect } from 'react'
 import { Badge } from '../Badge'
 import { Header } from '../Header'
 import { Paragraph } from '../Paragraph'
@@ -24,6 +26,9 @@ export interface Props {
 export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
   const { id, name, desc, category, daily_lessons } = studyplan
   const { completed } = useUserStore(s => s.studyplansLists)
+
+  const setStateStudyplan = useStudyplansStore(s => s.setStudyplan)
+  useEffect(() => setStateStudyplan(studyplan), [])
 
   const { userStudyplan, getUtilityValues } = useUserStudyplan()
   const justCompleted = (getUtilityValues()?.allTasksAreCompleted ?? false) && usersCurrent

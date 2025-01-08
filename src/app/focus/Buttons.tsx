@@ -4,7 +4,7 @@ import { useUserPrompts } from '@/hooks/useUserPrompts'
 import { TasksContext } from '@/lib/context/TasksContext'
 import { ArrowIcon, CheckIcon, MagicWandIcon, RocketIcon } from '@icons'
 import { useRouter } from 'next/navigation'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useContext } from 'react'
 
 export const Buttons = () => {
   const { selectedTaskIsDone, isLoading } = useContext(TasksContext)
@@ -33,10 +33,10 @@ const ProceedButton = () => {
 
   const handleFinishDay = () => {
     if (isOnLastDay) {
-      router.push('/studyplan')
+      router.replace('/studyplan')
       return
     }
-    router.push('/studyplan/tasks')
+    router.replace('/studyplan/tasks')
   }
 
   const handleNextTask = () => {
@@ -63,10 +63,10 @@ const ProceedButton = () => {
 
 const CompleteTaskButton = () => {
   const { selectedTask, completeTask, isLoading } = useContext(TasksContext)
-  const justLoaded = useJustLoaded(500, [selectedTask])
+  const justLoaded = useJustLoaded(400, [selectedTask])
 
   return (
-    <ChipButton onClick={completeTask} disabled={justLoaded} isLoading={isLoading}>
+    <ChipButton onClick={completeTask} disabled={justLoaded || isLoading} isLoading={isLoading}>
       <CheckIcon className='stroke-[3px]' /> I'm done
     </ChipButton>
   )

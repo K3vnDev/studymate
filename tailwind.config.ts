@@ -47,7 +47,7 @@ const config: Config = {
         },
         'bounce-once': {
           '0%': { translate: '0 0' },
-          '50%': { translate: '0 -20%' },
+          '50%': { translate: '0 -1rem' },
           '100%': { translate: '0 0' }
         },
         'fade-and-scale': {

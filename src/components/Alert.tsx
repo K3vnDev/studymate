@@ -13,7 +13,7 @@ import { Waitable } from './Waitable'
 export const Alert = () => {
   const [data, setData] = useState<AlertData | null>(null)
   const [isVisible, setIsVisible] = useState(false)
-  const justLoaded = useJustLoaded(2000, [isVisible])
+  const justLoaded = useJustLoaded(1500, [isVisible])
 
   useEvent(EVENTS.ON_SHOW_ALERT, ({ detail }: CustomEvent) => {
     setData(detail as AlertData)
