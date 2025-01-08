@@ -26,6 +26,20 @@ export interface MessageAssistantData {
   newMessage?: string
 }
 
+export interface AlertData {
+  header: string
+  message: string
+
+  acceptButton: {
+    onClick: () => void | Promise<void>
+    icon?: React.ReactNode
+    text: string
+  }
+  rejectButton: {
+    onClick: () => void
+  }
+}
+
 // DB Responses
 export interface UserStudyplanAndCurrentDayResponse {
   studyplan: DBUserStudyplan

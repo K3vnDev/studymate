@@ -21,13 +21,19 @@ const config: Config = {
         'gray-70': '#0C0C0C',
         'card-background': '#100F14',
         'card-border': '#332E3A',
-        'main-background': 'rgb(255 255 255 / .033)'
+        'main-background': 'rgb(255 255 255 / .033)',
+        error: '#EF4444'
       },
       animation: {
         'spin-pulse': 'spin-pulse 1.5s linear both infinite',
-        'fade-in-fast': 'fade-in 0.1s ease-in both',
-        'fade-in-very-fast': 'fade-in 0.05s ease-in both',
-        'bounce-once': 'bounce-once 1s ease-in-out'
+
+        'fade-in-fast': 'fade-in 100ms ease-in both',
+        'fade-in-very-fast': 'fade-in 50ms ease-in both',
+
+        'bounce-once': 'bounce-once 1s ease-in-out',
+
+        appear: 'fade-and-scale 250ms ease both',
+        disappear: 'fade-and-scale 250ms ease reverse both'
       },
       keyframes: {
         'spin-pulse': {
@@ -43,6 +49,10 @@ const config: Config = {
           '0%': { translate: '0 0' },
           '50%': { translate: '0 -20%' },
           '100%': { translate: '0 0' }
+        },
+        'fade-and-scale': {
+          '0%': { opacity: '0', scale: '0.8' },
+          '100%': { opacity: '1', scale: '1' }
         }
       }
     },

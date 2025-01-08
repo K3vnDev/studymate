@@ -83,7 +83,7 @@ export default function PublicStudyplanPage() {
 
   return (
     <>
-      <Main className={`${justifySelf} gap-12 px-24 py-12 h-full relative justify-center`}>
+      <Main className={`${justifySelf} gap-12 px-24 py-12 h-full relative`}>
         {!isOnError ? (
           <Loadable isLoading={!studyplan}>{studyplan && <Studyplan {...{ studyplan }} />}</Loadable>
         ) : (

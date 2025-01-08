@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { Alert } from '@/components/Alert'
 import { AppBackground, BlurredPoint } from '@/components/AppBackground'
 
 export const metadata: Metadata = {
@@ -21,6 +22,8 @@ export default function RootLayout({
           <BlurredPoint className='bg-[#6A71FC]/20' position='left-top' />
           <BlurredPoint className='bg-[#6313ED]/15' position='right-bottom' />
         </AppBackground>
+
+        <Alert />
       </body>
     </html>
   )

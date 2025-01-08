@@ -23,7 +23,7 @@ export const Option = ({ children, action, danger = false }: Props) => {
     manage.close()
   }
 
-  const style = danger ? 'text-red-500 hover:bg-red-600/15' : 'text-gray-10 hover:bg-gray-50'
+  const style = danger ? 'text-error hover:bg-error/10' : 'text-gray-10 hover:bg-gray-50'
 
   return (
     <button

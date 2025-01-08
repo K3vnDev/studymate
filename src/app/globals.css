@@ -11,7 +11,7 @@
 }
 
 .error {
-  @apply bg-red-700/15 border border-red-500/45 text-red-500;
+  @apply bg-error/15 border border-error/45 text-error;
 }
 
 @keyframes chat-message-bubbles-pounce {

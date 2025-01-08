@@ -1,8 +1,8 @@
 import { useEvent } from '@/hooks/useEvent'
 import { useOnClickOutside } from '@/hooks/useOnClickOutside'
 import { DropdownMenuContext } from '@/lib/context/DropdownMenuContext'
+import { ChevronIcon, MoreIcon } from '@icons'
 import { useState } from 'react'
-import { ChevronIcon, MoreIcon } from '../icons'
 
 interface Props {
   children: React.ReactNode
