@@ -1,19 +1,20 @@
 import { Badge } from '@/components/Badge'
 import { ChipButton } from '@/components/ChipButton'
 import { Paragraph } from '@/components/Paragraph'
-import type { UserStudyplan } from '@/types.d'
+import { StudyplanContext } from '@/lib/context/StudyplanContext'
 import { CheckIcon, RocketIcon } from '@icons'
 import { useRouter } from 'next/navigation'
+import { useContext } from 'react'
 
 interface Props {
-  daily_lessons: UserStudyplan['daily_lessons']
   day: number
 }
 
-export const TodaysLesson = ({ daily_lessons, day }: Props) => {
-  const { name, desc, tasks } = daily_lessons[day - 1]
+export const TodaysLesson = ({ day }: Props) => {
+  const { studyplan } = useContext(StudyplanContext)
   const router = useRouter()
 
+  const { name, desc, tasks } = studyplan.daily_lessons[day - 1]
   const allTasksAreDone = tasks.every(task => task.done)
 
   const handleClick = () => {

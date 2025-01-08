@@ -60,12 +60,12 @@ export const Alert = () => {
         </p>
 
         <section className='flex gap-4 w-fit flex-nowrap'>
-          <Button className='text-gray-10 border-gray-10 *:stroke-[3px]' onClick={handleReject}>
-            <CrossIcon className='opacity-50' /> Cancel
+          <Button className='text-gray-10 border-gray-10' onClick={handleReject}>
+            <CrossIcon /> Cancel
           </Button>
 
           <Button
-            className='text-error border-error *:stroke-[1.5px]'
+            className='text-error border-error/35 *:stroke-[1.5px]'
             onClick={handleAccept}
             disabled={justLoaded}
           >
@@ -98,7 +98,7 @@ const Button = ({ children, className = '', disabled = false, onClick = () => {}
     <button
       className={`
         ${className} ${FONTS.INTER} px-5 py-2 rounded-lg border text-lg font-bold button 
-        hover:brightness-150 active:brightness-75 flex flex-nowrap text-nowrap items-center gap-2 *:size-6
+        hover:brightness-150 active:brightness-75 flex flex-nowrap text-nowrap items-center gap-1.5 *:size-6
       `}
       disabled={disabled || isLoading}
       onClick={handleClick}

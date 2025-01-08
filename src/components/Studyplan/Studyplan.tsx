@@ -1,5 +1,6 @@
 import { TodaysLesson } from '@/app/studyplan/TodaysLesson'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
+import { StudyplanContext } from '@/lib/context/StudyplanContext'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import { useUserStore } from '@/store/useUserStore'
 import type { StudyplanSaved } from '@/types.d'
@@ -24,7 +25,7 @@ export interface Props {
 }
 
 export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
-  const { id, name, desc, category, daily_lessons } = studyplan
+  const { id, name, desc, category } = studyplan
   const { completed } = useUserStore(s => s.studyplansLists)
 
   const setStateStudyplan = useStudyplansStore(s => s.setStudyplan)
@@ -34,9 +35,10 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
   const justCompleted = (getUtilityValues()?.allTasksAreCompleted ?? false) && usersCurrent
 
   const isCompleted = completed?.some(completedId => completedId === id) ?? false
+  const userHasAnotherStudyplan = !!userStudyplan && !usersCurrent
 
   return (
-    <>
+    <StudyplanContext.Provider value={{ studyplan, isCompleted, usersCurrent, userHasAnotherStudyplan }}>
       <section className='flex flex-col gap-9'>
         <div className='flex justify-between items-start'>
           <div className='flex flex-col gap-3 relative'>
@@ -45,7 +47,7 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
             <Paragraph className='w-4/5'>{desc}</Paragraph>
           </div>
 
-          {(isCompleted || usersCurrent) && <OptionsButton {...{ isCompleted, usersCurrent }} />}
+          <OptionsButton />
         </div>
 
         {/* Buttons section */}
@@ -56,7 +58,7 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
             {!usersCurrent ? (
               <>
                 <BookmarkIcon className='size-9 text-blue-20 stroke-[1.5px]' />
-                {isCompleted ? <CompletedBadge /> : <StartButton />}
+                {isCompleted ? <CompletedBadge /> : !userHasAnotherStudyplan && <StartButton />}
               </>
             ) : (
               justCompleted && <FinishButton />
@@ -65,13 +67,8 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
         </div>
       </section>
 
-      {/* Today's lesson */}
-      {usersCurrent && userStudyplan && (
-        <TodaysLesson {...{ daily_lessons, day: userStudyplan.current_day }} />
-      )}
-
-      {/* Daily lessons */}
-      <DailyLessons {...{ daily_lessons }} />
-    </>
+      {usersCurrent && userStudyplan && <TodaysLesson day={userStudyplan.current_day} />}
+      <DailyLessons />
+    </StudyplanContext.Provider>
   )
 }

@@ -1,17 +1,17 @@
 import { FONTS } from '@/consts'
 import { useVerticalNavigation } from '@/hooks/useVerticalNavigation'
+import { StudyplanContext } from '@/lib/context/StudyplanContext'
 import { parseDays } from '@/lib/utils/parseDays'
 import type { StudyplanSaved } from '@/types.d'
 import { CheckIcon, ChevronIcon, ClockIcon } from '@icons'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Header } from '../Header'
 
-interface Props {
-  daily_lessons: StudyplanSaved['daily_lessons']
-}
-
-export const DailyLessons = ({ daily_lessons }: Props) => {
+export const DailyLessons = () => {
   const [extendedLesson, setExtendedLesson] = useState(-1)
+  const {
+    studyplan: { daily_lessons }
+  } = useContext(StudyplanContext)
 
   useVerticalNavigation({
     currentIndex: extendedLesson,

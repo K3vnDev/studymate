@@ -1,16 +1,14 @@
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
+import { StudyplanContext } from '@/lib/context/StudyplanContext'
 import { showAlert } from '@/lib/utils/showAlert'
 import { DropdownMenu } from '@components/DropdownMenu/DropdownMenu'
 import { Line } from '@components/DropdownMenu/Line'
 import { Option } from '@components/DropdownMenu/Option'
 import { CloudIcon, ReloadIcon, RocketIcon, TrashIcon } from '@icons'
+import { useContext } from 'react'
 
-interface Props {
-  usersCurrent: boolean
-  isCompleted: boolean
-}
-
-export const OptionsButton = ({ usersCurrent, isCompleted }: Props) => {
+export const OptionsButton = () => {
+  const { usersCurrent, isCompleted, userHasAnotherStudyplan } = useContext(StudyplanContext)
   const { abandonStudyplan, seeOriginalStudyplan, startStudyplan } = useUserStudyplan({ fetchOnAwake: false })
 
   const handleAbandonStudyplan = () =>
@@ -33,11 +31,34 @@ export const OptionsButton = ({ usersCurrent, isCompleted }: Props) => {
       }
     })
 
+  const handleStartStudyplan = () => {
+    if (!userHasAnotherStudyplan) {
+      startStudyplan()
+      return
+    }
+
+    showAlert({
+      header: 'Overwite your studyplan?',
+      message:
+        'You already have an active study plan. Starting a new one will erase all your current progress!',
+      acceptButton: {
+        onClick: startStudyplan,
+        text: 'Overwite studyplan',
+        icon: <RocketIcon />
+      }
+    })
+  }
+
+  if (!isCompleted && !userHasAnotherStudyplan && !usersCurrent) {
+    return null
+  }
+
   return (
     <DropdownMenu>
-      {isCompleted && (
-        <Option action={startStudyplan}>
-          <RocketIcon /> Start studyplan again
+      {(userHasAnotherStudyplan || isCompleted) && (
+        <Option action={handleStartStudyplan} danger={userHasAnotherStudyplan}>
+          <RocketIcon />
+          {isCompleted ? 'Start studyplan again' : 'Start studyplan'}
         </Option>
       )}
 
