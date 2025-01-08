@@ -23,6 +23,16 @@ export const OptionsButton = ({ usersCurrent, isCompleted }: Props) => {
       }
     })
 
+  const handleRestartStudyplan = () =>
+    showAlert({
+      message: "You're about to restart your studyplan. Youre gonna lose all your progress!",
+      acceptButton: {
+        onClick: startStudyplan,
+        text: 'Restart studyplan',
+        icon: <ReloadIcon />
+      }
+    })
+
   return (
     <DropdownMenu>
       {isCompleted && (
@@ -39,7 +49,7 @@ export const OptionsButton = ({ usersCurrent, isCompleted }: Props) => {
 
           <Line />
 
-          <Option danger action={startStudyplan}>
+          <Option danger action={handleRestartStudyplan}>
             <ReloadIcon /> Restart studyplan
           </Option>
 

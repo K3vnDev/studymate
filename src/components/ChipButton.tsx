@@ -1,6 +1,6 @@
 'use client'
 
-import { useLoadingIcon } from '@/hooks/useLoadingIcon'
+import { Waitable } from './Waitable'
 
 interface Props {
   children: React.ReactNode
@@ -19,8 +19,6 @@ export const ChipButton = ({
   disabled,
   className = ''
 }: Props) => {
-  const { parsedChilren } = useLoadingIcon({ children, isLoading })
-
   const style = empty
     ? 'bg-transparent border-blue-10 text-blue-10'
     : 'bg-blue-30 border-[#6168E8] text-white'
@@ -39,7 +37,7 @@ export const ChipButton = ({
       onClick={handleClick}
       disabled={disabled || isLoading}
     >
-      {parsedChilren}
+      <Waitable isWaiting={isLoading}>{children}</Waitable>
     </button>
   )
 }

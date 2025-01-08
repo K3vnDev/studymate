@@ -1,4 +1,5 @@
 import { ChipButton } from '@/components/ChipButton'
+import { useJustLoaded } from '@/hooks/useJustLoaded'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
 import { TasksContext } from '@/lib/context/TasksContext'
 import { ArrowIcon, CheckIcon, MagicWandIcon, RocketIcon } from '@icons'
@@ -62,18 +63,7 @@ const ProceedButton = () => {
 
 const CompleteTaskButton = () => {
   const { selectedTask, completeTask, isLoading } = useContext(TasksContext)
-  const [justLoaded, setJustLoaded] = useState(true)
-  const timeout = useRef<NodeJS.Timeout>()
-
-  const WAIT_TIME = 500
-
-  useEffect(() => {
-    setJustLoaded(true)
-    timeout.current = setTimeout(() => {
-      setJustLoaded(false)
-    }, WAIT_TIME)
-    return () => clearTimeout(timeout.current)
-  }, [selectedTask])
+  const justLoaded = useJustLoaded(500, [selectedTask])
 
   return (
     <ChipButton onClick={completeTask} disabled={justLoaded} isLoading={isLoading}>

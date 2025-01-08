@@ -1,7 +1,7 @@
 import { FONTS } from '@/consts'
-import { useLoadingIcon } from '@/hooks/useLoadingIcon'
 import { DropdownMenuContext } from '@/lib/context/DropdownMenuContext'
 import { useContext, useState } from 'react'
+import { Waitable } from '../Waitable'
 
 interface Props {
   children: React.ReactNode
@@ -11,7 +11,6 @@ interface Props {
 
 export const Option = ({ children, action, danger = false }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { parsedChilren } = useLoadingIcon({ children, isLoading })
   const { manage } = useContext(DropdownMenuContext)
 
   const handleClick = async () => {
@@ -35,7 +34,7 @@ export const Option = ({ children, action, danger = false }: Props) => {
       disabled={isLoading}
     >
       <span className='group-active:scale-95 transition flex gap-2 items-center *:size-6'>
-        {parsedChilren}
+        <Waitable isWaiting={isLoading}>{children}</Waitable>
       </span>
     </button>
   )

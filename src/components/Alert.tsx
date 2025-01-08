@@ -2,16 +2,18 @@
 
 import { EVENTS, FONTS } from '@/consts'
 import { useEvent } from '@/hooks/useEvent'
+import { useJustLoaded } from '@/hooks/useJustLoaded'
 import type { AlertData } from '@/types.d'
 import { CrossIcon } from '@icons'
 import { useState } from 'react'
 import { Header } from './Header'
 import { Paragraph } from './Paragraph'
+import { Waitable } from './Waitable'
 
 export const Alert = () => {
   const [data, setData] = useState<AlertData | null>(null)
   const [isVisible, setIsVisible] = useState(false)
-  const [isLoading, setIsloading] = useState(false)
+  const justLoaded = useJustLoaded(2000, [isVisible])
 
   useEvent(EVENTS.ON_SHOW_ALERT, ({ detail }: CustomEvent) => {
     setData(detail as AlertData)
@@ -28,10 +30,7 @@ export const Alert = () => {
   }
 
   const handleAccept = async () => {
-    setIsloading(true)
     await data?.acceptButton.onClick()
-
-    setIsloading(false)
     visibility.hide()
   }
 
@@ -43,7 +42,7 @@ export const Alert = () => {
   return (
     <div
       className={`
-        ${opacity} ${pointerEvents} fixed bg-black/25 top-0 left-0 w-screen h-screen z-30 
+        ${opacity} ${pointerEvents} fixed bg-black/30 top-0 left-0 w-screen h-screen z-30 
         flex justify-center items-center transition duration-200
       `}
       onPointerDown={visibility.hide}
@@ -55,7 +54,7 @@ export const Alert = () => {
         `}
         onPointerDown={e => e.stopPropagation()}
       >
-        <p className='flex flex-col gap-2'>
+        <p className='flex flex-col gap-2.5'>
           <Header>{data?.header}</Header>
           <Paragraph>{data?.message}</Paragraph>
         </p>
@@ -64,7 +63,12 @@ export const Alert = () => {
           <Button className='text-gray-10 border-gray-10 *:stroke-[3px]' onClick={handleReject}>
             <CrossIcon className='opacity-50' /> Cancel
           </Button>
-          <Button className='text-error border-error *:stroke-[1.5px]' onClick={handleAccept}>
+
+          <Button
+            className='text-error border-error *:stroke-[1.5px]'
+            onClick={handleAccept}
+            disabled={justLoaded}
+          >
             {[data?.acceptButton.icon, data?.acceptButton.text]}
           </Button>
         </section>
@@ -77,17 +81,29 @@ interface ButtonProps {
   children: React.ReactNode
   className?: string
   disabled?: boolean
-  onClick?: () => void
+  onClick?: () => void | Promise<void>
+  danger?: boolean
 }
 
-const Button = ({ children, className = '', disabled = false, onClick }: ButtonProps) => (
-  <button
-    className={`
-      ${className} ${FONTS.INTER} px-5 py-2 rounded-lg border text-lg font-bold button 
-      hover:brightness-150 flex flex-nowrap text-nowrap items-center gap-2 *:size-6
-    `}
-    {...{ disabled, onClick }}
-  >
-    {children}
-  </button>
-)
+const Button = ({ children, className = '', disabled = false, onClick = () => {} }: ButtonProps) => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleClick = async () => {
+    setIsLoading(true)
+    await onClick()
+    setIsLoading(false)
+  }
+
+  return (
+    <button
+      className={`
+        ${className} ${FONTS.INTER} px-5 py-2 rounded-lg border text-lg font-bold button 
+        hover:brightness-150 active:brightness-75 flex flex-nowrap text-nowrap items-center gap-2 *:size-6
+      `}
+      disabled={disabled || isLoading}
+      onClick={handleClick}
+    >
+      <Waitable isWaiting={isLoading}>{children}</Waitable>
+    </button>
+  )
+}
