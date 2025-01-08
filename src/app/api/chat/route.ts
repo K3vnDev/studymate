@@ -1,15 +1,14 @@
 import { dataParser } from '@/app/api/utils/dataParser'
 import { MATE_VALUES, MAX_MESSAGES_ON_PROMPT } from '@/consts'
-import { ChatMessageSchema, MessageContentSchema } from '@/lib/schemas/ChatMessage'
 import { MateResponseSchema } from '@/lib/schemas/MateResponse'
-import type { MessageAssistantData } from '@/types.d'
+import { PromptRequestSchema } from '@/lib/schemas/PromptRequest'
+import type { PromptRequestSchema as PromptRequestSchemaType } from '@/types.d'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import OpenAI from 'openai'
 import { zodResponseFormat } from 'openai/helpers/zod.mjs'
 import type { ChatCompletionMessageParam } from 'openai/src/resources/index.js'
-import { z } from 'zod'
 import { Response } from '../utils/Response'
 import { getPrevChatMessages } from '../utils/getPrevChatMessages'
 import { getUserId } from '../utils/getUserId'
@@ -37,6 +36,7 @@ export const POST = async (req: NextRequest) => {
 
   let chatMessages: ChatCompletionMessageParam[]
   let userMessage: string
+  let userData: PromptRequestSchemaType['userData']
 
   const supabase = createServerComponentClient({ cookies })
 
@@ -46,15 +46,20 @@ export const POST = async (req: NextRequest) => {
 
   try {
     // Extract user message
-    const { prevMessages, newMessage }: MessageAssistantData = await req.json()
+    const reqBody = await req.json()
+    const validatedBody = await PromptRequestSchema.parseAsync(reqBody)
 
-    userMessage = await MessageContentSchema.parseAsync(newMessage)
-    const validatedMessages = await z.array(ChatMessageSchema).parseAsync(prevMessages)
+    const { new: newMessage, previous: previousChatMessages } = validatedBody.messages
 
-    const parsedMessages = dataParser.clientToPrompt(validatedMessages)
-    chatMessages = parsedMessages as ChatCompletionMessageParam[]
+    // Extract new user message and previous messages
+    userMessage = newMessage
+    chatMessages = dataParser.clientToPrompt(previousChatMessages) as ChatCompletionMessageParam[]
+
+    // Extract user data
+    userData = validatedBody.userData
+    console.log({ UserData: JSON.stringify(userData) })
   } catch {
-    return Response(false, 400, { msg: 'Messages are missing or invalid' })
+    return Response(false, 400, { msg: 'Messages or user data are missing or invalid' })
   }
 
   try {
@@ -63,6 +68,7 @@ export const POST = async (req: NextRequest) => {
       model: 'gpt-4o-mini',
       messages: [
         { role: 'system', content: MATE_TRAIN_MESSAGE },
+        { role: 'system', content: JSON.stringify({ userData }) },
         ...chatMessages.slice(-MAX_MESSAGES_ON_PROMPT),
         { role: 'user', content: userMessage }
       ],

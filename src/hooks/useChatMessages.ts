@@ -1,9 +1,10 @@
 import { CONTENT_JSON, EVENTS } from '@/consts'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useChatStore } from '@/store/useChatStore'
-import type { ChatMessage, ChatMessagesDBResponse, MateResponseSchema } from '@/types.d'
+import type { ChatMessage, ChatMessagesDBResponse, MateResponseSchema, PromptRequestSchema } from '@/types.d'
 import { useEffect, useRef, useState } from 'react'
 import { useEvent } from './useEvent'
+import { useUserStudyplan } from './useUserStudyplan'
 
 export const useChatMessages = () => {
   const messages = useChatStore(s => s.messages)
@@ -12,6 +13,7 @@ export const useChatMessages = () => {
   const setHighlihtedMessage = useChatStore(s => s.setHighlihtedMessage)
   const userInput = useChatStore(s => s.userInput)
   const setUserInput = useChatStore(s => s.setUserInput)
+  const { userStudyplan } = useUserStudyplan()
 
   const [isWaitingResponse, setIsWaitingRespose] = useState(false)
   const [isOnChatError, setIsOnChatError] = useState(false)
@@ -20,7 +22,7 @@ export const useChatMessages = () => {
   const tryAgainCallback = useRef<() => void>(() => {})
 
   const loadPreviousMessages = () => {
-    if (messages !== null) return
+    if (messages) return
     setIsOnLoadingError(false)
 
     dataFetch<ChatMessagesDBResponse[]>({
@@ -40,19 +42,29 @@ export const useChatMessages = () => {
   useEvent(EVENTS.ON_CHAT_TRY_AGAIN, tryAgainCallback.current, [isOnChatError])
 
   const messageMate = (message: string) => {
+    if (!messages) return
+
     setIsWaitingRespose(true)
     setIsOnChatError(false)
+
+    const previous = messages.filter(
+      ({ role }) => role !== 'error'
+    ) as PromptRequestSchema['messages']['previous']
+
+    const requestBody: PromptRequestSchema = {
+      messages: { new: message, previous },
+      userData: { currentStudyplan: userStudyplan }
+    }
+    console.log('Sent!!!')
 
     dataFetch<MateResponseSchema['responses']>({
       url: '/api/chat',
       options: {
         headers: CONTENT_JSON,
         method: 'POST',
-        body: JSON.stringify({
-          prevMessages: messages?.filter(({ role }) => ['studyplan', 'user', 'assistant'].includes(role)),
-          newMessage: message
-        })
+        body: JSON.stringify(requestBody)
       },
+
       onSuccess: data => {
         const chatMessages = data.map(({ type, data }) => ({
           role: type === 'message' ? 'assistant' : 'studyplan',
