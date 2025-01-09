@@ -1,6 +1,6 @@
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useUserStore } from '@/store/useUserStore'
-import type { StudyplansListsResponse } from '@/types'
+import type { DBStudyplansLists } from '@/types'
 import { useEffect } from 'react'
 
 export const useUserData = () => {
@@ -11,7 +11,7 @@ export const useUserData = () => {
     const listsArray = Object.entries(lists)
     if (listsArray.length > 0) return
 
-    dataFetch<StudyplansListsResponse['studyplans_lists']>({
+    dataFetch<DBStudyplansLists['studyplans_lists']>({
       url: '/api/user/lists',
       onSuccess: data => setStudyplansLists(() => data)
     })

@@ -16,11 +16,6 @@ export type ChatMessage =
       content: StudyplanUnsavedSchema
     }
 
-export type ChatMessagesDBResponse = {
-  role: 'assistant' | 'user' | 'system'
-  content: string
-}
-
 export interface AlertData {
   header: string
   message: string
@@ -36,15 +31,17 @@ export interface AlertData {
 }
 
 // DB Responses
-export interface UserStudyplanAndCurrentDayResponse {
+export interface DBUserStudyplanAndCurrentDayResponse {
   studyplan: DBUserStudyplan
-  current_studyplan_day: {
-    day: number
-    last_updated: string
-  }
+  current_studyplan_day: DBCurrentStudyplanDay
 }
 
-export interface StudyplansListsResponse {
+export interface DBCurrentStudyplanDay {
+  day: number
+  last_updated: string
+}
+
+export interface DBStudyplansLists {
   studyplans_lists: {
     recommended: string[]
     completed: string[]
@@ -53,7 +50,6 @@ export interface StudyplansListsResponse {
 }
 
 // Schemas
-export type ChatMessageSchema = z.infer<typeof ChatMessageSchemaType>
 export type MateResponseSchema = z.infer<typeof MateResponseSchemaType>
 export type PromptRequestSchema = z.infer<typeof PromptRequestSchemaType>
 

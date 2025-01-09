@@ -1,11 +1,11 @@
-import { dataParser } from '@/app/api/utils/dataParser'
-import type { MateResponseSchema } from '@/types.d'
+import type { ChatMessage } from '@/types.d'
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { dataParser } from './dataParser'
 import { getPrevChatMessages } from './getPrevChatMessages'
 
 interface Params {
   userMessage: string
-  assistantMessages: MateResponseSchema['responses']
+  assistantMessages: ChatMessage[]
   userId: string
   supabase: SupabaseClient
 }
@@ -20,10 +20,14 @@ export const saveChatMessagesToDatabase = async ({
     const prevChatMessages = await getPrevChatMessages({ supabase })
     if (prevChatMessages === null) return
 
+    // biome-ignore format: <>
+    const stringifiedAssistantMessages = dataParser
+      .fromStudyplanToAnother(assistantMessages, JSON.stringify)
+
     const messagesToInsert = [
       ...prevChatMessages,
       { role: 'user', content: userMessage },
-      ...dataParser.mateResponseToDB(assistantMessages)
+      ...stringifiedAssistantMessages
     ]
 
     await supabase

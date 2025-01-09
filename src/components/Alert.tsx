@@ -54,10 +54,10 @@ export const Alert = () => {
         `}
         onPointerDown={e => e.stopPropagation()}
       >
-        <p className='flex flex-col gap-2.5'>
+        <div className='flex flex-col gap-2.5'>
           <Header>{data?.header}</Header>
           <Paragraph>{data?.message}</Paragraph>
-        </p>
+        </div>
 
         <section className='flex gap-4 w-fit flex-nowrap'>
           <Button className='text-gray-10 border-gray-10' onClick={handleReject}>

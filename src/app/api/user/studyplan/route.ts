@@ -1,22 +1,22 @@
 import { StudyplanSchema } from '@/lib/schemas/Studyplan'
+import { dateSubstraction } from '@/lib/utils/dateSubstraction'
 import type {
+  DBCurrentStudyplanDay,
+  DBUserStudyplanAndCurrentDayResponse,
   StudyplanSaved,
   StudyplanUnSaved,
-  UserStudyplan,
-  UserStudyplanAndCurrentDayResponse
+  UserStudyplan
 } from '@/types.d'
+import { Response } from '@api/utils/Response'
+import { abandonStudyplan } from '@api/utils/abandonStudyplan'
+import { dataParser } from '@api/utils/dataParser'
+import { databaseQuery } from '@api/utils/databaseQuery'
+import { getStudyplan } from '@api/utils/getStudyplan'
+import { getUserId } from '@api/utils/getUserId'
+import { modifyStudyplansLists } from '@api/utils/modifyStudyplansLists'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
-import { Response } from '../../utils/Response'
-import { abandonStudyplan } from '../../utils/abandonStudyplan'
-import { dataParser } from '../../utils/dataParser'
-import { databaseQuery } from '../../utils/databaseQuery'
-import { dateSubstraction } from '../../utils/dateSubstraction'
-import { formatCurrentStudyplanDay } from '../../utils/formatCurrentStudyplanDay'
-import { getStudyplan } from '../../utils/getStudyplan'
-import { getUserId } from '../../utils/getUserId'
-import { modifyStudyplansLists } from '../../utils/modifyStudyplansLists'
 
 // Get user studyplan and current day
 export const GET = async () => {
@@ -26,7 +26,7 @@ export const GET = async () => {
   if (userId === null) return Response(false, 401)
 
   try {
-    let data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>(
+    let data = await databaseQuery<DBUserStudyplanAndCurrentDayResponse[]>(
       supabase.from('users').select('studyplan, current_studyplan_day')
     )
 
@@ -44,11 +44,10 @@ export const GET = async () => {
 
     // Increase studyplan current day if its allowed
     if (todaysTasksAreDone && !isOnLastDay && tasksWereCompletedBeforeToday) {
-      const current_studyplan_day = formatCurrentStudyplanDay(day + 1)
+      const current_studyplan_day = dataParser.fromNumberToCurrentStudyplanDay(day + 1)
 
       try {
-        type QueryResponse = UserStudyplanAndCurrentDayResponse['current_studyplan_day']
-        const data = await databaseQuery<QueryResponse[]>(
+        const data = await databaseQuery<DBCurrentStudyplanDay[]>(
           supabase.from('users').update({ current_studyplan_day }).eq('id', userId).select()
         )
         if (!data) return Response(false, 500)
@@ -59,7 +58,7 @@ export const GET = async () => {
       data = [{ studyplan, current_studyplan_day }]
     }
 
-    return Response(true, 200, { data: dataParser.DBResponseToUserStudyplan(data) })
+    return Response(true, 200, { data: dataParser.fromDBResponseToUserStudyplan(data) })
   } catch {
     return Response(false, 500)
   }
@@ -103,14 +102,14 @@ export const POST = async (req: NextRequest) => {
 
   // Save a copy of the studyplan on the user
   try {
-    const current_studyplan_day = formatCurrentStudyplanDay(1)
+    const current_studyplan_day = dataParser.fromNumberToCurrentStudyplanDay(1)
 
     // Undone all daily lessons
     const daily_lessons = studyplanFromReq.daily_lessons.map(d => {
       return { ...d, tasks: d.tasks.map(t => ({ ...t, done: false })) }
     })
 
-    const data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>(
+    const data = await databaseQuery<DBUserStudyplanAndCurrentDayResponse[]>(
       supabase
         .from('users')
         .update({
@@ -120,7 +119,7 @@ export const POST = async (req: NextRequest) => {
         .eq('id', userId)
         .select()
     )
-    return Response(true, 201, { data: dataParser.DBResponseToUserStudyplan(data) })
+    return Response(true, 201, { data: dataParser.fromDBResponseToUserStudyplan(data) })
   } catch {
     return Response(false, 500)
   }

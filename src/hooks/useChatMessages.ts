@@ -1,7 +1,7 @@
 import { CONTENT_JSON, EVENTS } from '@/consts'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useChatStore } from '@/store/useChatStore'
-import type { ChatMessage, ChatMessagesDBResponse, MateResponseSchema, PromptRequestSchema } from '@/types.d'
+import type { ChatMessage, PromptRequestSchema } from '@/types.d'
 import { useEffect, useRef, useState } from 'react'
 import { useEvent } from './useEvent'
 import { useUserStudyplan } from './useUserStudyplan'
@@ -25,14 +25,9 @@ export const useChatMessages = () => {
     if (messages) return
     setIsOnLoadingError(false)
 
-    dataFetch<ChatMessagesDBResponse[]>({
+    dataFetch<ChatMessage[]>({
       url: '/api/chat',
-      onSuccess: data => {
-        const newMessages = data.map(msg =>
-          msg.role === 'system' ? { role: 'studyplan', content: JSON.parse(msg.content) } : msg
-        )
-        setMessages(newMessages as ChatMessage[])
-      },
+      onSuccess: newMessages => setMessages(newMessages as ChatMessage[]),
       onError: () => setIsOnLoadingError(true)
     })
   }
@@ -41,43 +36,33 @@ export const useChatMessages = () => {
   // Resend message when user presses try again
   useEvent(EVENTS.ON_CHAT_TRY_AGAIN, tryAgainCallback.current, [isOnChatError])
 
+  const parsePreviousMessages = (messages: ChatMessage[]) =>
+    messages.filter(({ role }) => role !== 'error') as PromptRequestSchema['messages']['previous']
+
   const messageMate = (message: string) => {
-    if (!messages) return
+    if (messages === null) return
 
     setIsWaitingRespose(true)
     setIsOnChatError(false)
 
-    const previous = messages.filter(
-      ({ role }) => role !== 'error'
-    ) as PromptRequestSchema['messages']['previous']
-
-    const requestBody: PromptRequestSchema = {
-      messages: { new: message, previous },
-      userData: { currentStudyplan: userStudyplan }
-    }
-    console.log('Sent!!!')
-
-    dataFetch<MateResponseSchema['responses']>({
+    dataFetch<ChatMessage[]>({
       url: '/api/chat',
       options: {
         headers: CONTENT_JSON,
         method: 'POST',
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify({
+          messages: {
+            new: message,
+            previous: parsePreviousMessages(messages)
+          },
+          user_data: { current_studyplan: userStudyplan }
+        } as PromptRequestSchema)
       },
+      onSuccess: messages => pushMessages(...messages),
+      onFinish: () => setIsWaitingRespose(false),
 
-      onSuccess: data => {
-        const chatMessages = data.map(({ type, data }) => ({
-          role: type === 'message' ? 'assistant' : 'studyplan',
-          content: data
-        })) as ChatMessage[]
-
-        pushMessages(...chatMessages)
-        setIsWaitingRespose(false)
-      },
       onError: () => {
         setIsOnChatError(true)
-        setIsWaitingRespose(false)
-
         tryAgainCallback.current = () => messageMate(message)
       }
     })

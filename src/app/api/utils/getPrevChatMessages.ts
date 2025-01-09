@@ -1,5 +1,6 @@
-import type { ChatMessageSchema } from '@/types'
+import type { PromptRequestSchema } from '@/types.d'
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { dataParser } from './dataParser'
 import { databaseQuery } from './databaseQuery'
 
 interface Params {
@@ -8,15 +9,17 @@ interface Params {
 
 export const getPrevChatMessages = async ({ supabase }: Params) => {
   try {
-    type QueryType = { chat_with_mate: ChatMessageSchema[] }
+    type QueryType = { chat_with_mate: PromptRequestSchema['messages']['previous'] }
     const data = await databaseQuery<QueryType[]>(supabase.from('users').select('chat_with_mate'))
 
     if (data.length === 0) return null
     const [{ chat_with_mate }] = data
 
     if (chat_with_mate === null) return []
-    return chat_with_mate
-  } catch {
+
+    const parsedMessages = dataParser.fromStudyplanToAnother(chat_with_mate, JSON.parse)
+    return parsedMessages
+  } catch (ErrorTrace) {
     throw new Error()
   }
 }

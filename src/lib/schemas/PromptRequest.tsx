@@ -17,8 +17,8 @@ export const PromptRequestSchema = z.object({
     ),
     new: z.string().trim().nonempty()
   }),
-  userData: z.object({
-    currentStudyplan: StudyplanSchema.extend({
+  user_data: z.object({
+    current_studyplan: StudyplanSchema.extend({
       original_id: z.string(),
       current_day: z.number()
     }).nullable()

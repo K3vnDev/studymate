@@ -1,4 +1,4 @@
-import type { StudyplansListsResponse } from '@/types'
+import type { DBStudyplansLists } from '@/types'
 import { type SupabaseClient, createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { databaseQuery } from './databaseQuery'
@@ -6,7 +6,7 @@ import { databaseQuery } from './databaseQuery'
 interface Params {
   supabase?: SupabaseClient<any, 'public', any>
   userId: string
-  key: keyof StudyplansListsResponse['studyplans_lists']
+  key: keyof DBStudyplansLists['studyplans_lists']
   id: string
 }
 
@@ -18,13 +18,11 @@ export const modifyStudyplansLists = ({
 }: Params) => {
   // Get studyplans list
   const getStudyplansList = async () => {
-    const data = await databaseQuery<StudyplansListsResponse[]>(
-      supabase.from('users').select('studyplans_lists')
-    )
+    const data = await databaseQuery<DBStudyplansLists[]>(supabase.from('users').select('studyplans_lists'))
     return data[0].studyplans_lists
   }
 
-  const saveChanges = async (studyplans_lists: StudyplansListsResponse['studyplans_lists']) => {
+  const saveChanges = async (studyplans_lists: DBStudyplansLists['studyplans_lists']) => {
     await databaseQuery(supabase.from('users').update({ studyplans_lists }).eq('id', userId))
   }
 

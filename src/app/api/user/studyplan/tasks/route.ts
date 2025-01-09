@@ -1,7 +1,7 @@
 import { Response } from '@/app/api/utils/Response'
 import { databaseQuery } from '@/app/api/utils/databaseQuery'
 import { getUserId } from '@/app/api/utils/getUserId'
-import type { DBUserStudyplan, UserStudyplanAndCurrentDayResponse } from '@/types.d'
+import type { DBUserStudyplan, DBUserStudyplanAndCurrentDayResponse } from '@/types.d'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
@@ -26,7 +26,7 @@ export const POST = async (req: NextRequest) => {
 
   try {
     // Fetch studyplan and current day from database
-    const data = await databaseQuery<UserStudyplanAndCurrentDayResponse[]>(
+    const data = await databaseQuery<DBUserStudyplanAndCurrentDayResponse[]>(
       supabase.from('users').select('studyplan, current_studyplan_day')
     )
     const [{ studyplan, current_studyplan_day }] = data
