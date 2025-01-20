@@ -19,6 +19,7 @@ export const useUserPrompts = (params: Params = { redirect: false }) => {
 
   return {
     createStudyplan: () => callback(USER_PROMPTS.GENERATE_STUDYPLAN),
+    explainTasks: () => callback(USER_PROMPTS.EXPLAIN_TASKS),
     blank: () => callback('')
   }
 }

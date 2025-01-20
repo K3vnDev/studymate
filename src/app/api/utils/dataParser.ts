@@ -42,8 +42,15 @@ export const dataParser = {
     return { day, last_updated }
   },
 
-  fromStudyplanToAnother: (messages: ChatMessage[], action: typeof JSON.parse | typeof JSON.stringify) =>
-    messages.map(({ role, content }) =>
-      role === 'studyplan' ? { role, content: action(content) } : { role, content }
-    )
+  fromStudyplansInClientMessages: (messages: ChatMessage[]) => {
+    const parse = (action: typeof JSON.parse | typeof JSON.stringify) =>
+      messages.map(({ role, content }) =>
+        role === 'studyplan' ? { role, content: action(content) } : { role, content }
+      )
+
+    return {
+      toStringified: () => parse(JSON.stringify),
+      toObject: () => parse(JSON.parse)
+    }
+  }
 }

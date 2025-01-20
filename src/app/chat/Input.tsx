@@ -12,7 +12,7 @@ export const Input = () => {
   const setUserInput = useChatStore(s => s.setUserInput)
   const messages = useChatStore(s => s.messages)
 
-  const { handleSubmit, inputProps } = useContext(ChatContext)
+  const { handleSubmit, inputProps, isWaitingResponse } = useContext(ChatContext)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -25,6 +25,7 @@ export const Input = () => {
       setHighlihtedMessage(null)
     }
   }, [highlightedMessage])
+
   useEffect(() => {
     focusInput()
     return () => setHighlihtedMessage(null)
@@ -52,20 +53,23 @@ export const Input = () => {
         className={`
           bg-gray-50 border border-gray-20 rounded-3xl flex px-4 justify-between gap-4 items-center 
           focus-within:border-[#aaa] [transition:all_.2s_ease] hover:brightness-110
-          `}
+        `}
         onSubmit={handleSubmit}
       >
         <textarea
           className={`
             min-h-12 py-3 w-full max-w-full placeholder:text-[#363636] bg-transparent 
-            outline-none text-gray-10 resize-none [field-sizing:content]
-            `}
+            outline-none text-gray-10 resize-none [field-sizing:content] peer placeholder:select-none
+          `}
           placeholder='Message Mate'
           ref={inputRef}
           {...inputProps}
           autoFocus
         />
-        <button className='bg-gray-20 rounded-full size-9 min-w-9 flex justify-center items-center button group'>
+        <button
+          className='bg-gray-20 rounded-full size-9 min-w-9 flex justify-center items-center button group'
+          disabled={isWaitingResponse}
+        >
           <ChevronIcon className='text-gray-50 stroke-[2.5px] transition group-active:-translate-y-1' />
         </button>
       </form>

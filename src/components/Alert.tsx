@@ -13,7 +13,7 @@ import { Waitable } from './Waitable'
 export const Alert = () => {
   const [data, setData] = useState<AlertData | null>(null)
   const [isVisible, setIsVisible] = useState(false)
-  const justLoaded = useJustLoaded(1500, [isVisible])
+  const justLoaded = useJustLoaded(1000, [isVisible])
 
   useEvent(EVENTS.ON_SHOW_ALERT, ({ detail }: CustomEvent) => {
     setData(detail as AlertData)
@@ -29,13 +29,16 @@ export const Alert = () => {
     hide: () => setIsVisible(false)
   }
 
+  if (!data) return null
+  const { acceptButton, rejectButton, header, message } = data
+
   const handleAccept = async () => {
-    await data?.acceptButton.onClick()
+    await acceptButton.onClick()
     visibility.hide()
   }
 
   const handleReject = () => {
-    data?.rejectButton.onClick()
+    rejectButton.onClick()
     visibility.hide()
   }
 
@@ -55,8 +58,8 @@ export const Alert = () => {
         onPointerDown={e => e.stopPropagation()}
       >
         <div className='flex flex-col gap-2.5'>
-          <Header>{data?.header}</Header>
-          <Paragraph>{data?.message}</Paragraph>
+          <Header>{header}</Header>
+          <Paragraph>{message}</Paragraph>
         </div>
 
         <section className='flex gap-4 w-fit flex-nowrap'>
@@ -68,8 +71,10 @@ export const Alert = () => {
             className='text-error border-error/35 *:stroke-[1.5px]'
             onClick={handleAccept}
             disabled={justLoaded}
+            key={acceptButton.text}
           >
-            {[data?.acceptButton.icon, data?.acceptButton.text]}
+            {acceptButton.icon}
+            {acceptButton.text}
           </Button>
         </section>
       </div>

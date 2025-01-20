@@ -100,5 +100,6 @@ export const PROTECTED_ROUTES = [
 // Chat
 export const CHAT_ERROR_MESSAGE = "Sorry, I'm having some trouble right now :("
 export const USER_PROMPTS = {
-  GENERATE_STUDYPLAN: 'Hey Mate, Would you help me to create a new studyplan?'
+  GENERATE_STUDYPLAN: 'Hey Mate, would you help me to create a new studyplan?',
+  EXPLAIN_TASKS: 'Hey Mate, would you help me with my next task of today?'
 }

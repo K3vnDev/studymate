@@ -33,7 +33,7 @@ export const TodaysTasks = ({ desc, tasks }: Props) => {
             <MagicWandIcon /> What's next?
           </ChipButton>
         ) : (
-          <ChipButton empty onClick={prompts.blank}>
+          <ChipButton empty onClick={prompts.explainTasks}>
             <MagicWandIcon /> Explain tasks
           </ChipButton>
         )}

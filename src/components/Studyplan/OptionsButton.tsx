@@ -31,9 +31,9 @@ export const OptionsButton = () => {
       }
     })
 
-  const handleStartStudyplan = () => {
+  const handleStartStudyplan = async () => {
     if (!userHasAnotherStudyplan) {
-      startStudyplan()
+      await startStudyplan()
       return
     }
 

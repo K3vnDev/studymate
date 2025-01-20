@@ -41,7 +41,7 @@ export const POST = async (req: NextRequest) => {
     const data = await req.json()
     idList = await z.array(z.string()).parseAsync(data)
   } catch {
-    return Response(false, 400, { msg: 'Id list is missing or invalid' })
+    return Response(false, 400, { msg: 'Id array is missing or invalid' })
   }
 
   const supabase = createServerComponentClient({ cookies })

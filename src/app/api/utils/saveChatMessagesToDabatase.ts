@@ -1,3 +1,4 @@
+import { DatabaseChatSchema } from '@/lib/schemas/DatabaseChatMessages'
 import type { ChatMessage } from '@/types.d'
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { dataParser } from './dataParser'
@@ -20,15 +21,19 @@ export const saveChatMessagesToDatabase = async ({
     const prevChatMessages = await getPrevChatMessages({ supabase })
     if (prevChatMessages === null) return
 
-    // biome-ignore format: <>
     const stringifiedAssistantMessages = dataParser
-      .fromStudyplanToAnother(assistantMessages, JSON.stringify)
+      .fromStudyplansInClientMessages(assistantMessages)
+      .toStringified()
 
-    const messagesToInsert = [
-      ...prevChatMessages,
+    const stringifiedPrevChatMessages = dataParser
+      .fromStudyplansInClientMessages(prevChatMessages)
+      .toStringified()
+
+    const messagesToInsert = await DatabaseChatSchema.parseAsync([
+      ...stringifiedPrevChatMessages,
       { role: 'user', content: userMessage },
       ...stringifiedAssistantMessages
-    ]
+    ])
 
     await supabase
       .from('users')

@@ -17,9 +17,9 @@ export const getPrevChatMessages = async ({ supabase }: Params) => {
 
     if (chat_with_mate === null) return []
 
-    const parsedMessages = dataParser.fromStudyplanToAnother(chat_with_mate, JSON.parse)
+    const parsedMessages = dataParser.fromStudyplansInClientMessages(chat_with_mate).toObject()
     return parsedMessages
-  } catch (ErrorTrace) {
+  } catch {
     throw new Error()
   }
 }
