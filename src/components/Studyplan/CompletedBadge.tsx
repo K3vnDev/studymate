@@ -1,7 +1,7 @@
-import { FONTS } from '@/consts'
 import { throwConfetti } from '@/lib/utils/throwConfetti'
+import { GradientBorder } from '@components/GradientBorder'
+import { FONTS } from '@consts'
 import { useEffect, useRef, useState } from 'react'
-import { GradientBorder } from '../GradientBorder'
 
 export const CompletedBadge = () => {
   const timeout = useRef<NodeJS.Timeout>()

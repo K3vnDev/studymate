@@ -1,4 +1,4 @@
-import type { ChatMessage } from '@/types.d'
+import type { ChatMessage } from '@types'
 import { create } from 'zustand'
 
 interface ChatsStore {

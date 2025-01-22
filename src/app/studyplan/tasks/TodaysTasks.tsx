@@ -2,10 +2,10 @@ import { CardMate } from '@/components/CardMate'
 import { ChipButton } from '@/components/ChipButton'
 import { Header } from '@/components/Header'
 import { Paragraph } from '@/components/Paragraph'
-import { MATE_MESSAGES } from '@/consts'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
-import type { UserStudyplan } from '@/types.d'
+import { MATE_MESSAGES } from '@consts'
 import { CheckListIcon, MagicWandIcon, MessageIcon } from '@icons'
+import type { UserStudyplan } from '@types'
 import { Task } from './Task'
 
 type Props = UserStudyplan['daily_lessons'][number]

@@ -1,4 +1,4 @@
-import { useEvent } from './useEvent'
+import { useEvent } from '@hooks/useEvent'
 
 export const useOnClickOutside = (elementId: string, callback: (hasClickedOutside: boolean) => void) => {
   useEvent('pointerdown', (e: PointerEvent) => {

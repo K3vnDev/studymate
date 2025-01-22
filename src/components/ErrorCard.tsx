@@ -1,4 +1,4 @@
-import { FONTS, MATE_IMAGES_ALT } from '@/consts'
+import { FONTS, MATE_IMAGES_ALT } from '@consts'
 import Image from 'next/image'
 
 interface Props {

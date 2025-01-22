@@ -1,4 +1,4 @@
-import type { UserStudyplan } from '@/types.d'
+import type { UserStudyplan } from '@types'
 import { create } from 'zustand'
 
 export interface UserStore {

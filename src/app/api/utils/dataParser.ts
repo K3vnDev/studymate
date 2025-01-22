@@ -1,11 +1,11 @@
-import { MATE_VALUES } from '@/consts'
+import { MATE_VALUES } from '@consts'
 import type {
   ChatMessage,
   DBCurrentStudyplanDay,
   DBUserStudyplanAndCurrentDayResponse,
   MateResponseSchema,
   PromptRequestSchema
-} from '@/types.d'
+} from '@types'
 import type { ChatCompletionMessage } from 'openai/resources/index.mjs'
 
 export const dataParser = {

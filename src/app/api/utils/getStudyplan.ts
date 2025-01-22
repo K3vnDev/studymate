@@ -1,8 +1,8 @@
-import type { StudyplanSaved } from '@/types.d'
+import { databaseQuery } from '@api/utils/databaseQuery'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import type { SupabaseClient } from '@supabase/supabase-js'
+import type { StudyplanSaved } from '@types'
 import { cookies } from 'next/headers'
-import { databaseQuery } from './databaseQuery'
 
 interface Params {
   id: string

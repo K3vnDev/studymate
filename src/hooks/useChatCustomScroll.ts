@@ -1,6 +1,6 @@
 import { useChatStore } from '@/store/useChatStore'
+import { useEvent } from '@hooks/useEvent'
 import { useEffect, useRef, useState } from 'react'
-import { useEvent } from './useEvent'
 
 const CHAT_ON_BOTTOM_SCROLL_THRESHOLD = 20
 
@@ -44,8 +44,7 @@ export const useChatCustomScroll = ({ updateScrollOn }: Params) => {
     const { scrollTop, scrollHeight, clientHeight } = listRef.current
     const scrollDifference = scrollHeight - scrollTop
 
-    const newScrollIsOnBottom =
-      Math.abs(clientHeight - scrollDifference) < CHAT_ON_BOTTOM_SCROLL_THRESHOLD
+    const newScrollIsOnBottom = Math.abs(clientHeight - scrollDifference) < CHAT_ON_BOTTOM_SCROLL_THRESHOLD
     if (newScrollIsOnBottom) isAutoScrollingDown.current = false
 
     setScrollIsOnBottom(newScrollIsOnBottom)

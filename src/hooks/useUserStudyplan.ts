@@ -1,13 +1,13 @@
-import { CONTENT_JSON } from '@/consts'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { throwConfetti } from '@/lib/utils/throwConfetti'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import { useUserStore } from '@/store/useUserStore'
-import type { UserStudyplan } from '@/types.d'
+import { CONTENT_JSON } from '@consts'
+import { useOnUser } from '@hooks/useOnUser'
+import type { UserStudyplan } from '@types'
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { useOnUser } from './useOnUser'
 
 interface Params {
   fetchOnAwake?: boolean

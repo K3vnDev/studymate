@@ -1,5 +1,5 @@
-import { LoginButton } from '@/components/LoginButton'
 import { AppLogo } from '@components/AppLogo'
+import { LoginButton } from '@components/LoginButton'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import Image from 'next/image'

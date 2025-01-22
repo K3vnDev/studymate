@@ -1,7 +1,7 @@
-import { USER_PROMPTS } from '@/consts'
 import { useChatStore } from '@/store/useChatStore'
+import { USER_PROMPTS } from '@consts'
+import { useChatMessages } from '@hooks/useChatMessages'
 import { useRouter } from 'next/navigation'
-import { useChatMessages } from './useChatMessages'
 
 interface Params {
   redirect?: boolean

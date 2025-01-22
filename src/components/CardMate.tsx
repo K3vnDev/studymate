@@ -1,7 +1,7 @@
-import { MATE_IMAGES_ALT } from '@/consts'
-import { useUserPrompts } from '@/hooks/useUserPrompts'
+import { Paragraph } from '@components/Paragraph'
+import { MATE_IMAGES_ALT } from '@consts'
+import { useUserPrompts } from '@hooks/useUserPrompts'
 import Image from 'next/image'
-import { Paragraph } from './Paragraph'
 
 interface Props {
   message: string

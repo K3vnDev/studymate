@@ -1,7 +1,7 @@
-import type { StudyplanSaved } from '@/types.d'
 import { Response } from '@api/utils/Response'
 import { databaseQuery } from '@api/utils/databaseQuery'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import type { StudyplanSaved } from '@types'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import { z } from 'zod'

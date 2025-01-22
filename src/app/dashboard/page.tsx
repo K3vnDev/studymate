@@ -1,16 +1,17 @@
 'use client'
 
-import { CardMate } from '@/components/CardMate'
-import { CardStudyplan } from '@/components/CardStudyplan'
-import { ChipButton } from '@/components/ChipButton'
-import { FallbackZone } from '@/components/FallbackZone'
-import { GalleryStudyplans } from '@/components/GalleryStudyplans'
-import { Main } from '@/components/Main'
-import { Sidebar } from '@/components/Sidebar'
-import { MATE_MESSAGES } from '@/consts'
-import { useUserData } from '@/hooks/useUserData'
-import { useUserPrompts } from '@/hooks/useUserPrompts'
-import { useUserStudyplan } from '@/hooks/useUserStudyplan'
+import { BGPoint, Background } from '@components/Background'
+import { CardMate } from '@components/CardMate'
+import { CardStudyplan } from '@components/CardStudyplan'
+import { ChipButton } from '@components/ChipButton'
+import { FallbackZone } from '@components/FallbackZone'
+import { GalleryStudyplans } from '@components/GalleryStudyplans'
+import { Main } from '@components/Main'
+import { Sidebar } from '@components/Sidebar'
+import { MATE_MESSAGES } from '@consts'
+import { useUserData } from '@hooks/useUserData'
+import { useUserPrompts } from '@hooks/useUserPrompts'
+import { useUserStudyplan } from '@hooks/useUserStudyplan'
 import { MagicWandIcon, MessageIcon } from '@icons'
 
 export default function DashboardPage() {
@@ -42,6 +43,11 @@ export default function DashboardPage() {
       </Main>
 
       <Sidebar />
+
+      <Background className='bg-[#0C0C0C]'>
+        <BGPoint className='bg-[#6A71FC]/20' position='left-top' />
+        <BGPoint className='bg-[#6313ED]/15' position='right-bottom' />
+      </Background>
     </>
   )
 }

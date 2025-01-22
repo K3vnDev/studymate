@@ -1,8 +1,8 @@
 import type { MateResponseSchema as MateResponseSchemaType } from '@/lib/schemas/MateResponse'
 import type { PromptRequestSchema as PromptRequestSchemaType } from '@/lib/schemas/PromptRequest'
 import type { StudyplanSchema as StudyplanSchemaType } from '@/lib/schemas/Studyplan'
+import type { CATEGORIES } from '@consts'
 import type { z } from 'zod'
-import type { CATEGORIES } from './consts'
 
 export type Category = (typeof CATEGORIES)[number]
 

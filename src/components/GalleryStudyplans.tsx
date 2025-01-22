@@ -1,17 +1,17 @@
-import { CONTENT_JSON, FONTS } from '@/consts'
-import { useSearchStudyplan } from '@/hooks/useSearchStudyplan'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { getCategoryValues } from '@/lib/utils/getCategoryValues'
 import { parseDays } from '@/lib/utils/parseDays'
 import { repeat } from '@/lib/utils/repeat'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import { type UserStore, useUserStore } from '@/store/useUserStore'
-import type { StudyplanSaved } from '@/types.d'
+import { Header } from '@components/Header'
+import { CONTENT_JSON, FONTS } from '@consts'
+import { useSearchStudyplan } from '@hooks/useSearchStudyplan'
 import { ClockIcon } from '@icons'
+import type { StudyplanSaved } from '@types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect } from 'react'
-import { Header } from './Header'
 
 interface Props {
   title: string

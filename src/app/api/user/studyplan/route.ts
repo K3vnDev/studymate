@@ -1,12 +1,4 @@
-import { StudyplanSchema } from '@/lib/schemas/Studyplan'
 import { dateSubstraction } from '@/lib/utils/dateSubstraction'
-import type {
-  DBCurrentStudyplanDay,
-  DBUserStudyplanAndCurrentDayResponse,
-  StudyplanSaved,
-  StudyplanUnSaved,
-  UserStudyplan
-} from '@/types.d'
 import { Response } from '@api/utils/Response'
 import { abandonStudyplan } from '@api/utils/abandonStudyplan'
 import { dataParser } from '@api/utils/dataParser'
@@ -14,7 +6,15 @@ import { databaseQuery } from '@api/utils/databaseQuery'
 import { getStudyplan } from '@api/utils/getStudyplan'
 import { getUserId } from '@api/utils/getUserId'
 import { modifyStudyplansLists } from '@api/utils/modifyStudyplansLists'
+import { StudyplanSchema } from '@schemas/Studyplan'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import type {
+  DBCurrentStudyplanDay,
+  DBUserStudyplanAndCurrentDayResponse,
+  StudyplanSaved,
+  StudyplanUnSaved,
+  UserStudyplan
+} from '@types'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 

@@ -1,4 +1,4 @@
-import { FONTS } from '@/consts'
+import { FONTS } from '@consts'
 
 interface Props {
   className?: string

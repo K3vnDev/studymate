@@ -1,8 +1,8 @@
 import { DatabaseChatSchema } from '@/lib/schemas/DatabaseChatMessages'
-import type { ChatMessage } from '@/types.d'
+import { dataParser } from '@api/utils/dataParser'
+import { getPrevChatMessages } from '@api/utils/getPrevChatMessages'
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { dataParser } from './dataParser'
-import { getPrevChatMessages } from './getPrevChatMessages'
+import type { ChatMessage } from '@types'
 
 interface Params {
   userMessage: string

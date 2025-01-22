@@ -1,10 +1,10 @@
 import { CardStudyplan } from '@/components/CardStudyplan'
-import { EVENTS, FONTS } from '@/consts'
 import { dispatchEvent } from '@/lib/utils/dispatchEvent'
 import { repeat } from '@/lib/utils/repeat'
 import { useUserStore } from '@/store/useUserStore'
-import type { ChatMessage as ChatMessageType, StudyplanUnSaved } from '@/types.d'
+import { EVENTS, FONTS } from '@consts'
 import { ErrorIcon, ReloadIcon } from '@icons'
+import type { ChatMessage as ChatMessageType, StudyplanUnSaved } from '@types'
 import { isEqual } from 'lodash'
 
 interface Props {

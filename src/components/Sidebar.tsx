@@ -1,6 +1,6 @@
 'use client'
 
-import { FONTS } from '@/consts'
+import { FONTS } from '@consts'
 import { AppIcon, BookIcon, ClockIcon, HomeIcon, MessageIcon, ProfileIcon } from '@icons'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'

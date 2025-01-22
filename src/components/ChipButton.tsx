@@ -1,6 +1,6 @@
 'use client'
 
-import { Waitable } from './Waitable'
+import { Waitable } from '@components/Waitable'
 
 interface Props {
   children: React.ReactNode

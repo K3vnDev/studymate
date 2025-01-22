@@ -1,7 +1,7 @@
-import { FONTS } from '@/consts'
 import { DropdownMenuContext } from '@/lib/context/DropdownMenuContext'
+import { Waitable } from '@components/Waitable'
+import { FONTS } from '@consts'
 import { useContext, useState } from 'react'
-import { Waitable } from '../Waitable'
 
 interface Props {
   children: React.ReactNode

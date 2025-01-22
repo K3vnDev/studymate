@@ -1,8 +1,8 @@
-import { GradientBorder } from '@/components/GradientBorder'
-import { EVENTS } from '@/consts'
 import { ChatContext } from '@/lib/context/ChatContext'
 import { dispatchEvent } from '@/lib/utils/dispatchEvent'
 import { useChatStore } from '@/store/useChatStore'
+import { GradientBorder } from '@components/GradientBorder'
+import { EVENTS } from '@consts'
 import { ChevronIcon } from '@icons'
 import { useContext, useEffect, useRef } from 'react'
 

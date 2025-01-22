@@ -1,8 +1,8 @@
 import type { DBStudyplansLists } from '@/types'
 import { Response } from '@api/utils/Response'
+import { databaseQuery } from '@api/utils/databaseQuery'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import { databaseQuery } from '../../utils/databaseQuery'
 
 export const GET = async () => {
   const supabase = createServerComponentClient({ cookies })

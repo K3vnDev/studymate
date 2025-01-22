@@ -1,4 +1,4 @@
-import { FONTS } from '@/consts'
+import { FONTS } from '@consts'
 
 interface Props {
   children: React.ReactNode
@@ -6,7 +6,5 @@ interface Props {
 }
 
 export const Badge = ({ children, className = '' }: Props) => (
-  <span className={`text-blue-20 text-base ${FONTS.INTER} font-semibold ${className}`}>
-    {children}
-  </span>
+  <span className={`text-blue-20 text-base ${FONTS.INTER} font-semibold ${className}`}>{children}</span>
 )

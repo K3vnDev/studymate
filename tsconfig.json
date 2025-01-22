@@ -26,9 +26,6 @@
       "@/*": [
         "./src/*"
       ],
-      "@icons": [
-        "./src/components/icons.tsx"
-      ],
       "@components/*": [
         "./src/components/*"
       ],
@@ -36,8 +33,20 @@
         "./src/app/api/*"
       ],
       "@hooks/*": [
-        "./src/hooks*"
-      ]
+        "./src/hooks/*"
+      ],
+      "@schemas/*": [
+        "./src/lib/schemas/*"
+      ],
+      "@icons": [
+        "./src/components/icons.tsx"
+      ],
+      "@consts": [
+        "./src/consts.ts"
+      ],
+      "@types": [
+        "./src/types.d.ts"
+      ],
     }
   },
   "include": [

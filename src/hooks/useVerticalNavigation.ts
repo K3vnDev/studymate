@@ -1,4 +1,4 @@
-import { useEvent } from './useEvent'
+import { useEvent } from '@hooks/useEvent'
 
 interface Params {
   minIndex?: number

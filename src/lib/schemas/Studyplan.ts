@@ -1,4 +1,4 @@
-import { CATEGORIES } from '@/consts'
+import { CATEGORIES } from '@consts'
 import { z } from 'zod'
 
 export const StudyplanSchema = z.object({

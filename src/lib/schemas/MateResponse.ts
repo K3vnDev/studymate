@@ -1,5 +1,5 @@
+import { StudyplanSchema } from '@schemas/Studyplan'
 import { z } from 'zod'
-import { StudyplanSchema } from './Studyplan'
 
 export const MateResponseSchema = z.object({
   responses: z.array(

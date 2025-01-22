@@ -1,8 +1,8 @@
 import { ChatMessage } from '@/app/chat/ChatMessage'
-import { CHAT_ERROR_MESSAGE } from '@/consts'
 import { ChatContext } from '@/lib/context/ChatContext'
 import { useChatStore } from '@/store/useChatStore'
-import type { ChatMessage as ChatMessageType } from '@/types'
+import { CHAT_ERROR_MESSAGE } from '@consts'
+import type { ChatMessage as ChatMessageType } from '@types'
 import { useContext } from 'react'
 
 export const MessagesList = () => {

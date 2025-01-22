@@ -1,4 +1,4 @@
-import type { UserStudyplan } from '@/types.d'
+import type { UserStudyplan } from '@types'
 import { createContext } from 'react'
 
 interface TasksContext {

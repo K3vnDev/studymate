@@ -1,4 +1,4 @@
-import { MATE_VALUES } from '@/consts'
+import { MATE_VALUES } from '@consts'
 const { STUDYPLAN, MESSAGE } = MATE_VALUES
 
 export const MATE_TRAIN_MESSAGE = `

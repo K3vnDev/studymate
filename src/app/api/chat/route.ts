@@ -1,15 +1,15 @@
 import { dataParser } from '@/app/api/utils/dataParser'
-import { PromptRequestSchema } from '@/lib/schemas/PromptRequest'
-import type { PromptRequestSchema as PromptRequestSchemaType } from '@/types.d'
+import { Response } from '@api/utils/Response'
+import { getPrevChatMessages } from '@api/utils/getPrevChatMessages'
+import { getUserId } from '@api/utils/getUserId'
+import { promptAIModel } from '@api/utils/promptAIModel'
+import { saveChatMessagesToDatabase } from '@api/utils/saveChatMessagesToDabatase'
+import { PromptRequestSchema } from '@schemas/PromptRequest'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import type { PromptRequestSchema as PromptRequestSchemaType } from '@types'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import type { ChatCompletionMessageParam } from 'openai/src/resources/index.js'
-import { Response } from '../utils/Response'
-import { getPrevChatMessages } from '../utils/getPrevChatMessages'
-import { getUserId } from '../utils/getUserId'
-import { promptAIModel } from '../utils/promptAIModel'
-import { saveChatMessagesToDatabase } from '../utils/saveChatMessagesToDabatase'
 
 // Get all previous chat messages
 export const GET = async () => {

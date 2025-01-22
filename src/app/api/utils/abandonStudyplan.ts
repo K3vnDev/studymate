@@ -1,6 +1,6 @@
+import { databaseQuery } from '@api/utils/databaseQuery'
 import { type SupabaseClient, createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import { databaseQuery } from './databaseQuery'
 
 interface Params {
   supabase?: SupabaseClient<any, 'public', any>

@@ -1,7 +1,7 @@
-import type { PromptRequestSchema } from '@/types.d'
+import { dataParser } from '@api/utils/dataParser'
+import { databaseQuery } from '@api/utils/databaseQuery'
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { dataParser } from './dataParser'
-import { databaseQuery } from './databaseQuery'
+import type { PromptRequestSchema } from '@types'
 
 interface Params {
   supabase: SupabaseClient

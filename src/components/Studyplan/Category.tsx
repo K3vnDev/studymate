@@ -1,6 +1,6 @@
-import { FONTS } from '@/consts'
 import { getCategoryValues } from '@/lib/utils/getCategoryValues'
-import type { Category as CategoryType } from '@/types.d'
+import { FONTS } from '@consts'
+import type { Category as CategoryType } from '@types'
 
 interface CategoryProps {
   category: CategoryType

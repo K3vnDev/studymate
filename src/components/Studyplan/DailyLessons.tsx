@@ -1,9 +1,9 @@
-import { FONTS } from '@/consts'
 import { useVerticalNavigation } from '@/hooks/useVerticalNavigation'
 import { StudyplanContext } from '@/lib/context/StudyplanContext'
 import { parseDays } from '@/lib/utils/parseDays'
-import type { StudyplanSaved } from '@/types.d'
+import { FONTS } from '@consts'
 import { CheckIcon, ChevronIcon, ClockIcon } from '@icons'
+import type { StudyplanSaved } from '@types'
 import { useContext, useState } from 'react'
 import { Header } from '../Header'
 

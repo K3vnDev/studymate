@@ -1,5 +1,5 @@
 import { useStudyplansStore } from '@/store/useStudyplansStore'
-import type { StudyplanSaved } from '@/types.d'
+import type { StudyplanSaved } from '@types'
 import { useEffect, useState } from 'react'
 
 export const useSearchStudyplan = (id?: string) => {

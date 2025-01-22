@@ -1,9 +1,12 @@
 interface Props {
   children: React.ReactNode
+  className?: string
 }
 
-export const AppBackground = ({ children }: Props) => (
-  <div className='bg-[#0C0C0C] fixed top-0 left-0 w-screen h-screen -z-10 pointer-events-none overflow-hidden'>
+export const Background = ({ children, className = '' }: Props) => (
+  <div
+    className={`${className} fixed top-0 left-0 w-screen h-screen -z-10 pointer-events-none overflow-hidden`}
+  >
     {children}
   </div>
 )
@@ -25,7 +28,7 @@ interface BlurredPointProps {
   size?: number
 }
 
-export const BlurredPoint = ({ className = '', margin = 5, size = 60, position }: BlurredPointProps) => {
+export const BGPoint = ({ className = '', margin = 5, size = 60, position }: BlurredPointProps) => {
   const getPositionStyle = () => {
     const [x, y] = position.split('-')
 

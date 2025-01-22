@@ -1,14 +1,14 @@
 'use client'
 
-import { EVENTS, FONTS } from '@/consts'
-import { useEvent } from '@/hooks/useEvent'
-import { useJustLoaded } from '@/hooks/useJustLoaded'
-import type { AlertData } from '@/types.d'
+import { Header } from '@components/Header'
+import { Paragraph } from '@components/Paragraph'
+import { Waitable } from '@components/Waitable'
+import { EVENTS, FONTS } from '@consts'
+import { useEvent } from '@hooks/useEvent'
+import { useJustLoaded } from '@hooks/useJustLoaded'
 import { CrossIcon } from '@icons'
+import type { AlertData } from '@types'
 import { useState } from 'react'
-import { Header } from './Header'
-import { Paragraph } from './Paragraph'
-import { Waitable } from './Waitable'
 
 export const Alert = () => {
   const [data, setData] = useState<AlertData | null>(null)

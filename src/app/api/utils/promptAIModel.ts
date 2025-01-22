@@ -1,10 +1,10 @@
-import { MAX_MESSAGES_ON_PROMPT } from '@/consts'
 import { MateResponseSchema } from '@/lib/schemas/MateResponse'
-import type { PromptRequestSchema as PromptRequestSchemaType } from '@/types.d'
+import { MATE_TRAIN_MESSAGE } from '@api/utils/mateTrainMessage'
+import { MAX_MESSAGES_ON_PROMPT } from '@consts'
+import type { PromptRequestSchema as PromptRequestSchemaType } from '@types'
 import OpenAI from 'openai'
 import { zodResponseFormat } from 'openai/helpers/zod.mjs'
 import type { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
-import { MATE_TRAIN_MESSAGE } from './mateTrainMessage'
 
 interface Data {
   userData?: PromptRequestSchemaType['user_data']

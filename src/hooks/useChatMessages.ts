@@ -1,10 +1,10 @@
-import { CONTENT_JSON, EVENTS } from '@/consts'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useChatStore } from '@/store/useChatStore'
-import type { ChatMessage, PromptRequestSchema } from '@/types.d'
+import { CONTENT_JSON, EVENTS } from '@consts'
+import { useEvent } from '@hooks/useEvent'
+import { useUserStudyplan } from '@hooks/useUserStudyplan'
+import type { ChatMessage, PromptRequestSchema } from '@types'
 import { useEffect, useRef, useState } from 'react'
-import { useEvent } from './useEvent'
-import { useUserStudyplan } from './useUserStudyplan'
 
 export const useChatMessages = () => {
   const messages = useChatStore(s => s.messages)

@@ -1,9 +1,9 @@
 'use client'
 
-import { Loadable } from '@/components/Loadable'
-import { Main } from '@/components/Main'
-import { Sidebar } from '@/components/Sidebar'
-import { useUserStudyplan } from '@/hooks/useUserStudyplan'
+import { Loadable } from '@components/Loadable'
+import { Main } from '@components/Main'
+import { Sidebar } from '@components/Sidebar'
+import { useUserStudyplan } from '@hooks/useUserStudyplan'
 import { CurrentTask } from './CurrentTask'
 import { InfoHeader } from './InfoHeader'
 import { Timer } from './Timer'

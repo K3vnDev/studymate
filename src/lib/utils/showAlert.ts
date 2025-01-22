@@ -1,5 +1,5 @@
-import { EVENTS } from '@/consts'
-import type { AlertData } from '@/types.d'
+import { EVENTS } from '@consts'
+import type { AlertData } from '@types'
 import { dispatchEvent } from './dispatchEvent'
 
 export const showAlert = ({

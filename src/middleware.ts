@@ -1,6 +1,6 @@
+import { PROTECTED_ROUTES } from '@consts'
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { type NextRequest, NextResponse } from 'next/server'
-import { PROTECTED_ROUTES } from './consts'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()

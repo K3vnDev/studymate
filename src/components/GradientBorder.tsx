@@ -1,5 +1,5 @@
-import { EVENTS } from '@/consts'
-import { useEvent } from '@/hooks/useEvent'
+import { EVENTS } from '@consts'
+import { useEvent } from '@hooks/useEvent'
 import { useEffect, useRef, useState } from 'react'
 
 interface Props {
