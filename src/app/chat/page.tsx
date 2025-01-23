@@ -1,5 +1,6 @@
 'use client'
 
+import { BGPoint, Background } from '@/components/Background'
 import { ChatContext } from '@/lib/context/ChatContext'
 import { useChatStore } from '@/store/useChatStore'
 import { CardMate } from '@components/CardMate'
@@ -69,8 +70,6 @@ export default function ChatPage() {
       </Main>
 
       <div className='w-8 bg-transparent pointer-events-none' ref={customScrollValues.scrollRef} />
-
-      <Sidebar />
     </ChatContext.Provider>
   )
 }

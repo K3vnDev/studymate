@@ -3,7 +3,7 @@ interface Props {
   className?: string
 }
 
-export const Background = ({ children, className = '' }: Props) => (
+export const Background = ({ children, className = 'bg-[#0C0C0C]' }: Props) => (
   <div
     className={`${className} fixed top-0 left-0 w-screen h-screen -z-10 pointer-events-none overflow-hidden`}
   >
@@ -12,7 +12,7 @@ export const Background = ({ children, className = '' }: Props) => (
 )
 
 interface BlurredPointProps {
-  position:
+  pos:
     | 'left-top'
     | 'center-top'
     | 'right-top'
@@ -28,9 +28,9 @@ interface BlurredPointProps {
   size?: number
 }
 
-export const BGPoint = ({ className = '', margin = 5, size = 60, position }: BlurredPointProps) => {
+export const BGPoint = ({ className = '', margin = 5, size = 60, pos }: BlurredPointProps) => {
   const getPositionStyle = () => {
-    const [x, y] = position.split('-')
+    const [x, y] = pos.split('-')
 
     const getValue = (pos: string) => {
       if (pos === 'center') {

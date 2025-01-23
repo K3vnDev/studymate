@@ -1,9 +1,10 @@
 'use client'
 
-import { Main } from '@/components/Main'
-import { Sidebar } from '@/components/Sidebar'
-import { Studyplan } from '@/components/Studyplan/Studyplan'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
+import { BGPoint, Background } from '@components/Background'
+import { Main } from '@components/Main'
+import { Sidebar } from '@components/Sidebar'
+import { Studyplan } from '@components/Studyplan/Studyplan'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -18,12 +19,8 @@ export default function ChatStudyplanPage() {
   }, [])
 
   return (
-    <>
-      <Main className='gap-12 px-24 py-12 h-full relative'>
-        {studyplan !== null ? <Studyplan {...{ studyplan }} /> : null}
-      </Main>
-
-      <Sidebar />
-    </>
+    <Main className='gap-12 px-24 py-12 h-full relative'>
+      {studyplan !== null ? <Studyplan {...{ studyplan }} /> : null}
+    </Main>
   )
 }

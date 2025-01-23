@@ -1,9 +1,9 @@
 'use client'
 
-import { Loadable } from '@/components/Loadable'
-import { Main } from '@/components/Main'
-import { Sidebar } from '@/components/Sidebar'
-import { useUserStudyplan } from '@/hooks/useUserStudyplan'
+import { Loadable } from '@components/Loadable'
+import { Main } from '@components/Main'
+import { Sidebar } from '@components/Sidebar'
+import { useUserStudyplan } from '@hooks/useUserStudyplan'
 import { TodaysTasks } from './TodaysTasks'
 
 export default function TasksPage() {
@@ -20,5 +20,3 @@ export default function TasksPage() {
     </>
   )
 }
-
-const Task = () => {}

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import '@/globals.css'
+import './globals.css'
 import { Alert } from '@components/Alert'
 
 export const metadata: Metadata = {
