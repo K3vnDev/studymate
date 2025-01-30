@@ -8,7 +8,7 @@ export const Timer = () => (
         className={`
           absolute left-0 top-0 w-full aspect-square border-[4px] border-blue-10/10 rounded-full 
           shadow-circle shadow-blue-10/15 animate-pulse
-          `}
+        `}
       />
     </div>
   </span>

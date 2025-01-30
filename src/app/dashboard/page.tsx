@@ -18,7 +18,7 @@ export default function DashboardPage() {
   useUserData()
 
   return (
-    <Main className='gap-12 px-24 py-12 h-full'>
+    <Main className='gap-12 h-full'>
       {!userStudyplan && !isLoading ? (
         <CardMate message={MATE_MESSAGES.MEET}>
           <ChipButton empty onClick={prompts.createStudyplan}>

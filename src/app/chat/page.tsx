@@ -34,7 +34,10 @@ export default function ChatPage() {
 
   return (
     <ChatContext.Provider value={{ ...chatMessagesValues, ...customScrollValues }}>
-      <Main className='items-center h-[calc(100vh-3rem)] flex-col justify-between fixed right-48 top-6 px-48 w-[calc(100%-56rem)]'>
+      <Main
+        className='items-center h-[calc(100vh-3rem)] flex-col justify-between fixed right-48 top-6 px-48 w-[calc(100%-56rem)]'
+        ignorePaddings
+      >
         {!isOnLoadingError ? (
           <Loadable isLoading={!messages}>
             {messages?.length ? (

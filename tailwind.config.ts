@@ -59,8 +59,17 @@ const config: Config = {
     boxShadow: {
       circle: '0px 0px 200px 0px',
       card: '4px 4px 12px 0px'
+    },
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
+      '3xl': '1750px'
     }
   },
+
   plugins: []
 }
 export default config

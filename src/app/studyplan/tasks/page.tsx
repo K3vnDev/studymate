@@ -12,7 +12,7 @@ export default function TasksPage() {
 
   return (
     <>
-      <Main className='gap-12 px-24 py-12 h-full relative'>
+      <Main className='gap-12 h-full relative'>
         <Loadable isLoading={isLoading}>{todaysTasks && <TodaysTasks {...todaysTasks} />}</Loadable>
       </Main>
 
