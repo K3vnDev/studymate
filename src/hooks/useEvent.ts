@@ -6,8 +6,8 @@ export const useEvent = <T>(
   dependencyArray: unknown[] = []
 ) => {
   useEffect(() => {
-    document.addEventListener(eventName, eventHandler as NormalEventHandler)
-    return () => document.removeEventListener(eventName, eventHandler as NormalEventHandler)
+    document.addEventListener(eventName, eventHandler as EventHandler)
+    return () => document.removeEventListener(eventName, eventHandler as EventHandler)
   }, [...dependencyArray])
 }
-type NormalEventHandler = (e: Event) => void
+type EventHandler = (e: Event) => void

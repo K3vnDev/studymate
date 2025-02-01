@@ -14,33 +14,37 @@ export const useChatCustomScroll = ({ updateScrollOn }: Params) => {
   const isAutoScrollingDown = useRef(false)
   const isOnInitialScroll = useRef(true)
 
-  const listRef = useRef<HTMLLIElement>(null)
-  const scrollRef = useRef(null)
+  const listRef = useRef<HTMLUListElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
-  // Set chat scroll height to an element's height to increase body scroll
+  // update scrollElement's height to increase body scroll
   useEffect(() => {
-    if (listRef.current !== null && scrollRef.current !== null) {
+    const recalculateScrollHeight = () => {
+      if (!listRef.current || !scrollRef.current) return
       listRef.current.style.overflowY = 'scroll'
-      const { scrollHeight } = listRef.current
-      listRef.current.style.overflowY = 'hidden'
 
-      const scrollElement: HTMLDivElement = scrollRef.current
-      scrollElement.style.height = `${scrollHeight}px`
+      const { scrollHeight } = listRef.current
+
+      const { bottom } = listRef.current.getBoundingClientRect()
+      const listRefBottom = window.innerHeight - bottom
+
+      // Apply scroll height
+      listRef.current.style.overflowY = 'hidden'
+      scrollRef.current.style.height = `${scrollHeight + listRefBottom + 25}px` // Find out where that 25 comes from
     }
+
+    window.addEventListener('resize', recalculateScrollHeight)
+    recalculateScrollHeight()
+
+    return () => window.removeEventListener('resize', recalculateScrollHeight)
   }, [listRef.current, scrollRef.current, chatMessages, ...updateScrollOn])
 
-  // Apply scroll made on the body to the chat
-  useEvent('scroll', () => {
+  const handleScroll = () => {
+    // Apply scroll made on the body to the chat
     if (listRef.current === null) return
-
     listRef.current.scrollTo({ top: window.scrollY })
-    checkScrollOnBottom()
-  })
 
-  // Handle scroll on bottom checking logic
-  const checkScrollOnBottom = () => {
-    if (listRef.current === null) return
-
+    // Handle scroll on bottom checking logic
     const { scrollTop, scrollHeight, clientHeight } = listRef.current
     const scrollDifference = scrollHeight - scrollTop
 
@@ -49,20 +53,25 @@ export const useChatCustomScroll = ({ updateScrollOn }: Params) => {
 
     setScrollIsOnBottom(newScrollIsOnBottom)
   }
+  // Call the above function whenever the user scrolls
+  useEvent('scroll', handleScroll, [scrollIsOnBottom])
 
   // Scroll to bottom on new message
   useEffect(() => {
     if (scrollIsOnBottom && chatMessages !== null && chatMessages.length > 0) {
-      scrollToBottom(isOnInitialScroll.current ? 'instant' : 'smooth')
+      const behavior = isOnInitialScroll.current ? 'instant' : 'smooth'
+      scrollToBottom(behavior)
+
       isOnInitialScroll.current = false
     }
-  }, [chatMessages, ...updateScrollOn])
+  }, [chatMessages, ...updateScrollOn]) // Maybe remove updateScrollOn ???
 
   const scrollToBottom = (behavior: ScrollBehavior) => {
     window.scrollTo({ top: document.documentElement.scrollHeight, behavior })
     isAutoScrollingDown.current = true
   }
 
+  // TODO: Make this event-driven / put the logic on the button itself
   const scrollDownButtonProps: { onClick: () => void; style: React.CSSProperties } = {
     style:
       scrollIsOnBottom || isAutoScrollingDown.current

@@ -1,29 +1,21 @@
 'use client'
 
-import { BGPoint, Background } from '@/components/Background'
 import { ChatContext } from '@/lib/context/ChatContext'
 import { useChatStore } from '@/store/useChatStore'
-import { CardMate } from '@components/CardMate'
-import { ChipButton } from '@components/ChipButton'
 import { Button, ErrorCard, Gigant, Message } from '@components/ErrorCard'
 import { Loadable } from '@components/Loadable'
 import { Main } from '@components/Main'
-import { Sidebar } from '@components/Sidebar'
-import { MATE_MESSAGES } from '@consts'
 import { useChatCustomScroll } from '@hooks/useChatCustomScroll'
 import { useChatMessages } from '@hooks/useChatMessages'
-import { useUserPrompts } from '@hooks/useUserPrompts'
 import { useUserStudyplan } from '@hooks/useUserStudyplan'
-import { MagicWandIcon, ReloadIcon } from '@icons'
-import { Header } from './Header'
+import { ReloadIcon } from '@icons'
+import { Content } from './Content'
 import { Input } from './Input'
-import { MessagesList } from './MessagesList'
 import { ScrollDownButton } from './ScrollDownButton'
 
 export default function ChatPage() {
   useUserStudyplan()
   const messages = useChatStore(s => s.messages)
-  const prompt = useUserPrompts()
 
   const { loadPreviousMessages, ...chatMessagesValues } = useChatMessages()
   const { isWaitingResponse, isOnChatError, isOnLoadingError } = chatMessagesValues
@@ -32,37 +24,35 @@ export default function ChatPage() {
     updateScrollOn: [isWaitingResponse, isOnChatError]
   })
 
+  // (total) - (sidebar_width) - (gap) - (body_padding) * 2
+  const w = {
+    xxxl: '3xl:w-[calc(100vw-22vw-4rem-12rem*2)]',
+    xxl: '2xl:w-[calc(100vw-22vw-4rem-8rem*2)]',
+    xl: 'xl:w-[calc(100vw-22vw-4rem-4rem*2)]',
+    lg: 'lg:w-[calc(100vw-8rem*2)]',
+    default: 'max-lg:w-[calc(100vw-2.5rem*2)]'
+  }
+
   return (
     <ChatContext.Provider value={{ ...chatMessagesValues, ...customScrollValues }}>
       <Main
-        className='items-center h-[calc(100vh-3rem)] flex-col justify-between fixed right-48 top-6 px-48 w-[calc(100%-56rem)]'
-        ignorePaddings
+        className={`
+          items-center flex-col justify-between fixed xl:top-6 top-[6.5rem] 
+          ${w.xxxl} ${w.xxl} ${w.xl} ${w.lg} ${w.default} xl:h-[calc(100vh-3rem)] max-xl:min-h-0 h-[calc(100vh-6.5rem)]
+          3xl:right-48 2xl:right-32 xl:right-16 lg:right-32 right-10 3xl:px-44 lg:px-28 pb-12 pt-0
+          xl:rounded-3xl rounded-b-none xl:border border-b-0
+        `}
       >
         {!isOnLoadingError ? (
           <Loadable isLoading={!messages}>
-            {messages?.length ? (
-              <>
-                <Header />
-                <MessagesList />
-              </>
-            ) : (
-              <CardMate
-                message={MATE_MESSAGES.MEET}
-                className={{ main: 'absolute top-1/2 -translate-y-[calc(100%+.75rem)]' }}
-              >
-                <ChipButton onClick={prompt.createStudyplan} empty>
-                  <MagicWandIcon />
-                  Create a studyplan
-                </ChipButton>
-              </CardMate>
-            )}
+            <Content {...{ messages }} />
 
             <Input />
             <ScrollDownButton />
           </Loadable>
         ) : (
           <ErrorCard>
-            <Gigant />
+            <Gigant>Ooops...</Gigant>
             <Message>Sorry, couldn't load your messages</Message>
             <Button onClick={loadPreviousMessages}>
               <ReloadIcon className='size-7 group-active:rotate-90 transition' />

@@ -83,11 +83,25 @@ export const ChatError = ({ children }: ChildrenProps) => {
   )
 }
 
-const overlaysBase = `px-6 list-none py-3 w-fit max-w-96 rounded-3xl ${FONTS.INTER} font-light`
-
 const UserOverlay = ({ children }: ChildrenProps) => (
-  <li className={`${overlaysBase} bg-blue-20 text-white rounded-se-none self-end`}>{children}</li>
+  <OverlayBase className='bg-blue-20 text-white rounded-se-none self-end'>{children}</OverlayBase>
 )
 const AssistantOverlay = ({ children }: ChildrenProps) => (
-  <li className={`${overlaysBase} bg-gray-40 text-gray-10 rounded-ss-none self-start`}>{children}</li>
+  <OverlayBase className='bg-gray-40 text-gray-10 rounded-ss-none self-start'>{children}</OverlayBase>
+)
+
+interface OverlayBaseProps {
+  className?: string
+  children?: React.ReactNode
+}
+
+const OverlayBase = ({ className = '', children }: OverlayBaseProps) => (
+  <li
+    className={`
+      ${className} px-6 list-none py-3 md:max-w-96 xs:max-w-64 max-w-56 
+      rounded-3xl ${FONTS.INTER} font-light w-fit
+    `}
+  >
+    {children}
+  </li>
 )

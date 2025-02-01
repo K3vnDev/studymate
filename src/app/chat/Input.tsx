@@ -45,7 +45,9 @@ export const Input = () => {
     <GradientBorder
       color='skySalmon'
       className={{
-        main: `absolute ${yPosition} left-1/2 -translate-x-1/2 w-[calc(100%-23.5rem)] p-1 rounded-[1.625rem]`
+        main: `absolute ${yPosition} left-1/2 -translate-x-1/2 p-1 rounded-[1.625rem]
+          3xl:w-[calc(100%-11rem*2+0.5rem)] lg:w-[calc(100%-7rem*2+0.5rem)] sm:w-[calc(100%-4rem*2+0.5rem)] 
+          xs:w-[calc(100%-2rem*2+0.5rem)] w-[calc(100%-1rem*2+0.5rem)]`
       }}
       bouncy
     >
