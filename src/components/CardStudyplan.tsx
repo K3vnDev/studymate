@@ -38,7 +38,7 @@ export const CardStudyplan = ({ studyplan, userCurrent = false, className = '' }
       color='blues'
       constant={userCurrent}
     >
-      <li
+      <article
         className={`
           ${className} w-[22rem] border border-card-border card bg-card-background 
           px-5 py-6 flex flex-col gap-1 rounded-2xl cursor-default
@@ -48,8 +48,8 @@ export const CardStudyplan = ({ studyplan, userCurrent = false, className = '' }
         <Badge>STUDYPLAN</Badge>
         <Header className='mb-1'>{name}</Header>
         <Paragraph>{desc}</Paragraph>
-        <div className='mt-3 flex justify-between items-center'>
-          <span className='flex text-gray-10 gap-1 items-center'>
+        <div className='mt-3 flex justify-between items-center flex-wrap gap-x-4 gap-y-3 w-full'>
+          <span className='flex text-gray-10 gap-1 items-center text-nowrap'>
             {userCurrent && userStudyplan ? (
               `Day ${userStudyplan.current_day}`
             ) : (
@@ -59,12 +59,12 @@ export const CardStudyplan = ({ studyplan, userCurrent = false, className = '' }
               </>
             )}
           </span>
-          <ChipButton onClick={handleClick}>
+          <ChipButton onClick={handleClick} className='justify-self-end'>
             <RocketIcon />
             See plan
           </ChipButton>
         </div>
-      </li>
+      </article>
     </GradientBorder>
   )
 }

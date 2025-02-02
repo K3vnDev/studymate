@@ -10,9 +10,9 @@ export const Sidebar = () => (
   <aside
     className={`
       xl:w-[22vw] flex xl:flex-col gap-16 justify-center items-start fixed 
-      3xl:left-48 2xl:left-32 xl:left-16 left-1/2 xl:top-1/2 top-4 
+      3xl:left-48 2xl:left-32 xl:left-16 left-1/2 xl:top-1/2 top-3 xl:overflow-visible overflow-hidden
       xl:bg-transparent bg-black/50 xl:backdrop-blur-0 backdrop-blur-sm xl:border-none border border-card-border
-      xl:-translate-y-1/2 xl:translate-x-0 -translate-x-1/2 rounded-full xl:px-0 px-8 xl:py-0 py-2 
+      xl:-translate-y-1/2 xl:translate-x-0 -translate-x-1/2 rounded-full xl:px-0 sm:px-8 px-2 xl:py-0 sm:py-2 py-1 
     `}
   >
     <h2 className={`text-white text-3xl xl:flex hidden gap-5 items-center ml-4 ${FONTS.POPPINS}`}>
@@ -23,7 +23,7 @@ export const Sidebar = () => (
       </div>
     </h2>
 
-    <ul className='flex xl:flex-col items-start xl:gap-4 gap-6'>
+    <ul className='flex xl:flex-col items-start xl:gap-4 sm:gap-6 gap-2'>
       {PATHS.map(({ name, icon }, i) => (
         <RouteButton route={name} icon={icon} key={i} />
       ))}
@@ -47,7 +47,7 @@ const RouteButton = ({ route, icon }: RouteButtonParams) => {
   }, [pathname])
 
   const style = isSelected
-    ? 'text-white xl:scale-[1.1] scale-[1.15] xl:bg-gray-10/[.04] bg-gray-10/[.1]'
+    ? 'text-white xl:scale-110 scale-125 xl:bg-gray-10/[.04] bg-gray-10/[.1]'
     : 'text-gray-10 button'
 
   return (
@@ -59,6 +59,7 @@ const RouteButton = ({ route, icon }: RouteButtonParams) => {
           items-center xl:-translate-x-3 transition-all
         `}
         draggable={false}
+        scroll
       >
         <div className='*:size-8 *:stroke-[1.5px]'>{icon}</div>
         <span className={`xl:inline-block hidden text-xl font-medium ${FONTS.POPPINS}`}>{route}</span>

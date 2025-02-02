@@ -14,7 +14,7 @@ interface Props {
 export const Content = ({ messages }: Props) => {
   const prompt = useUserPrompts()
 
-  if (messages) {
+  if (messages?.length) {
     return (
       <>
         <Header />

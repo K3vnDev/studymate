@@ -24,23 +24,18 @@ export default function ChatPage() {
     updateScrollOn: [isWaitingResponse, isOnChatError]
   })
 
-  // (total) - (sidebar_width) - (gap) - (body_padding) * 2
-  const w = {
-    xxxl: '3xl:w-[calc(100vw-22vw-4rem-12rem*2)]',
-    xxl: '2xl:w-[calc(100vw-22vw-4rem-8rem*2)]',
-    xl: 'xl:w-[calc(100vw-22vw-4rem-4rem*2)]',
-    lg: 'lg:w-[calc(100vw-8rem*2)]',
-    default: 'max-lg:w-[calc(100vw-2.5rem*2)]'
-  }
-
   return (
     <ChatContext.Provider value={{ ...chatMessagesValues, ...customScrollValues }}>
       <Main
         className={`
-          items-center flex-col justify-between fixed xl:top-6 top-[6.5rem] 
-          ${w.xxxl} ${w.xxl} ${w.xl} ${w.lg} ${w.default} xl:h-[calc(100vh-3rem)] max-xl:min-h-0 h-[calc(100vh-6.5rem)]
-          3xl:right-48 2xl:right-32 xl:right-16 lg:right-32 right-10 3xl:px-44 lg:px-28 pb-12 pt-0
+          items-center flex-col justify-between fixed xl:top-6 sm:top-[5.5rem] top-[5rem]
+          3xl:right-48 2xl:right-32 xl:right-16 lg:right-32 sm:right-8 xs:right-4 right-2 3xl:px-44 lg:px-28 pb-12 pt-0
           xl:rounded-3xl rounded-b-none xl:border border-b-0
+
+          xl:h-[calc(100dvh-3rem)] max-xl:min-h-0 sm:h-[calc(100dvh-5.5rem)] h-[calc(100dvh-5rem)]
+
+          3xl:w-[calc(100vw-22vw-4rem-12rem*2)] 2xl:w-[calc(100vw-22vw-4rem-8rem*2)] xl:w-[calc(100vw-22vw-4rem-4rem*2)] 
+          lg:w-[calc(100vw-8rem*2)] sm:w-[calc(100vw-2rem*2)] xs:w-[calc(100vw-1rem*2)] w-[calc(100vw-0.5rem*2)]
         `}
       >
         {!isOnLoadingError ? (

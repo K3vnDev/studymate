@@ -23,7 +23,7 @@ export const ChatMessage = ({ role, content }: Props) => {
       const { original_id, current_day, ...parsedUserStudyplan } = userStudyplan
       userCurrent = isEqual(parsedUserStudyplan, studyplan)
     }
-    return <CardStudyplan {...{ studyplan, userCurrent }} />
+    return <CardStudyplan className='md:max-w-[22rem] max-w-[20rem] w-full' {...{ studyplan, userCurrent }} />
   }
   if (role === 'user') {
     return <UserOverlay>{content}</UserOverlay>
