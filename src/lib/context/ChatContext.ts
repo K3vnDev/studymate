@@ -12,10 +12,7 @@ interface ChatContext {
   }
   listRef: React.MutableRefObject<any>
   scrollRef: React.MutableRefObject<any>
-  scrollDownButtonProps: {
-    onClick: () => void
-    style: React.CSSProperties
-  }
+  scrollIsOnBottom: boolean
 }
 
 export const ChatContext = createContext<ChatContext>({
@@ -30,8 +27,5 @@ export const ChatContext = createContext<ChatContext>({
   },
   listRef: { current: null },
   scrollRef: { current: null },
-  scrollDownButtonProps: {
-    onClick: () => {},
-    style: {}
-  }
+  scrollIsOnBottom: true
 })

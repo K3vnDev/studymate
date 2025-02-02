@@ -23,7 +23,8 @@ export const CONTENT_JSON = {
 export const EVENTS = {
   ON_CHAT_TRY_AGAIN: 'onchattryagain',
   ON_HIGHLIGHT_BORDER: 'onhighlightborder',
-  ON_SHOW_ALERT: 'onshowalert'
+  ON_SHOW_ALERT: 'onshowalert',
+  ON_CHAT_SCROLL_DOWN: 'onchatscrolldown'
 } as const
 
 export const CATEGORIES = [
