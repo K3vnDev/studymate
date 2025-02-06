@@ -104,3 +104,13 @@ export const USER_PROMPTS = {
   GENERATE_STUDYPLAN: 'Hey Mate, would you help me to create a new studyplan?',
   EXPLAIN_TASKS: 'Hey Mate, would you help me with my next task of today?'
 }
+
+export const SCREENS = {
+  XS: 576,
+  SM: 640,
+  MD: 768,
+  LG: 1024,
+  XL: 1280,
+  TWO_XL: 1536,
+  THREE_XL: 1750
+}

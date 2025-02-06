@@ -3,18 +3,15 @@ import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { StudyplanContext } from '@/lib/context/StudyplanContext'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import { useUserStore } from '@/store/useUserStore'
-import { BookmarkIcon } from '@icons'
 import type { StudyplanSaved } from '@types'
 import { useEffect } from 'react'
 import { Badge } from '../Badge'
 import { Header } from '../Header'
 import { Paragraph } from '../Paragraph'
+import { ButtonsSection } from './ButtonsSection'
 import { Category } from './Category'
-import { CompletedBadge } from './CompletedBadge'
 import { DailyLessons } from './DailyLessons'
-import { FinishButton } from './FinishButton'
 import { OptionsButton } from './OptionsButton'
-import { StartButton } from './StartButton'
 
 export interface Props {
   studyplan: Omit<StudyplanSaved, 'id' | 'created_by'> & {
@@ -44,26 +41,16 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
           <div className='flex flex-col gap-3 relative'>
             <Badge>STUDYPLAN</Badge>
             <Header s={3}>{name}</Header>
-            <Paragraph className='w-4/5'>{desc}</Paragraph>
+            <Paragraph className='xl:w-5/6 w-[95%]'>{desc}</Paragraph>
           </div>
 
           <OptionsButton />
         </div>
 
-        {/* Buttons section */}
-        <div className='w-full flex justify-between items-center'>
-          <Category {...{ category }} />
+        <div className='w-full gap-x-16 gap-y-4 flex flex-wrap justify-between'>
+          <Category category={category} />
 
-          <div className='flex gap-4 items-center'>
-            {!usersCurrent ? (
-              <>
-                <BookmarkIcon className='size-9 text-blue-20 stroke-[1.5px]' />
-                {isCompleted ? <CompletedBadge /> : !userHasAnotherStudyplan && <StartButton />}
-              </>
-            ) : (
-              justCompleted && <FinishButton />
-            )}
-          </div>
+          <ButtonsSection {...{ isCompleted, justCompleted, userHasAnotherStudyplan, usersCurrent }} />
         </div>
       </section>
 

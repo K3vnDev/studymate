@@ -6,14 +6,18 @@ interface CategoryProps {
   category: CategoryType
 }
 
-export const Category = ({ category }: CategoryProps) => (
-  <span
-    className={`
+export const Category = ({ category }: CategoryProps) => {
+  const { icon } = getCategoryValues(category)
+
+  return (
+    <span
+      className={`
       text-gray-10 $${FONTS.INTER} font-medium text-lg 
       flex gap-2 items-center text-nowrap
     `}
-  >
-    {getCategoryValues(category).icon}
-    {category}
-  </span>
-)
+    >
+      <div className='*:size-[1.375rem] *:min-w-[1.375rem]'>{icon}</div>
+      {category}
+    </span>
+  )
+}

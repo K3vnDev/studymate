@@ -21,9 +21,9 @@ export const DailyLessons = () => {
 
   return (
     <section className='flex flex-col gap-5'>
-      <div className='flex justify-between items-center'>
-        <Header>Daily Lessons</Header>
-        <span className='flex gap-2 text-gray-10 text-lg items-center'>
+      <div className='flex justify-between items-center gap-x-4 gap-y-1 flex-wrap'>
+        <Header className='text-nowrap'>Daily Lessons</Header>
+        <span className='flex gap-2 text-gray-10 text-lg text-nowrap items-center'>
           <ClockIcon className='size-6' />
           {parseDays(daily_lessons.length)}
         </span>

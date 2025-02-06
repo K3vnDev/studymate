@@ -19,23 +19,26 @@ export const CardMate = ({ message, children, onClick, className }: Props) => {
   return (
     <article
       className={`
-        ${className?.main ?? ''} bg-card-background border border-card-border w-fit max-w-[40rem] 
-        rounded-2xl flex items-center px-8 gap-4 card
+        ${className?.main ?? ''} bg-card-background border border-card-border w-fit lg:max-w-[40rem] max-w-[34rem]
+        rounded-2xl flex items-center sm:px-8 px-6 gap-6 card
       `}
       onClick={onClick ?? prompts.blank}
     >
-      <div className='h-full min-w-40 self-end aspect-square'>
+      <div className='self-end'>
         <Image
           src='/mate/greeting.webp'
           alt={MATE_IMAGES_ALT.GREETING}
           draggable={false}
-          width={150}
+          width={160}
           height={150}
-          className={`${className?.image ?? ''} h-full [scale:1.15] object-cover self-end origin-bottom`}
+          className={`
+            ${className?.image ?? ''} [scale:1.15] object-cover self-end origin-bottom
+            max-w-40 xs:w-40 w-28 aspect-square
+          `}
         />
       </div>
 
-      <main className='flex flex-col gap-5 py-5'>
+      <main className='flex flex-col sm:gap-5 gap-3 xs:py-7 py-4'>
         <Paragraph>{message}</Paragraph>
         <div className='flex gap-2 self-end'>{children}</div>
       </main>

@@ -38,8 +38,8 @@ export const TodaysLesson = ({ day }: Props) => {
         <Paragraph>{desc}</Paragraph>
       </div>
 
-      <div className='flex justify-between items-center mt-6'>
-        <span className='text-white'>Day {day}</span>
+      <div className='flex justify-between items-center mt-6 gap-x-4 gap-y-3 flex-wrap'>
+        <span className='text-white text-nowrap'>Day {day}</span>
         <ChipButton onClick={handleClick}>
           <RocketIcon />
           See today's tasks
