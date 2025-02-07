@@ -1,6 +1,6 @@
 'use client'
 
-import { GalleryStudyplans } from '@components/GalleryStudyplans'
+import { GalleryStudyplans } from '@components/GalleryStudyplans/GalleryStudyplans'
 import { Main } from '@components/Main'
 import { useUserData } from '@hooks/useUserData'
 import { InitialSection } from './InitialSection'
