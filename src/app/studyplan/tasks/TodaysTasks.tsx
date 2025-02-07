@@ -2,8 +2,9 @@ import { CardMate } from '@/components/CardMate'
 import { ChipButton } from '@/components/ChipButton'
 import { Header } from '@/components/Header'
 import { Paragraph } from '@/components/Paragraph'
+import { useResponsiveness } from '@/hooks/useResponsiveness'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
-import { MATE_MESSAGES } from '@consts'
+import { MATE_MESSAGES, SCREENS } from '@consts'
 import { CheckListIcon, MagicWandIcon, MessageIcon } from '@icons'
 import type { UserStudyplan } from '@types'
 import { Task } from './Task'
@@ -13,8 +14,10 @@ type Props = UserStudyplan['daily_lessons'][number]
 export const TodaysTasks = ({ desc, tasks }: Props) => {
   const prompts = useUserPrompts({ redirect: true })
   const allTasksAreDone = tasks.every(t => t.done)
+  const { screenSize } = useResponsiveness()
 
   const mateMessage = allTasksAreDone ? MATE_MESSAGES.TASKS.DONE : MATE_MESSAGES.TASKS.NOT_DONE
+  const showChatButton = screenSize.x >= SCREENS.MD
 
   return (
     <>
@@ -38,9 +41,11 @@ export const TodaysTasks = ({ desc, tasks }: Props) => {
           </ChipButton>
         )}
 
-        <ChipButton onClick={prompts.blank}>
-          <MessageIcon /> Chat
-        </ChipButton>
+        {showChatButton && (
+          <ChipButton onClick={prompts.blank}>
+            <MessageIcon /> Chat
+          </ChipButton>
+        )}
       </CardMate>
 
       <section className='flex flex-col gap-3'>

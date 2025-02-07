@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const ErrorCard = ({ children, className = '' }: Props) => (
-  <div className={`${className} absolute top-1/2 -translate-y-1/2 flex flex-col items-center gap-7`}>
+  <div className={`${className} absolute top-1/2 -translate-y-1/2 flex flex-col items-center sm:gap-7 gap-5`}>
     <Image
       src='/mate/sitting.webp'
       alt={MATE_IMAGES_ALT.SITTING}
@@ -27,11 +27,15 @@ interface MessageProps {
 }
 
 export const Gigant = ({ className = '', children = 'Ooops...' }: MessageProps) => (
-  <span className={`${FONTS.POPPINS} ${className} text-5xl font-bold text-white`}>{children}</span>
+  <span
+    className={`${FONTS.POPPINS} ${className} sm:text-5xl text-4xl font-bold text-center text-balance text-white`}
+  >
+    {children}
+  </span>
 )
 
 export const Message = ({ className = '', children = 'Sorry, there was an error' }: MessageProps) => (
-  <span className={`${FONTS.POPPINS} ${className} text-2xl text-gray-10 text-pretty text-center`}>
+  <span className={`${FONTS.POPPINS} ${className} sm:text-2xl text-xl text-gray-10 text-balance text-center`}>
     {children} :(
   </span>
 )

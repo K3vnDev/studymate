@@ -24,16 +24,13 @@ export const Content = ({ messages }: Props) => {
   }
 
   return (
-    <>
-      <CardMate
-        message={MATE_MESSAGES.MEET}
-        className={{ main: 'absolute top-1/2 -translate-y-[calc(100%+.75rem)]' }}
-      >
+    <div className='absolute top-1/2 -translate-y-[calc(100%+.75rem)]'>
+      <CardMate message={MATE_MESSAGES.MEET}>
         <ChipButton onClick={prompt.createStudyplan} empty>
           <MagicWandIcon />
           Create a studyplan
         </ChipButton>
       </CardMate>
-    </>
+    </div>
   )
 }

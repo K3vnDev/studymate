@@ -19,20 +19,20 @@ export const TileStudyplan = ({ id }: Props) => {
     const { image } = getCategoryValues(category)
 
     return (
-      <li className='flex flex-col w-56 button' title={name}>
+      <li className='flex flex-col w-full button' title={name}>
         <Link href={`/studyplan/${id}`}>
           <Image
             src={`/studyplan/${image}.webp`}
             alt='Studyplan category'
             width={250}
             height={200}
-            className='object-cover w-full h-44 rounded-lg mb-2'
+            className='object-cover w-full h-[11.5rem] rounded-lg mb-2'
             draggable={false}
           />
           <span
             className={`
-            ${FONTS.POPPINS} text-lg text-white w-full inline-block text-nowrap 
-            whitespace-nowrap overflow-hidden text-ellipsis h-7
+              ${FONTS.POPPINS} text-lg text-white w-full inline-block text-nowrap 
+              whitespace-nowrap overflow-hidden text-ellipsis h-7
             `}
           >
             {name}

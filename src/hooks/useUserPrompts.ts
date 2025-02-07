@@ -12,14 +12,17 @@ export const useUserPrompts = (params: Params = { redirect: false }) => {
   useChatMessages()
   const router = useRouter()
 
-  const callback = (message: string) => {
+  const { CREATE_STUDYPLAN, EXPLAIN_TASKS, WHAT_CAN_YOU_DO } = USER_PROMPTS
+
+  const prompt = (message: string) => {
     if (params.redirect) router.push('/chat')
     setHighlihtedMessage(message)
   }
 
   return {
-    createStudyplan: () => callback(USER_PROMPTS.GENERATE_STUDYPLAN),
-    explainTasks: () => callback(USER_PROMPTS.EXPLAIN_TASKS),
-    blank: () => callback('')
+    createStudyplan: () => prompt(CREATE_STUDYPLAN),
+    explainTasks: () => prompt(EXPLAIN_TASKS),
+    whatCanYouDo: () => prompt(WHAT_CAN_YOU_DO),
+    blank: () => prompt('')
   }
 }

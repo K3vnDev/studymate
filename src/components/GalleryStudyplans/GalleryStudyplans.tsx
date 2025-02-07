@@ -1,9 +1,10 @@
+import { useResponsiveness } from '@/hooks/useResponsiveness'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { repeat } from '@/lib/utils/repeat'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import { type UserStore, useUserStore } from '@/store/useUserStore'
 import { Header } from '@components/Header'
-import { CONTENT_JSON } from '@consts'
+import { CONTENT_JSON, SCREENS } from '@consts'
 import type { StudyplanSaved } from '@types'
 import { useEffect } from 'react'
 import { TileStudyplan } from './TileStudyplan'
@@ -12,13 +13,19 @@ import { TileStudyPlanFallback } from './TileStudyplanFallback'
 interface Props {
   title: string
   storeKey: keyof UserStore['studyplansLists']
-  maxItems: number
+  itemsCount: {
+    max: number
+    min: number
+  }
 }
 
-export const GalleryStudyplans = ({ title, storeKey, maxItems }: Props) => {
+export const GalleryStudyplans = ({ title, storeKey, itemsCount }: Props) => {
   const studyplansLists = useUserStore(s => s.studyplansLists)
   const addStudyplans = useStudyplansStore(s => s.addStudyplans)
-  const studyplans = studyplansLists[storeKey]?.slice(0, maxItems)
+  const { screenSize } = useResponsiveness()
+
+  const items_n = screenSize.x >= SCREENS.MD ? itemsCount.max : itemsCount.min
+  const studyplans = studyplansLists[storeKey]?.slice(0, items_n)
 
   useEffect(() => {
     if (!studyplansLists[storeKey]) return
@@ -41,10 +48,10 @@ export const GalleryStudyplans = ({ title, storeKey, maxItems }: Props) => {
       ) : (
         <div className='bg-zinc-700 animate-pulse rounded-lg w-48 h-8' />
       )}
-      <ul className='flex flex-wrap gap-4'>
+      <ul className='grid md:grid-cols-3 grid-cols-2 gap-4'>
         {studyplans
           ? studyplans.map(id => <TileStudyplan key={id} id={id} />)
-          : repeat(maxItems - 1, i => <TileStudyPlanFallback key={i} />)}
+          : repeat(items_n, i => <TileStudyPlanFallback key={i} />)}
       </ul>
     </section>
   )

@@ -99,12 +99,15 @@ export const PROTECTED_ROUTES = [
 ]
 
 // Chat
-export const CHAT_ERROR_MESSAGE = "Sorry, I'm having some trouble right now :("
 export const USER_PROMPTS = {
-  GENERATE_STUDYPLAN: 'Hey Mate, would you help me to create a new studyplan?',
-  EXPLAIN_TASKS: 'Hey Mate, would you help me with my next task of today?'
+  CREATE_STUDYPLAN: 'Hey Mate, would you help me to create a new studyplan?',
+  EXPLAIN_TASKS: 'Hey Mate, would you help me with my next task of today?',
+  WHAT_CAN_YOU_DO: 'Hey Mate, what can you help me with?'
+  // TODO: Make "what's next?" prompt
 }
+export const CHAT_ERROR_MESSAGE = "Sorry, I'm having some trouble right now :("
 
+// Responsive
 export const SCREENS = {
   XS: 576,
   SM: 640,

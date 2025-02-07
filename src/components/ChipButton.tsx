@@ -31,8 +31,8 @@ export const ChipButton = ({
   return (
     <button
       className={`
-        ${className} ${style} border rounded-full py-1 px-5 font-medium text-lg button 
-        flex gap-2 items-center *:size-6 text-nowrap w-fit
+        ${className} ${style} border rounded-full py-1 lg:px-5 px-3 font-medium text-lg button 
+        flex lg:gap-2 gap-1 items-center *:size-6 text-nowrap w-fit
       `}
       onClick={handleClick}
       disabled={disabled || isLoading}
