@@ -11,6 +11,7 @@ import { useUserStudyplan } from '@hooks/useUserStudyplan'
 import { ReloadIcon } from '@icons'
 import { MessagesScreen } from './MessagesScreen'
 import { NoMessagesScreen } from './NoMessagesScreen'
+import { ScrollHelper } from './ScrollHelper'
 
 export default function ChatPage() {
   useUserStudyplan()
@@ -23,18 +24,25 @@ export default function ChatPage() {
     updateScrollOn: [isWaitingResponse, isOnChatError]
   })
 
+  const classNames = {
+    width: `3xl:w-[calc(100vw-22vw-4rem-24rem)] 2xl:w-[calc(100vw-22vw-4rem-16rem)] 
+      xl:w-[calc(100vw-22vw-4rem-8rem)] lg:w-[calc(100vw-16rem)] sm:w-[calc(100vw-4rem)] 
+      xs:w-[calc(100vw-2rem)] w-[calc(100vw-1rem)]`,
+
+    heigth: 'xl:h-[calc(100dvh-3rem)] max-xl:min-h-0 sm:h-[calc(100dvh-5.5rem)] h-[calc(100dvh-5rem)]',
+
+    right: '3xl:right-48 2xl:right-32 xl:right-16 lg:right-32 sm:right-8 xs:right-4 right-2'
+  }
+
   return (
     <ChatContext.Provider value={{ ...chatMessagesValues, ...customScrollValues }}>
       <Main
         className={`
-          items-center flex-col justify-between fixed xl:top-6 sm:top-[5.5rem] top-[5rem]
-          3xl:right-48 2xl:right-32 xl:right-16 lg:right-32 sm:right-8 xs:right-4 right-2 3xl:px-44 lg:px-28 pb-12 pt-0
-          xl:rounded-3xl rounded-b-none xl:border border-b-0
-
-          xl:h-[calc(100dvh-3rem)] max-xl:min-h-0 sm:h-[calc(100dvh-5.5rem)] h-[calc(100dvh-5rem)]
-
-          3xl:w-[calc(100vw-22vw-4rem-12rem*2)] 2xl:w-[calc(100vw-22vw-4rem-8rem*2)] xl:w-[calc(100vw-22vw-4rem-4rem*2)] 
-          lg:w-[calc(100vw-8rem*2)] sm:w-[calc(100vw-2rem*2)] xs:w-[calc(100vw-1rem*2)] w-[calc(100vw-0.5rem*2)]
+          items-center flex-col justify-between fixed 
+          xl:rounded-3xl rounded-b-none xl:border border-b-0 top-6 
+          pt-0 sm:py-0 sm:pb-12 py-0 pb-12 3xl:px-44 lg:px-28 
+          
+          ${classNames.width} ${classNames.heigth} ${classNames.right}
         `}
       >
         {!isOnLoadingError ? (
@@ -53,7 +61,7 @@ export default function ChatPage() {
         )}
       </Main>
 
-      <div className='w-8 bg-transparent pointer-events-none' ref={customScrollValues.scrollRef} />
+      <ScrollHelper scrollRef={customScrollValues.scrollRef} />
     </ChatContext.Provider>
   )
 }

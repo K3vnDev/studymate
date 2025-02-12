@@ -30,7 +30,7 @@ export const useChatCustomScroll = ({ updateScrollOn }: Params) => {
 
       // Apply scroll height
       listRef.current.style.overflowY = 'hidden'
-      scrollRef.current.style.height = `${scrollHeight + listRefBottom + 25}px` // Find out where that 25 comes from
+      scrollRef.current.style.height = `${scrollHeight + listRefBottom}px`
     }
 
     window.addEventListener('resize', recalculateScrollHeight)
