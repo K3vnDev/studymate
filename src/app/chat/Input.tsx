@@ -6,11 +6,14 @@ import { EVENTS } from '@consts'
 import { ChevronIcon } from '@icons'
 import { useContext, useEffect, useRef } from 'react'
 
-export const Input = () => {
+interface Props {
+  className?: string
+}
+
+export const Input = ({ className = '' }: Props) => {
   const highlightedMessage = useChatStore(s => s.highlightedMessage)
   const setHighlihtedMessage = useChatStore(s => s.setHighlihtedMessage)
   const setUserInput = useChatStore(s => s.setUserInput)
-  const messages = useChatStore(s => s.messages)
 
   const { handleSubmit, inputProps, isWaitingResponse } = useContext(ChatContext)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -39,15 +42,11 @@ export const Input = () => {
     inputRef.current.setSelectionRange(length, length)
   }
 
-  const yPosition = messages?.length ? 'bottom-5' : 'bottom-1/2 translate-y-[calc(100%+.75rem)]'
-
   return (
     <GradientBorder
       color='skySalmon'
       className={{
-        main: `absolute ${yPosition} left-1/2 -translate-x-1/2 p-1 rounded-[1.625rem]
-          3xl:w-[calc(100%-11rem*2+0.5rem)] lg:w-[calc(100%-7rem*2+0.5rem)] sm:w-[calc(100%-4rem*2+0.5rem)] 
-          xs:w-[calc(100%-2rem*2+0.5rem)] w-[calc(100%-1rem*2+0.5rem)]`
+        main: `${className} p-1 rounded-[1.625rem]`
       }}
       bouncy
     >

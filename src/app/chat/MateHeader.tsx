@@ -1,7 +1,7 @@
 import { FONTS } from '@consts'
 import { AppIcon } from '@icons'
 
-export const Header = () => (
+export const MateHeader = () => (
   <div
     className={`
       ${FONTS.POPPINS} flex gap-3 items-center text-white absolute xl:top-8 sm:top-4 top-3 left-1/2 -translate-x-1/2

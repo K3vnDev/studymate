@@ -9,9 +9,8 @@ import { useChatCustomScroll } from '@hooks/useChatCustomScroll'
 import { useChatMessages } from '@hooks/useChatMessages'
 import { useUserStudyplan } from '@hooks/useUserStudyplan'
 import { ReloadIcon } from '@icons'
-import { Content } from './Content'
-import { Input } from './Input'
-import { ScrollDownButton } from './ScrollDownButton'
+import { MessagesScreen } from './MessagesScreen'
+import { NoMessagesScreen } from './NoMessagesScreen'
 
 export default function ChatPage() {
   useUserStudyplan()
@@ -40,10 +39,7 @@ export default function ChatPage() {
       >
         {!isOnLoadingError ? (
           <Loadable isLoading={!messages}>
-            <Content {...{ messages }} />
-
-            <Input />
-            <ScrollDownButton />
+            {messages?.length ? <MessagesScreen /> : <NoMessagesScreen />}
           </Loadable>
         ) : (
           <ErrorCard>
