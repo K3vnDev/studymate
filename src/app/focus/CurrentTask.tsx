@@ -10,8 +10,8 @@ import type { UserStudyplan } from '@types'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { Buttons } from './Buttons'
-import { NavigationButton } from './NavigationButton'
-import { Task } from './Task'
+import { TaskTile } from './TaskTile'
+import { TasksNavigation } from './TasksNavigation'
 
 interface Props {
   todaysTasks: UserStudyplan['daily_lessons'][number]['tasks']
@@ -71,8 +71,6 @@ export const CurrentTask = ({ todaysTasks: tasks, isOnLastDay }: Props) => {
     action: newIndex => swapTask(newIndex)
   })
 
-  const asideGap = tasks.length < 4 ? 'gap-5' : tasks.length < 6 ? 'gap-4' : 'gap-2'
-
   return !isShowingCompletedMessage ? (
     <TasksContext.Provider
       value={{
@@ -89,33 +87,28 @@ export const CurrentTask = ({ todaysTasks: tasks, isOnLastDay }: Props) => {
       <article
         className={`
           flex bg-card-background border border-card-border 
-          rounded-2xl px-7 py-6 gap-7 w-[40rem] animate-fade-in-fast
+          rounded-2xl xs:px-7 px-5 xs:py-6 py-5 md:gap-7 gap-4 max-w-[40rem] w-full animate-fade-in-fast
         `}
       >
         <main className='flex flex-col gap-3 w-full'>
           <Badge>CURRENT TASK</Badge>
-
           <ul
             className='w-full flex flex-col h-20 overflow-hidden rounded-lg border border-gray-50'
             ref={ulRef}
           >
             {tasks.map((task, i) => (
-              <Task {...task} key={i} />
+              <TaskTile {...task} key={i} />
             ))}
           </ul>
-
           <Buttons />
         </main>
-        <aside className={`w-4 h-full flex flex-col justify-center ${asideGap}`}>
-          {tasks.map((_, index) => (
-            <NavigationButton key={index} index={index} />
-          ))}
-        </aside>
+        <TasksNavigation />
       </article>
     </TasksContext.Provider>
   ) : (
-    <span className='text-lg text-white/50 text-center mb-1 animate-fade-in-fast'>
-      You have completed all your tasks of today, Good job!
+    <span className='text-lg text-white/50 text-center mb-1 animate-fade-in-fast text-balance'>
+      You have completed all your tasks of today,{' '}
+      <span className='font-semibold text-white/75'>Good job! 🎉</span>
     </span>
   )
 }

@@ -1,5 +1,7 @@
+import { useResponsiveness } from '@/hooks/useResponsiveness'
 import { TasksContext } from '@/lib/context/TasksContext'
 import { ChipButton } from '@components/ChipButton'
+import { SCREENS } from '@consts'
 import { useJustLoaded } from '@hooks/useJustLoaded'
 import { useUserPrompts } from '@hooks/useUserPrompts'
 import { ArrowIcon, CheckIcon, MagicWandIcon, RocketIcon } from '@icons'
@@ -7,8 +9,7 @@ import { useRouter } from 'next/navigation'
 import { useContext } from 'react'
 
 export const Buttons = () => {
-  const { selectedTaskIsDone, isLoading } = useContext(TasksContext)
-  const prompts = useUserPrompts()
+  const { selectedTaskIsDone } = useContext(TasksContext)
 
   return (
     <div className='flex gap-2 self-end'>
@@ -16,14 +17,25 @@ export const Buttons = () => {
         <ProceedButton />
       ) : (
         <>
-          <ChipButton empty disabled={isLoading} onClick={prompts.blank}>
-            <MagicWandIcon /> Explain this task
-          </ChipButton>
-
+          <ExplainTaskButton />
           <CompleteTaskButton />
         </>
       )}
     </div>
+  )
+}
+
+const ExplainTaskButton = () => {
+  const prompts = useUserPrompts()
+  const { isLoading } = useContext(TasksContext)
+
+  const { screenSize } = useResponsiveness()
+  const buttonLabel = screenSize.x >= SCREENS.XS ? 'Explain this task' : 'Explain'
+
+  return (
+    <ChipButton empty disabled={isLoading} onClick={prompts.blank}>
+      <MagicWandIcon /> {buttonLabel}
+    </ChipButton>
   )
 }
 
@@ -65,9 +77,12 @@ const CompleteTaskButton = () => {
   const { selectedTask, completeTask, isLoading } = useContext(TasksContext)
   const justLoaded = useJustLoaded(400, [selectedTask])
 
+  const { screenSize } = useResponsiveness()
+  const buttonLabel = screenSize.x >= SCREENS.XS ? "I'm done" : 'Done'
+
   return (
     <ChipButton onClick={completeTask} disabled={justLoaded || isLoading} isLoading={isLoading}>
-      <CheckIcon className='stroke-[3px]' /> I'm done
+      <CheckIcon className='stroke-[3px]' /> {buttonLabel}
     </ChipButton>
   )
 }
