@@ -26,14 +26,14 @@ export const Buttons = () => {
 }
 
 const ExplainTaskButton = () => {
-  const prompts = useUserPrompts()
+  const prompts = useUserPrompts({ redirect: true })
   const { isLoading } = useContext(TasksContext)
 
   const { screenSize } = useResponsiveness()
   const buttonLabel = screenSize.x >= SCREENS.XS ? 'Explain this task' : 'Explain'
 
   return (
-    <ChipButton empty disabled={isLoading} onClick={prompts.blank}>
+    <ChipButton empty disabled={isLoading} onClick={prompts.explainTasks}>
       <MagicWandIcon /> {buttonLabel}
     </ChipButton>
   )

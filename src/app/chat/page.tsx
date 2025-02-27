@@ -39,8 +39,8 @@ export default function ChatPage() {
       <Main
         className={`
           items-center flex-col justify-between fixed 
-          xl:rounded-3xl rounded-b-none xl:border border-b-0 top-6 
-          pt-0 sm:py-0 sm:pb-12 py-0 pb-12 3xl:px-44 lg:px-28 
+          xl:rounded-3xl rounded-b-none xl:border border-b-0 top-6
+          3xl:px-44 lg:px-28 sm:pb-12 pb-12 sm:pt-0 pt-0 sm:py-0 py-0 
           
           ${classNames.width} ${classNames.heigth} ${classNames.right}
         `}

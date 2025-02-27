@@ -52,8 +52,9 @@ export const Input = ({ className = '' }: Props) => {
     >
       <form
         className={`
-          bg-gray-50 border border-gray-20 rounded-3xl flex px-4 justify-between gap-4 items-center 
-          focus-within:border-[#aaa] [transition:all_.2s_ease] hover:brightness-110
+          flex justify-between items-center md:px-4 px-3 md:gap-4 gap-2
+          bg-gray-50 border border-gray-20 rounded-3xl focus-within:border-[#aaa]
+          [transition:all_.2s_ease] hover:brightness-110
         `}
         onSubmit={handleSubmit}
       >

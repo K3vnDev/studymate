@@ -7,7 +7,7 @@ import { useUserPrompts } from '@/hooks/useUserPrompts'
 import { MATE_MESSAGES, SCREENS } from '@consts'
 import { CheckListIcon, MagicWandIcon, MessageIcon } from '@icons'
 import type { UserStudyplan } from '@types'
-import { Task } from './Task'
+import { TaskTile } from './TaskTile'
 
 type Props = UserStudyplan['daily_lessons'][number]
 
@@ -50,7 +50,7 @@ export const TodaysTasks = ({ desc, tasks }: Props) => {
 
       <section className='flex flex-col gap-3'>
         {tasks.map(({ goal, done }, i) => (
-          <Task {...{ goal, done, index: i }} key={i} />
+          <TaskTile {...{ goal, done, index: i }} key={i} />
         ))}
       </section>
     </>

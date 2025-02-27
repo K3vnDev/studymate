@@ -5,7 +5,7 @@ import { useUserStore } from '@/store/useUserStore'
 import { EVENTS, FONTS } from '@consts'
 import { ErrorIcon, ReloadIcon } from '@icons'
 import type { ChatMessage as ChatMessageType, StudyplanUnSaved } from '@types'
-import { isEqual } from 'lodash'
+import lodash from 'lodash'
 
 interface Props {
   role: ChatMessageType['role'] | 'bubbles'
@@ -13,18 +13,10 @@ interface Props {
 }
 
 export const ChatMessage = ({ role, content }: Props) => {
-  const userStudyplan = useUserStore(s => s.studyplan)
-
   if (typeof content !== 'string') {
-    const studyplan: StudyplanUnSaved = content
-    let userCurrent = false
-
-    if (userStudyplan) {
-      const { original_id, current_day, ...parsedUserStudyplan } = userStudyplan
-      userCurrent = isEqual(parsedUserStudyplan, studyplan)
-    }
-    return <CardStudyplan className='md:max-w-[22rem] max-w-[20rem] w-full' {...{ studyplan, userCurrent }} />
+    return <StudyplanMessage studyplan={content} />
   }
+
   if (role === 'user') {
     return <UserOverlay>{content}</UserOverlay>
   }
@@ -105,3 +97,27 @@ const OverlayBase = ({ className = '', children }: OverlayBaseProps) => (
     {children}
   </li>
 )
+
+interface StudyplanMessageProps {
+  studyplan: StudyplanUnSaved
+}
+
+const StudyplanMessage = ({ studyplan }: StudyplanMessageProps) => {
+  const userStudyplan = useUserStore(s => s.studyplan)
+  let userCurrent = false
+
+  const undoneTasks = (studyplan: StudyplanUnSaved) => {
+    const { daily_lessons, ...studyplanClone } = structuredClone(studyplan)
+
+    return {
+      ...studyplanClone,
+      daily_lessons: daily_lessons.map(d => d.tasks.map(t => ({ ...t, done: false })))
+    }
+  }
+
+  if (userStudyplan) {
+    const { original_id, current_day, ...parsedUserStudyplan } = userStudyplan
+    userCurrent = lodash.isEqual(undoneTasks(parsedUserStudyplan), undoneTasks(studyplan))
+  }
+  return <CardStudyplan className='md:max-w-[22rem] max-w-[20rem] w-full' {...{ studyplan, userCurrent }} />
+}
