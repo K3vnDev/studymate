@@ -12,7 +12,7 @@ export const useUserPrompts = (params: Params = { redirect: false }) => {
   useChatMessages()
   const router = useRouter()
 
-  const { CREATE_STUDYPLAN, EXPLAIN_TASKS, WHAT_CAN_YOU_DO } = USER_PROMPTS
+  const { CREATE_STUDYPLAN, EXPLAIN_TASKS, WHAT_CAN_YOU_DO, WHATS_NEXT } = USER_PROMPTS
 
   const prompt = (message: string) => {
     if (params.redirect) router.push('/chat')
@@ -23,6 +23,7 @@ export const useUserPrompts = (params: Params = { redirect: false }) => {
     createStudyplan: () => prompt(CREATE_STUDYPLAN),
     explainTasks: () => prompt(EXPLAIN_TASKS),
     whatCanYouDo: () => prompt(WHAT_CAN_YOU_DO),
+    whatsNext: () => prompt(WHATS_NEXT),
     blank: () => prompt('')
   }
 }

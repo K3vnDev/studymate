@@ -32,7 +32,7 @@ export const TodaysTasks = ({ desc, tasks }: Props) => {
 
       <CardMate message={mateMessage}>
         {allTasksAreDone ? (
-          <ChipButton empty onClick={prompts.blank}>
+          <ChipButton empty onClick={prompts.whatsNext}>
             <MagicWandIcon /> What's next?
           </ChipButton>
         ) : (
