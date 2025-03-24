@@ -45,15 +45,15 @@ export const Alert = () => {
   return (
     <div
       className={`
-        ${opacity} ${pointerEvents} fixed bg-black/30 top-0 left-0 w-screen h-screen z-30 
-        flex justify-center items-center transition duration-200
+        ${opacity} ${pointerEvents} fixed bg-black/40 top-0 left-0 w-screen h-screen z-30 
+        flex justify-center items-center transition duration-200 px-6
       `}
       onPointerDown={visibility.hide}
     >
       <div
         className={`
-          ${opacity} ${scale} bg-gray-40 border border-gray-30 rounded-xl px-10 py-6 flex 
-          flex-col gap-6 shadow-card w-min transition duration-200
+          ${opacity} ${scale} bg-gray-40 border border-gray-30 rounded-xl xs:px-10 px-6 xs:py-6 py-7 flex 
+          flex-col gap-6 shadow-card w-min max-w-full transition duration-200
         `}
         onPointerDown={e => e.stopPropagation()}
       >
@@ -62,8 +62,8 @@ export const Alert = () => {
           <Paragraph>{message}</Paragraph>
         </div>
 
-        <section className='flex gap-4 w-fit flex-nowrap'>
-          <Button className='text-gray-10 border-gray-10' onClick={handleReject}>
+        <section className='flex gap-4 w-fit xs:flex-nowrap flex-wrap'>
+          <Button className='text-gray-10/90 border-gray-10/90' onClick={handleReject}>
             <CrossIcon /> Cancel
           </Button>
 
@@ -102,7 +102,7 @@ const Button = ({ children, className = '', disabled = false, onClick = () => {}
   return (
     <button
       className={`
-        ${className} ${FONTS.INTER} px-5 py-2 rounded-lg border text-lg font-bold button 
+        ${className} ${FONTS.INTER} xs:px-5 px-3 py-2 rounded-lg border text-lg font-bold button 
         hover:brightness-150 active:brightness-75 flex flex-nowrap text-nowrap items-center gap-1.5 *:size-6
       `}
       disabled={disabled || isLoading}
