@@ -25,9 +25,9 @@ export default function ChatPage() {
   })
 
   const classNames = {
-    width: `3xl:w-[calc(100vw-22vw-4rem-24rem)] 2xl:w-[calc(100vw-22vw-4rem-16rem)] 
-      xl:w-[calc(100vw-22vw-4rem-8rem)] lg:w-[calc(100vw-16rem)] sm:w-[calc(100vw-4rem)] 
-      xs:w-[calc(100vw-2rem)] w-[calc(100vw-1rem)]`,
+    width: `3xl:max-w-[calc(100vw-22vw-4rem-24rem)] 2xl:max-w-[calc(100vw-22vw-4rem-16rem)] 
+      xl:max-w-[calc(100vw-22vw-4rem-8rem)] lg:max-w-[calc(100vw-16rem)] sm:max-w-[calc(100vw-4rem)] 
+      xs:max-w-[calc(100vw-3rem)] max-w-[calc(100vw-1rem)]`,
 
     heigth: 'xl:h-[calc(100dvh-3rem)] max-xl:min-h-0 sm:h-[calc(100dvh-5.5rem)] h-[calc(100dvh-5rem)]',
 

@@ -5,10 +5,13 @@ export interface UserStore {
   studyplan: UserStudyplan | null | undefined
   setStudyplan: (studyplan: UserStudyplan | null) => void
 
+  isLoadingData: boolean
+  setIsLoadingData: (isLoading: boolean) => void
+
   setTaskDone: (index: number, value: boolean) => void
 
   studyplansLists: {
-    recomended?: string[]
+    recommended?: string[]
     completed?: string[]
     saved?: string[]
   }
@@ -22,6 +25,9 @@ export interface UserStore {
 export const useUserStore = create<UserStore>(set => ({
   studyplan: undefined,
   setStudyplan: value => set(() => ({ studyplan: value })),
+
+  isLoadingData: false,
+  setIsLoadingData: isLoading => set(() => ({ isLoadingData: isLoading })),
 
   setTaskDone: (index, value) =>
     set(({ studyplan }) => {

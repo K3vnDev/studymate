@@ -1,7 +1,7 @@
 'use client'
 
 import { useStudyplansStore } from '@/store/useStudyplansStore'
-import { BGPoint, Background } from '@components/Background'
+import { BlurredPoint, Background } from '@/components/Background/Background'
 import { Main } from '@components/Main'
 import { Sidebar } from '@components/Sidebar'
 import { Studyplan } from '@components/Studyplan/Studyplan'

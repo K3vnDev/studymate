@@ -1,14 +1,17 @@
+'use client'
+
 import { useResponsiveness } from '@/hooks/useResponsiveness'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { repeat } from '@/lib/utils/repeat'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
-import { type UserStore, useUserStore } from '@/store/useUserStore'
+import type { UserStore } from '@/store/useUserStore'
 import { Header } from '@components/Header'
 import { CONTENT_JSON, SCREENS } from '@consts'
 import type { StudyplanSaved } from '@types'
 import { useEffect } from 'react'
 import { TileStudyplan } from './TileStudyplan'
 import { TileStudyPlanFallback } from './TileStudyplanFallback'
+import { useUserData } from '@/hooks/useUserData'
 
 interface Props {
   title: string
@@ -20,9 +23,9 @@ interface Props {
 }
 
 export const GalleryStudyplans = ({ title, storeKey, itemsCount }: Props) => {
-  const studyplansLists = useUserStore(s => s.studyplansLists)
   const addStudyplans = useStudyplansStore(s => s.addStudyplans)
   const { screenSize } = useResponsiveness()
+  const { lists: studyplansLists } = useUserData()
 
   const items_n = screenSize.x >= SCREENS.MD ? itemsCount.max : itemsCount.min
   const studyplans = studyplansLists[storeKey]?.slice(0, items_n)

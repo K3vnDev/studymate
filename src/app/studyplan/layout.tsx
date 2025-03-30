@@ -1,4 +1,5 @@
-import { BGPoint, Background } from '@components/Background'
+import { Background } from '@components/Background/Background'
+import { BlurredPoint } from '@components/Background/BlurredPoint'
 
 export default function RootLayout({
   children
@@ -10,9 +11,9 @@ export default function RootLayout({
       {children}
 
       <Background>
-        <BGPoint margin={20} className='bg-blue-30/5' pos='left-bottom' />
-        <BGPoint className='bg-blue-30/15' pos='center-top' />
-        <BGPoint margin={20} className='bg-blue-30/5' pos='right-bottom' />
+        <BlurredPoint margin={20} className='bg-blue-30/5' pos='left-bottom' />
+        <BlurredPoint className='bg-blue-30/15' pos='center-top' />
+        <BlurredPoint margin={20} className='bg-blue-30/5' pos='right-bottom' />
       </Background>
     </>
   )

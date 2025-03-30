@@ -1,4 +1,4 @@
-import type { DBStudyplansLists } from '@/types'
+import type { DBStudyplansLists } from '@types'
 import { Response } from '@api/utils/Response'
 import { databaseQuery } from '@api/utils/databaseQuery'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
