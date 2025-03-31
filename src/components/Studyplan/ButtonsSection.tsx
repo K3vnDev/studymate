@@ -1,23 +1,14 @@
 import { BookmarkIcon } from '@icons'
-import { useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { CompletedBadge } from './CompletedBadge'
 import { FinishButton } from './FinishButton'
 import { StartButton } from './StartButton'
+import { StudyplanContext } from '@/lib/context/StudyplanContext'
+import { SaveButton } from './SaveButton'
 
-interface Props {
-  usersCurrent: boolean
-  isCompleted: boolean
-  userHasAnotherStudyplan: boolean
-  justCompleted: boolean
-}
-
-export const ButtonsSection = ({
-  usersCurrent,
-  isCompleted,
-  userHasAnotherStudyplan,
-  justCompleted
-}: Props) => {
+export const ButtonsSection = () => {
   const ref = useRef<HTMLDivElement>(null)
+  const { usersCurrent, isCompleted, justCompleted, userHasAnotherStudyplan } = useContext(StudyplanContext)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -47,7 +38,7 @@ export const ButtonsSection = ({
     <div className='flex justify-end gap-4' ref={ref}>
       {!usersCurrent ? (
         <>
-          <BookmarkIcon className='size-9 min-w-9 text-blue-20 stroke-[1.5px]' />
+          <SaveButton />
           {isCompleted ? <CompletedBadge /> : !userHasAnotherStudyplan && <StartButton />}
         </>
       ) : (

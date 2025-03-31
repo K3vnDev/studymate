@@ -172,7 +172,7 @@ export const PUT = async () => {
   }
 
   try {
-    await modifyStudyplansLists({ supabase, id: originalId, key: 'completed', userId }).add()
+    await modifyStudyplansLists({ supabase, modifyId: originalId, key: 'completed', userId }).add()
     return Response(true, 200, { data: originalId })
   } catch {
     return Response(false, 500)

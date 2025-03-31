@@ -7,14 +7,14 @@ interface Params {
   supabase?: SupabaseClient<any, 'public', any>
   userId: string
   key: keyof DBStudyplansLists['studyplans_lists']
-  id: string
+  modifyId: string
 }
 
 export const modifyStudyplansLists = ({
   supabase = createServerComponentClient({ cookies }),
   userId,
   key,
-  id
+  modifyId
 }: Params) => {
   // Get studyplans list
   const getStudyplansList = async () => {
@@ -29,20 +29,22 @@ export const modifyStudyplansLists = ({
   return {
     add: async () => {
       const studyplansLists = await getStudyplansList()
-      const alreadyExists = studyplansLists[key].find(k => k === id)
-      if (alreadyExists) return
+      const existingIndex = studyplansLists[key].findIndex(k => k === modifyId)
+      if (existingIndex !== -1) return false
 
-      studyplansLists[key].push(id)
+      studyplansLists[key].push(modifyId)
       await saveChanges(studyplansLists)
+      return true
     },
 
     remove: async () => {
       const studyplansLists = await getStudyplansList()
-      const index = studyplansLists[key].findIndex(k => k === id)
-      if (index === -1) return
+      const existingIndex = studyplansLists[key].findIndex(k => k === modifyId)
+      if (existingIndex === -1) return false
 
-      studyplansLists[key].splice(index, 1)
+      studyplansLists[key].splice(existingIndex, 1)
       await saveChanges(studyplansLists)
+      return true
     }
   }
 }

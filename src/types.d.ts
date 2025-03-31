@@ -13,7 +13,7 @@ export type ChatMessage =
     }
   | {
       role: 'studyplan'
-      content: StudyplanUnsavedSchema
+      content: ChatStudyplan
     }
 
 export interface AlertData {
@@ -67,3 +67,12 @@ export type DBUserStudyplan = {
 export type UserStudyplan = {
   current_day: number
 } & DBUserStudyplan
+
+export type ChatStudyplan = {
+  original_id: string | null
+} & StudyplanUnSaved
+
+export interface DBChatWithMate {
+  role: 'user' | 'assistant' | 'studyplan'
+  content: string
+}

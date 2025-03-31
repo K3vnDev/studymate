@@ -19,7 +19,13 @@ export interface UserStore {
     callback: (studyplans: UserStore['studyplansLists']) => UserStore['studyplansLists']
   ) => void
 
-  addToCompletedList: (id: string) => void
+  modifyStudyplansList: (
+    modifyId: string,
+    listKey: keyof UserStore['studyplansLists']
+  ) => {
+    add: (placeAtStart?: boolean) => void
+    remove: () => void
+  }
 }
 
 export const useUserStore = create<UserStore>(set => ({
@@ -45,14 +51,38 @@ export const useUserStore = create<UserStore>(set => ({
       return { studyplansLists: callback({ ...studyplans }) }
     }),
 
-  addToCompletedList: id =>
-    set(({ studyplansLists }) => {
-      const { completed } = { ...studyplansLists }
-      if (!completed) return {}
+  modifyStudyplansList: (id, key) => {
+    const getValues = (ogLists: UserStore['studyplansLists']) => {
+      const lists = { ...ogLists }
+      const list = lists[key]
+      const index = list?.findIndex(listId => listId === id) ?? -1
+      return { lists, list, index }
+    }
 
-      const doesntExistAlready = !completed.some(completedId => completedId === id)
-      if (doesntExistAlready) completed.push(id)
+    return {
+      add: (placeAtStart = false) =>
+        set(({ studyplansLists }) => {
+          const { lists, list, index } = getValues(studyplansLists)
+          if (!list || index !== -1) return {}
 
-      return { studyplansLists: { ...studyplansLists, completed } }
-    })
+          // Add id to the start or the end of the list
+          if (placeAtStart) list.unshift(id)
+          else list.push(id)
+
+          lists[key] = list
+          return { studyplansLists: lists }
+        }),
+      remove: () =>
+        set(({ studyplansLists }) => {
+          const { lists, list, index } = getValues(studyplansLists)
+          if (!list || index === -1) return {}
+
+          // Remove id from the list
+          list.splice(index, 1)
+
+          lists[key] = list
+          return { studyplansLists: lists }
+        })
+    }
+  }
 }))

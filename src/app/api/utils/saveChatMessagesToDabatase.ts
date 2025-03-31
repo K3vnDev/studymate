@@ -39,8 +39,6 @@ export const saveChatMessagesToDatabase = async ({
       .from('users')
       .update([{ chat_with_mate: messagesToInsert }])
       .eq('id', userId)
-
-    return
   } catch {
     throw new Error()
   }

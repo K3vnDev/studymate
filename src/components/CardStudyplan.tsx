@@ -7,11 +7,11 @@ import { GradientBorder } from '@components/GradientBorder'
 import { Header } from '@components/Header'
 import { Paragraph } from '@components/Paragraph'
 import { ClockIcon, RocketIcon } from '@icons'
-import type { StudyplanUnSaved, UserStudyplan } from '@types'
+import type { ChatStudyplan, StudyplanUnSaved, UserStudyplan } from '@types'
 import { useRouter } from 'next/navigation'
 
 interface Props {
-  studyplan: StudyplanUnSaved | UserStudyplan
+  studyplan: StudyplanUnSaved | UserStudyplan | ChatStudyplan
   userCurrent?: boolean
   className?: string
 }

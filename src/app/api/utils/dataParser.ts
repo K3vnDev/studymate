@@ -1,6 +1,8 @@
 import { MATE_VALUES } from '@consts'
 import type {
   ChatMessage,
+  ChatStudyplan,
+  DBChatWithMate,
   DBCurrentStudyplanDay,
   DBUserStudyplanAndCurrentDayResponse,
   MateResponseSchema,
@@ -23,9 +25,10 @@ export const dataParser = {
       if (type === 'message') {
         return { role: 'assistant', content: data }
       }
-      // Remove extra daily lessons (beware, this could be avoided on other ends)
+      // Remove extra daily lessons and set the original_id to null
       const slicedDailyLessons = data.daily_lessons.slice(0, MATE_VALUES.STUDYPLAN.MAX_DAYS)
-      return { role: 'studyplan', content: { ...data, daily_lessons: slicedDailyLessons } }
+      const content: ChatStudyplan = { ...data, original_id: null, daily_lessons: slicedDailyLessons }
+      return { role: 'studyplan', content }
     }),
 
   fromClientMessagesToModelPrompt: (messages: PromptRequestSchema['messages']['previous']) =>
@@ -42,12 +45,14 @@ export const dataParser = {
     return { day, last_updated }
   },
 
-  fromStudyplansInClientMessages: (messages: ChatMessage[]) => {
+  fromStudyplansInClientMessages: (messages: ChatMessage[] | DBChatWithMate[]) => {
     const parse = (action: typeof JSON.parse | typeof JSON.stringify) =>
-      messages.map(({ role, content }) =>
-        role === 'studyplan' ? { role, content: action(content) } : { role, content }
-      )
-
+      messages.map(msg => {
+        if (msg.role === 'studyplan') {
+          return { ...msg, content: action(msg.content as any) }
+        }
+        return msg
+      })
     return {
       toStringified: () => parse(JSON.stringify),
       toObject: () => parse(JSON.parse)

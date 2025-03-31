@@ -17,7 +17,7 @@ interface Params {
 export const useUserStudyplan = (params?: Params) => {
   const userStudyplan = useUserStore(s => s.studyplan)
   const setUserStudyplan = useUserStore(s => s.setStudyplan)
-  const addToCompletedList = useUserStore(s => s.addToCompletedList)
+  const modifyStudyplansList = useUserStore(s => s.modifyStudyplansList)
   const stateStudyplan = useStudyplansStore(s => s.studyplan)
 
   const onUser = useOnUser()
@@ -84,7 +84,7 @@ export const useUserStudyplan = (params?: Params) => {
           afterTimeout: throwConfetti,
           gone: () => {
             setUserStudyplan(null)
-            addToCompletedList(id)
+            modifyStudyplansList(id, 'completed').add()
           }
         })
     })
