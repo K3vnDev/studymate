@@ -11,7 +11,7 @@ interface Params {
   supabase: SupabaseClient
 }
 
-export const saveChatMessagesToDatabase = async ({
+export const saveNewChatMessagesToDatabase = async ({
   userMessage,
   assistantMessages,
   userId,

@@ -17,7 +17,7 @@ export default function ChatPage() {
   useUserStudyplan()
   const messages = useChatStore(s => s.messages)
 
-  const { loadPreviousMessages, ...chatMessagesValues } = useChatMessages()
+  const chatMessagesValues = useChatMessages()
   const { isWaitingResponse, isOnChatError, isOnLoadingError } = chatMessagesValues
 
   const customScrollValues = useChatCustomScroll({
@@ -53,7 +53,7 @@ export default function ChatPage() {
           <ErrorCard>
             <Gigant>Ooops...</Gigant>
             <Message>Sorry, couldn't load your messages</Message>
-            <Button onClick={loadPreviousMessages}>
+            <Button onClick={chatMessagesValues.loadPreviousMessages}>
               <ReloadIcon className='size-7 group-active:rotate-90 transition' />
               Try again
             </Button>

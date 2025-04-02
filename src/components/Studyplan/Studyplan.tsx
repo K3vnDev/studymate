@@ -20,6 +20,7 @@ export interface Props {
     id?: string | null
     created_by?: string | null
     original_id?: string | null
+    chat_message_id?: string | null
   }
   usersCurrent?: boolean
 }

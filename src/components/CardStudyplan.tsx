@@ -13,10 +13,11 @@ import { useRouter } from 'next/navigation'
 interface Props {
   studyplan: StudyplanUnSaved | UserStudyplan | ChatStudyplan
   userCurrent?: boolean
+  inChat?: boolean
   className?: string
 }
 
-export const CardStudyplan = ({ studyplan, userCurrent = false, className = '' }: Props) => {
+export const CardStudyplan = ({ studyplan, userCurrent = false, inChat = false, className = '' }: Props) => {
   const setStudyplan = useStudyplansStore(s => s.setStudyplan)
   const userStudyplan = useUserStore(s => s.studyplan)
 
@@ -25,6 +26,11 @@ export const CardStudyplan = ({ studyplan, userCurrent = false, className = '' }
 
   const handleClick = () => {
     setStudyplan(studyplan)
+
+    if (inChat && !userCurrent && 'original_id' in studyplan && studyplan.original_id) {
+      router.push(`/studyplan/${studyplan.original_id}`)
+      return
+    }
     router.push(userCurrent ? '/studyplan' : '/chat/studyplan')
   }
 

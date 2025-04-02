@@ -11,7 +11,10 @@ export const PromptRequestSchema = z.object({
         }),
         z.object({
           role: z.enum(['studyplan']),
-          content: StudyplanSchema
+          content: StudyplanSchema.extend({
+            original_id: z.string().uuid().nullable(),
+            chat_message_id: z.string().nullable()
+          })
         })
       ])
     ),

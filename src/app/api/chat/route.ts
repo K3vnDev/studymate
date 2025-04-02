@@ -3,10 +3,10 @@ import { Response } from '@api/utils/Response'
 import { getPrevChatMessages } from '@api/utils/getPrevChatMessages'
 import { getUserId } from '@api/utils/getUserId'
 import { promptAIModel } from '@api/utils/promptAIModel'
-import { saveChatMessagesToDatabase } from '@api/utils/saveChatMessagesToDabatase'
+import { saveNewChatMessagesToDatabase as saveNewChatMessagesToDatabase } from '@/app/api/utils/saveNewChatMessagesToDabatase'
 import { PromptRequestSchema } from '@schemas/PromptRequest'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import type { PromptRequestSchema as PromptRequestSchemaType } from '@types'
+import type { ChatMessage, PromptRequestSchema as PromptRequestSchemaType } from '@types'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import type { ChatCompletionMessageParam } from 'openai/src/resources/index.js'
@@ -63,9 +63,41 @@ export const POST = async (req: NextRequest) => {
     const assistantMessages = dataParser.fromModelResponseToClientMessages(assistantResponses)
 
     // Save messages to database
-    saveChatMessagesToDatabase({ supabase, assistantMessages, userMessage, userId })
+    saveNewChatMessagesToDatabase({ supabase, assistantMessages, userMessage, userId })
 
     return Response(true, 201, { data: assistantMessages })
+  } catch {
+    return Response(false, 500)
+  }
+}
+
+// Save messages to database
+export const PATCH = async (req: NextRequest) => {
+  const supabase = createServerComponentClient({ cookies })
+
+  // Check if user is logged in
+  const userId = await getUserId({ supabase })
+  if (userId === null) return Response(false, 401)
+
+  let chatMessages: ChatMessage[]
+
+  try {
+    const reqBody = await req.json()
+    const parsedMessages = await PromptRequestSchema.shape.messages.shape.previous.parseAsync(reqBody)
+    chatMessages = parsedMessages
+  } catch {
+    return Response(false, 400, { msg: 'Messages are missing or invalid' })
+  }
+
+  try {
+    const parsedMessages = dataParser.fromStudyplansInClientMessages(chatMessages).toStringified()
+
+    await supabase
+      .from('users')
+      .update([{ chat_with_mate: parsedMessages }])
+      .eq('id', userId)
+
+    return Response(true, 200)
   } catch {
     return Response(false, 500)
   }

@@ -53,6 +53,7 @@ export interface DBStudyplansLists {
 export type MateResponseSchema = z.infer<typeof MateResponseSchemaType>
 export type PromptRequestSchema = z.infer<typeof PromptRequestSchemaType>
 
+// Studyplan Shemas
 export type StudyplanUnSaved = z.infer<typeof StudyplanSchemaType>
 
 export type StudyplanSaved = {
@@ -70,6 +71,7 @@ export type UserStudyplan = {
 
 export type ChatStudyplan = {
   original_id: string | null
+  chat_message_id: string | null
 } & StudyplanUnSaved
 
 export interface DBChatWithMate {

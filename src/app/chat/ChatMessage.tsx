@@ -4,8 +4,7 @@ import { repeat } from '@/lib/utils/repeat'
 import { useUserStore } from '@/store/useUserStore'
 import { EVENTS, FONTS } from '@consts'
 import { ErrorIcon, ReloadIcon } from '@icons'
-import type { ChatMessage as ChatMessageType, StudyplanUnSaved } from '@types'
-import lodash from 'lodash'
+import type { ChatMessage as ChatMessageType, ChatStudyplan } from '@types'
 
 interface Props {
   role: ChatMessageType['role'] | 'bubbles'
@@ -99,25 +98,19 @@ const OverlayBase = ({ className = '', children }: OverlayBaseProps) => (
 )
 
 interface StudyplanMessageProps {
-  studyplan: StudyplanUnSaved
+  studyplan: ChatStudyplan
 }
 
 const StudyplanMessage = ({ studyplan }: StudyplanMessageProps) => {
   const userStudyplan = useUserStore(s => s.studyplan)
   let userCurrent = false
 
-  const undoneTasks = (studyplan: StudyplanUnSaved) => {
-    const { daily_lessons, ...studyplanClone } = structuredClone(studyplan)
+  userCurrent = studyplan.original_id === userStudyplan?.original_id
 
-    return {
-      ...studyplanClone,
-      daily_lessons: daily_lessons.map(d => d.tasks.map(t => ({ ...t, done: false })))
-    }
-  }
-
-  if (userStudyplan) {
-    const { original_id, current_day, ...parsedUserStudyplan } = userStudyplan
-    userCurrent = lodash.isEqual(undoneTasks(parsedUserStudyplan), undoneTasks(studyplan))
-  }
-  return <CardStudyplan className='md:max-w-[22rem] max-w-[20rem] w-full' {...{ studyplan, userCurrent }} />
+  return (
+    <CardStudyplan
+      className='md:max-w-[22rem] max-w-[20rem] w-full'
+      {...{ studyplan, userCurrent, inChat: true }}
+    />
+  )
 }

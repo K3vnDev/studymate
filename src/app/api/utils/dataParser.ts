@@ -27,7 +27,12 @@ export const dataParser = {
       }
       // Remove extra daily lessons and set the original_id to null
       const slicedDailyLessons = data.daily_lessons.slice(0, MATE_VALUES.STUDYPLAN.MAX_DAYS)
-      const content: ChatStudyplan = { ...data, original_id: null, daily_lessons: slicedDailyLessons }
+      const content: ChatStudyplan = {
+        ...data,
+        daily_lessons: slicedDailyLessons,
+        original_id: null,
+        chat_message_id: null
+      }
       return { role: 'studyplan', content }
     }),
 

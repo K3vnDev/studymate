@@ -1,5 +1,8 @@
+import { saveNewChatMessagesToDatabase } from '@/app/api/utils/saveNewChatMessagesToDabatase'
 import { dataFetch } from '@/lib/utils/dataFetch'
+import { saveChatToDatabase } from '@/lib/utils/saveChatToDatabase'
 import { throwConfetti } from '@/lib/utils/throwConfetti'
+import { useChatStore } from '@/store/useChatStore'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import { useUserStore } from '@/store/useUserStore'
 import { CONTENT_JSON } from '@consts'
@@ -19,6 +22,8 @@ export const useUserStudyplan = (params?: Params) => {
   const setUserStudyplan = useUserStore(s => s.setStudyplan)
   const modifyStudyplansList = useUserStore(s => s.modifyStudyplansList)
   const stateStudyplan = useStudyplansStore(s => s.studyplan)
+  const setChatStudyplanOriginalId = useChatStore(s => s.setStudyplanOriginalId)
+  const chatMessages = useChatStore(s => s.messages)
 
   const onUser = useOnUser()
   const router = useRouter()
@@ -56,9 +61,21 @@ export const useUserStudyplan = (params?: Params) => {
   const start = () =>
     dataFetchHandler<UserStudyplan>({
       url: '/api/user/studyplan',
-      options: { method: 'POST', headers: CONTENT_JSON, body: JSON.stringify(stateStudyplan) },
-      onSuccess: data => {
-        setUserStudyplan(data)
+      options: {
+        method: 'POST',
+        headers: CONTENT_JSON,
+        body: JSON.stringify(stateStudyplan)
+      },
+      onSuccess: newStudyplan => {
+        // Set the new studyplan as the user's current
+        setUserStudyplan(newStudyplan)
+        // Set the original_id in the state studyplan
+        if (stateStudyplan && 'chat_message_id' in stateStudyplan && stateStudyplan.chat_message_id) {
+          setChatStudyplanOriginalId(stateStudyplan.chat_message_id, newStudyplan.original_id, newMessages =>
+            saveChatToDatabase(newMessages)
+          )
+        }
+        // Go to the new studyplan page
         onUser({ stayed: () => router.replace('/studyplan') })
       }
     })

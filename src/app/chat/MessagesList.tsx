@@ -14,8 +14,8 @@ export const MessagesList = () => {
       className='w-full max-h-full flex flex-col gap-4 pb-20 pt-32 overflow-hidden animate-fade-in-fast'
       ref={listRef}
     >
-      {messages.map((chatMessage, i) => (
-        <ChatMessage {...chatMessage} key={i} />
+      {messages.map((message, i) => (
+        <ChatMessage {...message} key={i} />
       ))}
       {isWaitingResponse && <ChatMessage role='bubbles' content='' />}
       {isOnChatError && <ChatMessage role='error' content={CHAT_ERROR_MESSAGE} />}

@@ -13,6 +13,7 @@ interface ChatContext {
   listRef: React.MutableRefObject<any>
   scrollRef: React.MutableRefObject<any>
   scrollIsOnBottom: boolean
+  loadPreviousMessages: () => void
 }
 
 export const ChatContext = createContext<ChatContext>({
@@ -27,5 +28,6 @@ export const ChatContext = createContext<ChatContext>({
   },
   listRef: { current: null },
   scrollRef: { current: null },
-  scrollIsOnBottom: true
+  scrollIsOnBottom: true,
+  loadPreviousMessages: () => {}
 })

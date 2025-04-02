@@ -1,15 +1,15 @@
-import type { StudyplanSaved, StudyplanUnSaved, UserStudyplan } from '@types'
+import type { ChatStudyplan, StudyplanSaved, StudyplanUnSaved, UserStudyplan } from '@types'
 import { create } from 'zustand'
 
 export interface StudyplansStore {
-  studyplan: StudyplanSaved | StudyplanUnSaved | UserStudyplan | null
+  studyplan: StudyplanSaved | StudyplanUnSaved | UserStudyplan | ChatStudyplan | null
   setStudyplan: (value: StudyplansStore['studyplan']) => void
 
   studyplans: StudyplanSaved[]
   addStudyplans: (...values: StudyplanSaved[]) => void
 }
 
-export const useStudyplansStore = create<StudyplansStore>((set, get) => ({
+export const useStudyplansStore = create<StudyplansStore>(set => ({
   studyplan: null,
   setStudyplan: value => set(() => ({ studyplan: value })),
 

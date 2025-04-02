@@ -4,18 +4,20 @@ import { StudyplanContext } from '@/lib/context/StudyplanContext'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { CONTENT_JSON } from '@/consts'
 import { useUserStore } from '@/store/useUserStore'
+import { useChatStore } from '@/store/useChatStore'
+import { saveChatToDatabase } from '@/lib/utils/saveChatToDatabase'
 
 export const SaveButton = () => {
   const { studyplan, isSaved: studyplanIsSaved, publicId } = useContext(StudyplanContext)
   const [visualSaved, setVisualSaved] = useState(studyplanIsSaved)
   const [isLoading, setIsLoading] = useState(false)
   const modifyStudyplansList = useUserStore(s => s.modifyStudyplansList)
+  const setChatStudyplanOriginalId = useChatStore(s => s.setStudyplanOriginalId)
 
   const handleSave = (isSaving: boolean) => {
     if (!publicId) {
       if (isSaving) {
         // Create a new studyplan and save it
-        console.log('Creating a new studyplan and saving it...')
         setIsLoading(true)
         dataFetch<string>({
           url: '/api/user/lists/save',
@@ -25,11 +27,14 @@ export const SaveButton = () => {
             body: JSON.stringify(studyplan)
           },
           onSuccess: savedId => {
-            console.log('Studyplan saved with id:', savedId)
             setVisualSaved(true)
             modifyStudyplansList(savedId, 'saved').add(true)
 
-            // TODO: Update chat studyplan with the new original_id
+            if (studyplan.chat_message_id) {
+              setChatStudyplanOriginalId(studyplan.chat_message_id, savedId, newMessages =>
+                saveChatToDatabase(newMessages)
+              )
+            }
           },
           onFinish: () => setIsLoading(false)
         })
@@ -38,7 +43,6 @@ export const SaveButton = () => {
     }
 
     // Save or un-save an existing studyplan
-    console.log(`${isSaving ? 'saving' : 'unsaving'} studyplan...`)
     setIsLoading(true)
     dataFetch({
       url: '/api/user/lists/save',
@@ -53,13 +57,11 @@ export const SaveButton = () => {
       onSuccess: () => {
         setVisualSaved(isSaving)
 
-        console.log(`Studyplan ${isSaving ? 'saved' : 'unsaved'} with id ${publicId}`)
-
         if (isSaving) {
           modifyStudyplansList(publicId, 'saved').add(true)
-        } else {
-          modifyStudyplansList(publicId, 'saved').remove()
+          return
         }
+        modifyStudyplansList(publicId, 'saved').remove()
       },
       onFinish: () => setIsLoading(false)
     })
