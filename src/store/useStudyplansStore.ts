@@ -17,11 +17,11 @@ export const useStudyplansStore = create<StudyplansStore>(set => ({
 
   addStudyplans: (...newStudyplans) =>
     set(({ studyplans }) => {
-      const clonedStudyplans = [...studyplans]
+      const clonedStudyplans = structuredClone(studyplans)
 
-      newStudyplans.forEach(studyplan => {
-        if (!clonedStudyplans.some(({ id }) => id === studyplan.id)) {
-          clonedStudyplans.push(studyplan)
+      newStudyplans.forEach(addingStudyplan => {
+        if (!clonedStudyplans.some(({ id }) => id === addingStudyplan.id)) {
+          clonedStudyplans.push(addingStudyplan)
         }
       })
       return { studyplans: clonedStudyplans }

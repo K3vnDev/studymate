@@ -10,11 +10,11 @@ export const useOnUser = () => {
     }
   }, [])
 
-  const onUser = ({ gone = () => {}, stayed = () => {}, afterTimeout = () => {}, waitTime = 650 }) => {
+  const onUser = ({ gone = () => {}, stayed = () => {}, stayedWaitTime = () => {}, waitTime = 650 }) => {
     if (!userHasLeft.current) {
       stayed()
       setTimeout(() => {
-        afterTimeout()
+        stayedWaitTime()
         gone()
       }, waitTime)
     } else gone()

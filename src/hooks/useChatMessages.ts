@@ -1,9 +1,10 @@
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useChatStore } from '@/store/useChatStore'
+import { useStudyplansStore } from '@/store/useStudyplansStore'
 import { CONTENT_JSON, EVENTS } from '@consts'
 import { useEvent } from '@hooks/useEvent'
 import { useUserStudyplan } from '@hooks/useUserStudyplan'
-import type { ChatMessage, PromptRequestSchema } from '@types'
+import type { ChatMessage, ChatStudyplan, PromptRequestSchema, StudyplanSaved } from '@types'
 import { useEffect, useRef, useState } from 'react'
 
 export const useChatMessages = () => {
@@ -13,6 +14,7 @@ export const useChatMessages = () => {
   const setHighlihtedMessage = useChatStore(s => s.setHighlihtedMessage)
   const userInput = useChatStore(s => s.userInput)
   const setUserInput = useChatStore(s => s.setUserInput)
+  const addStudyplans = useStudyplansStore(s => s.addStudyplans)
   const { userStudyplan } = useUserStudyplan()
 
   const [isWaitingResponse, setIsWaitingRespose] = useState(false)
@@ -27,11 +29,31 @@ export const useChatMessages = () => {
 
     dataFetch<ChatMessage[]>({
       url: '/api/chat',
-      onSuccess: newMessages => setMessages(newMessages as ChatMessage[]),
+      onSuccess: newMessages => {
+        setMessages(newMessages)
+        preloadChatStudyplans(newMessages)
+      },
       onError: () => setIsOnLoadingError(true)
     })
   }
   useEffect(loadPreviousMessages, [])
+
+  const preloadChatStudyplans = (chatMessages: ChatMessage[]) => {
+    const chatStudyplans: ChatStudyplan[] = chatMessages
+      .filter(m => m.role === 'studyplan')
+      .map(m => m.content)
+    const studyplansIds = chatStudyplans.filter(s => s.original_id).map(s => s.original_id as string)
+
+    dataFetch<StudyplanSaved[]>({
+      url: '/api/studyplans',
+      options: {
+        headers: CONTENT_JSON,
+        method: 'POST',
+        body: JSON.stringify(studyplansIds)
+      },
+      onSuccess: studyplans => addStudyplans(...studyplans)
+    })
+  }
 
   // Resend message when user presses try again
   useEvent(EVENTS.ON_CHAT_TRY_AGAIN, tryAgainCallback.current, [isOnChatError])

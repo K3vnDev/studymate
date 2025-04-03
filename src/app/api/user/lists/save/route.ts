@@ -22,12 +22,12 @@ export const PATCH = async (req: NextRequest) => {
   // Parse the request body
   try {
     const reqBody = await req.json()
-    const { id, save } = z
+    const { id, save } = await z
       .object({
         id: z.string().uuid(),
         save: z.boolean()
       })
-      .parse(reqBody)
+      .parseAsync(reqBody)
 
     studyplanId = id
     saveStudyplan = save
@@ -36,26 +36,15 @@ export const PATCH = async (req: NextRequest) => {
   }
 
   try {
-    let wasSavedOrNot: boolean
+    const action = saveStudyplan ? 'add' : 'remove'
 
-    // Save studyplan
-    if (saveStudyplan) {
-      wasSavedOrNot = await modifyStudyplansLists({
-        supabase,
-        userId,
-        key: 'saved',
-        modifyId: studyplanId
-      }).add()
-
-      // Un-save studyplan
-    } else {
-      wasSavedOrNot = await modifyStudyplansLists({
-        supabase,
-        userId,
-        key: 'saved',
-        modifyId: studyplanId
-      }).remove()
-    }
+    // Save or un-save studyplan
+    const wasSavedOrNot = await modifyStudyplansLists({
+      supabase,
+      userId,
+      key: 'saved',
+      modifyId: studyplanId
+    })[action]()
 
     if (!wasSavedOrNot) {
       const prefix = saveStudyplan ? '' : 'un-'

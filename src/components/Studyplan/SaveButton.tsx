@@ -6,13 +6,18 @@ import { CONTENT_JSON } from '@/consts'
 import { useUserStore } from '@/store/useUserStore'
 import { useChatStore } from '@/store/useChatStore'
 import { saveChatToDatabase } from '@/lib/utils/saveChatToDatabase'
+import { useRouter } from 'next/navigation'
+import { useOnUser } from '@/hooks/useOnUser'
+import { useStudyplansStore } from '@/store/useStudyplansStore'
 
 export const SaveButton = () => {
   const { studyplan, isSaved: studyplanIsSaved, publicId } = useContext(StudyplanContext)
-  const [visualSaved, setVisualSaved] = useState(studyplanIsSaved)
   const [isLoading, setIsLoading] = useState(false)
   const modifyStudyplansList = useUserStore(s => s.modifyStudyplansList)
   const setChatStudyplanOriginalId = useChatStore(s => s.setStudyplanOriginalId)
+  const setStateStudyplan = useStudyplansStore(s => s.setStudyplan)
+  const router = useRouter()
+  const onUser = useOnUser()
 
   const handleSave = (isSaving: boolean) => {
     if (!publicId) {
@@ -27,14 +32,20 @@ export const SaveButton = () => {
             body: JSON.stringify(studyplan)
           },
           onSuccess: savedId => {
-            setVisualSaved(true)
             modifyStudyplansList(savedId, 'saved').add(true)
 
-            if (studyplan.chat_message_id) {
-              setChatStudyplanOriginalId(studyplan.chat_message_id, savedId, newMessages =>
-                saveChatToDatabase(newMessages)
-              )
-            }
+            if (!studyplan.chat_message_id) return
+
+            setChatStudyplanOriginalId(studyplan.chat_message_id, savedId, newMessages => {
+              // Save chat messages to database
+              saveChatToDatabase(newMessages)
+
+              // Load new published studyplan
+              setStateStudyplan({ ...studyplan, id: savedId })
+              onUser({
+                stayed: () => router.replace(`/studyplan/${savedId}`)
+              })
+            })
           },
           onFinish: () => setIsLoading(false)
         })
@@ -55,8 +66,6 @@ export const SaveButton = () => {
         })
       },
       onSuccess: () => {
-        setVisualSaved(isSaving)
-
         if (isSaving) {
           modifyStudyplansList(publicId, 'saved').add(true)
           return
@@ -68,10 +77,10 @@ export const SaveButton = () => {
   }
 
   const handleClick = () => {
-    handleSave(!visualSaved)
+    handleSave(!studyplanIsSaved)
   }
 
-  const fill = visualSaved ? 'fill-blue-20' : 'fill-none'
+  const fill = studyplanIsSaved ? 'fill-blue-20' : 'fill-none'
   const basicStyle = 'size-9 min-w-9 text-blue-20'
 
   return (

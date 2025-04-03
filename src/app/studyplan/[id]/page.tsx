@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react'
 
 export default function PublicStudyplanPage() {
   const studyplan = useStudyplansStore(s => s.studyplan)
-  const setStudyplan = useStudyplansStore(s => s.setStudyplan)
+  const setStateStudyplan = useStudyplansStore(s => s.setStudyplan)
   const addStudyplans = useStudyplansStore(s => s.addStudyplans)
   const [hasSession, setHasSession] = useState<boolean | undefined>(undefined)
 
@@ -48,21 +48,26 @@ export default function PublicStudyplanPage() {
       const foundStudyplan = searchStudyplan(id)
 
       if (foundStudyplan) {
-        setStudyplan(foundStudyplan)
+        setStateStudyplan(foundStudyplan)
         return
       }
     } else if ((studyplan as StudyplanSaved)?.id === id) {
       return
     }
 
-    setStudyplan(null)
+    setStateStudyplan(null)
 
     dataFetch<StudyplanSaved[]>({
       url: '/api/studyplans',
       options: { method: 'POST', headers: CONTENT_JSON, body: JSON.stringify([id]) },
-      onSuccess: ([data]) => {
-        setStudyplan(data)
-        addStudyplans(data)
+      onSuccess: data => {
+        if (data.length === 0) {
+          setIsOnError(true)
+          return
+        }
+        const [studyplan] = data
+        setStateStudyplan(studyplan)
+        addStudyplans(studyplan)
       },
       onError: () => setIsOnError(true)
     })
@@ -73,7 +78,7 @@ export default function PublicStudyplanPage() {
     handleStudyplanLoad()
   }, [])
 
-  const justifySelf = !hasSession ? 'justify-self-center' : ''
+  const justifySelf = !hasSession ? 'justify-self-center xl:justify-self-center' : ''
 
   const goHome = () => router.replace('/dashboard')
 

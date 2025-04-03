@@ -35,11 +35,11 @@ export const GET = async (req: NextRequest) => {
 
 // Get studyplans by ids
 export const POST = async (req: NextRequest) => {
-  let idList: string[]
+  let idsList: string[]
 
   try {
     const data = await req.json()
-    idList = await z.array(z.string()).parseAsync(data)
+    idsList = await z.array(z.string().uuid()).parseAsync(data)
   } catch {
     return Response(false, 400, { msg: 'Id array is missing or invalid' })
   }
@@ -48,7 +48,7 @@ export const POST = async (req: NextRequest) => {
 
   try {
     const data = await databaseQuery<StudyplanSaved[]>(
-      supabase.from('studyplans').select('id, name, desc, category, daily_lessons').in('id', idList)
+      supabase.from('studyplans').select('id, name, desc, category, daily_lessons').in('id', idsList)
     )
     return Response(true, 200, { data })
   } catch {

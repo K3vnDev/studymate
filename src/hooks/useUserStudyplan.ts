@@ -98,7 +98,7 @@ export const useUserStudyplan = (params?: Params) => {
       onSuccess: id =>
         onUser({
           stayed: () => seeOriginal('replace'),
-          afterTimeout: throwConfetti,
+          stayedWaitTime: throwConfetti,
           gone: () => {
             setUserStudyplan(null)
             modifyStudyplansList(id, 'completed').add()
