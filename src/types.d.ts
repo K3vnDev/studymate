@@ -49,6 +49,12 @@ export interface DBStudyplansLists {
   }
 }
 
+export interface DBUserData {
+  id: string
+  user_name: string
+  avatar_url: string
+}
+
 // Schemas
 export type MateResponseSchema = z.infer<typeof MateResponseSchemaType>
 export type PromptRequestSchema = z.infer<typeof PromptRequestSchemaType>

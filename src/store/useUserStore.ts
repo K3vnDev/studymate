@@ -1,7 +1,10 @@
-import type { UserStudyplan } from '@types'
+import type { DBUserData, UserStudyplan } from '@types'
 import { create } from 'zustand'
 
 export interface UserStore {
+  profileData: DBUserData | null
+  setProfileData: (value: DBUserData | null) => void
+
   studyplan: UserStudyplan | null | undefined
   setStudyplan: (studyplan: UserStudyplan | null) => void
 
@@ -29,6 +32,9 @@ export interface UserStore {
 }
 
 export const useUserStore = create<UserStore>(set => ({
+  profileData: null,
+  setProfileData: value => set(() => ({ profileData: value })),
+
   studyplan: undefined,
   setStudyplan: value => set(() => ({ studyplan: value })),
 

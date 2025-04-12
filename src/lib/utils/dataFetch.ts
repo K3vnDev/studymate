@@ -18,15 +18,17 @@ export const dataFetch = async <T>({
   onSuccess = () => {},
   onError = () => {},
   onFinish = () => {}
-}: Params<T>) => {
+}: Params<T>): Promise<T | undefined> => {
   try {
     const res = await fetch(url, options)
     const { success, data, message } = (await res.json()) as JSONResponse<T>
 
     if (!success || !res.ok) {
-      return onError(message, res.status)
+      onError(message, res.status)
+      return
     }
     onSuccess(data, message, res.status)
+    return data
   } catch (err) {
     onError(err as string)
   } finally {

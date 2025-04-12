@@ -25,9 +25,9 @@ export default function ChatPage() {
   })
 
   const classNames = {
-    width: `3xl:max-w-[calc(100vw-22vw-4rem-24rem)] 2xl:max-w-[calc(100vw-22vw-4rem-16rem)] 
-      xl:max-w-[calc(100vw-22vw-4rem-8rem)] lg:max-w-[calc(100vw-16rem)] sm:max-w-[calc(100vw-4rem)] 
-      xs:max-w-[calc(100vw-3rem)] max-w-[calc(100vw-1rem)]`,
+    width: `3xl:w-[calc(100%-22vw-4rem-24rem)] 2xl:w-[calc(100%-22vw-4rem-16rem)] 
+      xl:w-[calc(100%-22vw-4rem-8rem)] lg:w-[calc(100%-16rem)] sm:w-[calc(100%-4rem)] 
+      xs:w-[calc(100%-3rem)] w-[calc(100%-1rem)]`,
 
     heigth: 'xl:h-[calc(100dvh-3rem)] max-xl:min-h-0 sm:h-[calc(100dvh-5.5rem)] h-[calc(100dvh-5rem)]',
 
@@ -39,7 +39,7 @@ export default function ChatPage() {
       <Main
         className={`
           items-center flex-col justify-between fixed 
-          xl:rounded-3xl rounded-b-none xl:border border-b-0 top-6
+          xl:rounded-3xl rounded-b-none xl:border border-b-0 top-6 
           3xl:px-44 lg:px-28 sm:pb-12 pb-12 sm:pt-0 pt-0 sm:py-0 py-0 
           
           ${classNames.width} ${classNames.heigth} ${classNames.right}
