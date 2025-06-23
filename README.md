@@ -75,7 +75,7 @@ On the bottom of the page you'll find a card with swapable tasks, here you can m
 ### /profile
 This page is not fully implemented yet, but it's meant to be a place where you can see your info, progress and achievements. You'll also find lists of your saved and completed Studyplans.
 
-Track streaks, collect trophies 🏆, and flex your grind 💪
+Track streaks, collect trophies 🏆 and flex your grind 💪
 
 
 ## Future Additions
@@ -98,11 +98,11 @@ StudyMate is still in development and will keep getting updates — all of its c
 
 Totally! Just keep in mind that Studymate relies on private Supabase and OpenAI keys, so it's not exactly plug-and-play.
 
-That said, you're more than welcome to dive into the codebase, check out how it's structured, or steal—I mean, *borrow*—components and logic for your own projects.
+That said, you're more than welcome to dive into the codebase, check out how it's structured, or steal—I mean, *borrow*—components and logic for your own projects 😌
 
 Here's what might be useful:
 - `/components`: UI building blocks  
-- `/lib`: Utility declarations and logic  
+- `/lib`: Utility logic  
 - `/hooks`: Custom hooks, some are modular
 
 

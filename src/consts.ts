@@ -78,7 +78,10 @@ export const MATE_VALUES = {
   STUDYPLAN: {
     NAME: { MIN: 10, MAX: 30 },
     DESC: { MIN: 70, MAX: 150 },
-    TASKGOAL: { MIN: 25, MAX: 60 },
+    TASKS: {
+      GOAL: { MIN: 25, MAX: 60 },
+      COUNT: { DEFAULT: 3, MAX: 7 }
+    },
     MAX_DAYS: 10
   }
 }
@@ -100,7 +103,7 @@ export const PROTECTED_ROUTES = [
 
 // Chat
 export const USER_PROMPTS = {
-  CREATE_STUDYPLAN: 'Hey Mate, would you help me to create a new studyplan?',
+  CREATE_STUDYPLAN: 'Hey Mate, would you help me to create a new Studyplan?',
   EXPLAIN_TASKS: 'Hey Mate, would you help me with my next task of today?',
   WHAT_CAN_YOU_DO: 'Hey Mate, what can you help me with?',
   WHATS_NEXT: "Hey Mate, I've finished all my tasks for today! What's next?"
