@@ -73,9 +73,13 @@ On the bottom of the page you'll find a card with swapable tasks, here you can m
 
 
 ### /profile
-This page is not fully implemented yet, but it's meant to be a place where you can see your info, progress and achievements. You'll also find lists of your saved and completed Studyplans.
+Here you can see your info, statistics and achievements. You'll also find lists of your saved and completed Studyplans.
 
-Track streaks, collect trophies 🏆 and flex your grind 💪
+Reach a high streak, collect trophies 🏆 and flex your grind 💪
+
+![The profile page, showing the user's info, achievements and lists of saved and completed Studyplans](/public/screenshots/profile.webp)
+
+<small>⚠️ This page is still under development. The achievements, statistics and streak are not fully implemented yet.</small>
 
 
 ## Future Additions

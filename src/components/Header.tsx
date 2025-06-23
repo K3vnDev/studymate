@@ -2,11 +2,11 @@ import { FONTS } from '@consts'
 
 interface Props {
   className?: string
-  s?: 1 | 2 | 3
+  size?: 1 | 2 | 3
   children: React.ReactNode
 }
 
-export const Header = ({ className = '', s = 2, children }: Props) => {
+export const Header = ({ className = '', size: s = 2, children }: Props) => {
   const sizes = ['text-xl', 'text-2xl', 'text-3xl']
 
   return (

@@ -35,7 +35,7 @@ export const Studyplan = ({ studyplan, usersCurrent = false }: Props) => {
         <div className='flex justify-between items-start'>
           <div className='flex flex-col gap-3 relative'>
             <Badge>STUDYPLAN</Badge>
-            <Header s={3}>{name}</Header>
+            <Header size={3}>{name}</Header>
             <Paragraph className='xl:w-5/6 w-[95%]'>{desc}</Paragraph>
           </div>
 

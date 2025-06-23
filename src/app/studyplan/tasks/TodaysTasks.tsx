@@ -22,7 +22,7 @@ export const TodaysTasks = ({ desc, tasks }: Props) => {
   return (
     <>
       <div className='flex flex-col gap-4'>
-        <Header s={3}>
+        <Header size={3}>
           Today's tasks
           <CheckListIcon className='size-8' />
         </Header>
