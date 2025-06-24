@@ -37,8 +37,8 @@ export default function ProfilePage() {
           )}
           <Achievements />
         </section>
-        <GalleryStudyplans title='Your saved Studyplans' storeKey='saved' paginated />
-        <GalleryStudyplans title='Your completed Studyplans' storeKey='completed' paginated />
+        <GalleryStudyplans title='Your saved Studyplans' storeKey='saved' carousel />
+        <GalleryStudyplans title='Your completed Studyplans' storeKey='completed' carousel />
       </Main>
       <Sidebar />
     </>

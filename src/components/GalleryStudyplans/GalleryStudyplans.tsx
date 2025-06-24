@@ -10,15 +10,15 @@ import { useEffect } from 'react'
 import { useUserData } from '@/hooks/useUserData'
 import { GalleryStudyplansContext } from '@/lib/context/GalleryStudyplansContext'
 import { RowsGalleryStudyplans } from './RowsGalleryStudyplans'
-import { PaginatedGalleryStudyplans } from './PaginatedGalleryStudyplans'
+import { CarouselGalleryStudyplans } from './CarouselGalleryStudyplans'
 
 interface Props {
   title: string
   storeKey: keyof UserStore['studyplansLists']
-  paginated?: boolean
+  carousel?: boolean
 }
 
-export const GalleryStudyplans = ({ title, storeKey, paginated = false }: Props) => {
+export const GalleryStudyplans = ({ title, storeKey, carousel = false }: Props) => {
   const addStudyplans = useStudyplansStore(s => s.addStudyplans)
   const { lists: studyplansLists } = useUserData()
   const studyplansList = studyplansLists[storeKey]
@@ -38,7 +38,7 @@ export const GalleryStudyplans = ({ title, storeKey, paginated = false }: Props)
   }, [studyplansList])
 
   return (
-    <GalleryStudyplansContext.Provider value={{ studyplansList, paginated }}>
+    <GalleryStudyplansContext.Provider value={{ studyplansList, carousel }}>
       <section className='flex flex-col gap-4'>
         {/* Render the title if the studyplans list is not empty, otherwise render a placeholder */}
         {studyplansList ? (
@@ -48,7 +48,7 @@ export const GalleryStudyplans = ({ title, storeKey, paginated = false }: Props)
         )}
 
         {/* Render the correct component based on the paginated prop */}
-        {paginated ? <PaginatedGalleryStudyplans /> : <RowsGalleryStudyplans />}
+        {carousel ? <CarouselGalleryStudyplans /> : <RowsGalleryStudyplans />}
       </section>
     </GalleryStudyplansContext.Provider>
   )

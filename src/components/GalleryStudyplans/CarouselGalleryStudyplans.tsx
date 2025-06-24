@@ -6,7 +6,7 @@ import { TileStudyPlanFallback } from './TileStudyplanFallback'
 import { repeat } from '@/lib/utils/repeat'
 import { TileStudyplan } from './TileStudyplan'
 
-export const PaginatedGalleryStudyplans = () => {
+export const CarouselGalleryStudyplans = () => {
   const { studyplansList } = useContext(GalleryStudyplansContext)
   const { screenSize } = useResponsiveness()
   const ulRef = useRef<HTMLUListElement>(null)
@@ -26,6 +26,9 @@ export const PaginatedGalleryStudyplans = () => {
     className: 'shrink-0',
     style: { width: tileWidth, maxWidth: tileWidth, minWidth: tileWidth }
   }
+
+  // ⚠️⚠️⚠️
+  // Note: There's a bug that makes the fallback tiles not to be rendered correctly.
 
   return (
     <ul

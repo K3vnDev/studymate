@@ -2,10 +2,10 @@ import { createContext } from 'react'
 
 interface GalleryStudyplansContext {
   studyplansList?: string[]
-  paginated: boolean
+  carousel: boolean
 }
 
 export const GalleryStudyplansContext = createContext<GalleryStudyplansContext>({
   studyplansList: undefined,
-  paginated: false
+  carousel: false
 })
