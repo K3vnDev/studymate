@@ -37,12 +37,8 @@ export default function ProfilePage() {
           )}
           <Achievements />
         </section>
-        <GalleryStudyplans title='Your saved Studyplans' storeKey='saved' itemsCount={{ max: 3, min: 2 }} />
-        <GalleryStudyplans
-          title='Your completed Studyplans'
-          storeKey='completed'
-          itemsCount={{ max: 3, min: 2 }}
-        />
+        <GalleryStudyplans title='Your saved Studyplans' storeKey='saved' paginated />
+        <GalleryStudyplans title='Your completed Studyplans' storeKey='completed' paginated />
       </Main>
       <Sidebar />
     </>

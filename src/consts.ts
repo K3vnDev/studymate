@@ -119,4 +119,4 @@ export const SCREENS = {
   XL: 1280,
   TWO_XL: 1536,
   THREE_XL: 1750
-}
+} as const

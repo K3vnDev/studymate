@@ -8,10 +8,12 @@ import Link from 'next/link'
 import { TileStudyPlanFallback } from './TileStudyplanFallback'
 
 interface Props {
+  className?: string
+  style?: React.CSSProperties
   id: string
 }
 
-export const TileStudyplan = ({ id }: Props) => {
+export const TileStudyplan = ({ id, className = '', style }: Props) => {
   const { studyplan } = useSearchStudyplan(id)
 
   if (studyplan) {
@@ -19,7 +21,7 @@ export const TileStudyplan = ({ id }: Props) => {
     const { image } = getCategoryValues(category)
 
     return (
-      <li className='flex flex-col w-full button' title={name}>
+      <li className={`flex flex-col w-full button ${className}`} title={name} style={style}>
         <Link href={`/studyplan/${id}`}>
           <Image
             src={`/studyplan/${image}.webp`}

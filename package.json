@@ -10,8 +10,7 @@
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "0.10.0",
-    "@supabase/supabase-js": "2.45.6",
-    "@types/lodash": "4.17.13",
+    "@supabase/supabase-js": "^2.50.0",
     "canvas-confetti": "1.9.3",
     "next": "^15.2.4",
     "openai": "4.76.1",
