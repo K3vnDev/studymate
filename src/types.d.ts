@@ -60,27 +60,53 @@ export type MateResponseSchema = z.infer<typeof MateResponseSchemaType>
 export type PromptRequestSchema = z.infer<typeof PromptRequestSchemaType>
 
 // Studyplan Shemas
+/**
+ * A studyplan that is not saved in the database. Describes the base form of a studyplan.
+ *
+ * It lacks of id, created_by, and other fields that are only available in database studyplans.
+ */
 export type StudyplanUnSaved = z.infer<typeof StudyplanSchemaType>
 
+/**
+ * A studyplan that is saved in the database. Describes a public studyplan.
+ *
+ * It has an id, created_by, and other fields that are only available in database studyplans.
+ */
 export type StudyplanSaved = {
   id: string
   created_by: string
 } & StudyplanUnSaved
 
+/**
+ * A studyplan that is selected by the user.
+ *
+ * It features an original_id field that points to the public studyplan in the database.
+ */
 export type DBUserStudyplan = {
   original_id: string
 } & StudyplanUnSaved
 
+/**
+ * A studyplan that is selected by the user.
+ *
+ * It features a current_day field and the original_id field that points to the public studyplan in the database.
+ */
 export type UserStudyplan = {
   current_day: number
 } & DBUserStudyplan
 
+/**
+ * A studyplan that is used in a chat message.
+ */
 export type ChatStudyplan = {
   original_id: string | null
   chat_message_id: string | null
 } & StudyplanUnSaved
 
-export interface DBChatWithMate {
+/**
+ * Describes the chat messages stored in the database.
+ */
+export interface DBChatMessages {
   role: 'user' | 'assistant' | 'studyplan'
   content: string
 }
