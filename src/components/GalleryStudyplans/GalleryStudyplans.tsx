@@ -18,6 +18,18 @@ interface Props {
   carousel?: boolean
 }
 
+/**
+ * A component that renders a gallery of studyplans.
+ *
+ * It already handles the fetching of the studyplans data from the server.
+ *
+ * It allows to render the studyplans in a carousel or in a 2 rows layout.
+ *
+ * @param {Props} props - The props for the GalleryStudyplans component.
+ * @param {string} props.title - The title of the gallery.
+ * @param {keyof UserStore['studyplansLists']} props.storeKey - The key of the studyplans list in the user store.
+ * @param {boolean} [props.carousel=false] - Whether to render the studyplans in a carousel or not.
+ */
 export const GalleryStudyplans = ({ title, storeKey, carousel = false }: Props) => {
   const addStudyplans = useStudyplansStore(s => s.addStudyplans)
   const { lists: studyplansLists } = useUserData()

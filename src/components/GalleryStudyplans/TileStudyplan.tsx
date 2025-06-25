@@ -48,5 +48,5 @@ export const TileStudyplan = ({ id, className = '', style }: Props) => {
     )
   }
 
-  return <TileStudyPlanFallback />
+  return <TileStudyPlanFallback style={style} />
 }
