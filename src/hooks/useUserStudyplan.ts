@@ -1,4 +1,3 @@
-import { saveNewChatMessagesToDatabase } from '@/app/api/utils/saveNewChatMessagesToDabatase'
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { saveChatToDatabase } from '@/lib/utils/saveChatToDatabase'
 import { throwConfetti } from '@/lib/utils/throwConfetti'
@@ -6,8 +5,8 @@ import { useChatStore } from '@/store/useChatStore'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 import { useUserStore } from '@/store/useUserStore'
 import { CONTENT_JSON } from '@consts'
-import { useOnUser } from '@hooks/useOnUser'
-import type { UserStudyplan } from '@types'
+import { useUserBehavior } from '@/hooks/useUserBehavior'
+import type { ChatMessage, UserStudyplan } from '@types'
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -23,9 +22,8 @@ export const useUserStudyplan = (params?: Params) => {
   const modifyStudyplansList = useUserStore(s => s.modifyStudyplansList)
   const stateStudyplan = useStudyplansStore(s => s.studyplan)
   const setChatStudyplanOriginalId = useChatStore(s => s.setStudyplanOriginalId)
-  const chatMessages = useChatStore(s => s.messages)
 
-  const onUser = useOnUser()
+  const onUser = useUserBehavior()
   const router = useRouter()
 
   // Initial fetch of user studyplan
@@ -69,12 +67,14 @@ export const useUserStudyplan = (params?: Params) => {
       onSuccess: newStudyplan => {
         // Set the new studyplan as the user's current
         setUserStudyplan(newStudyplan)
-        // Set the original_id in the state studyplan
+
         if (stateStudyplan && 'chat_message_id' in stateStudyplan && stateStudyplan.chat_message_id) {
+          // Set the original_id in the state studyplan
           setChatStudyplanOriginalId(stateStudyplan.chat_message_id, newStudyplan.original_id, newMessages =>
             saveChatToDatabase(newMessages)
           )
         }
+
         // Go to the new studyplan page
         onUser({ stayed: () => router.replace('/studyplan') })
       }

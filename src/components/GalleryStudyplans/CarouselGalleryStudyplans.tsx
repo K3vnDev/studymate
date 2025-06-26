@@ -1,7 +1,7 @@
 import { SCREENS } from '@consts'
 import { useResponsiveness } from '@hooks/useResponsiveness'
 import { GalleryStudyplansContext } from '@/lib/context/GalleryStudyplansContext'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { use, useContext, useEffect, useRef, useState } from 'react'
 import { TileStudyPlanFallback } from './TileStudyplanFallback'
 import { repeat } from '@/lib/utils/repeat'
 import { TileStudyplan } from './TileStudyplan'
@@ -41,13 +41,13 @@ export const CarouselGalleryStudyplans = () => {
         ref={ulRef}
         className={`
           flex overflow-x-scroll w-full max-w-full 
-          scrollbar-hide snap-x snap-mandatory
+          scrollbar-hide snap-x snap-mandatory rounded-lg
         `}
         style={{ contain: 'layout inline-size', gap: `${gap}px` }}
       >
         {loaded &&
           (tileWidth && studyplansList
-            ? studyplansList.map(id => <TileStudyplan key={id} id={id} {...tileProps} />)
+            ? studyplansList.map(id => <TileStudyplan key={id} id={id} {...tileProps} inCarousel />)
             : repeat(showItemsCount, i => <TileStudyPlanFallback key={i} {...tileProps} />))}
       </ul>
 

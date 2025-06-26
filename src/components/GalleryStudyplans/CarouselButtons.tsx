@@ -1,6 +1,6 @@
 import { GalleryStudyplansContext } from '@/lib/context/GalleryStudyplansContext'
 import { ChevronIcon } from '@icons'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 
 interface Props {
   ulRef: React.RefObject<HTMLUListElement>
@@ -12,6 +12,19 @@ export const CarouselButtons = ({ ulRef, showItemsCount, tileWidth }: Props) => 
   const { gap } = useContext(GalleryStudyplansContext)
   const [buttonVisible, setButtonVisible] = useState({ left: false, right: false })
   const MIN_DIST_FROM_BORDER = 32
+  const initialScroll = useRef(true)
+
+  // Initial scroll to the first tile
+  useEffect(() => {
+    if (buttonVisible.left && initialScroll.current && tileWidth) {
+      initialScroll.current = false
+      console.log('scroll to the first tile', {
+        buttonVisible,
+        tileWidth,
+        ulRef: ulRef.current
+      })
+    }
+  }, [buttonVisible, tileWidth, ulRef.current])
 
   // Handles the visibility of the buttons
   const handleULScroll = () => {
@@ -51,7 +64,7 @@ export const CarouselButtons = ({ ulRef, showItemsCount, tileWidth }: Props) => 
   return (
     <>
       <CarouselButton
-        className='left-0 -translate-x-1/2'
+        className='left-0 xs:-translate-x-1/2 -translate-x-2'
         onClick={() => handleScrollButton(true)}
         visible={buttonVisible.left}
       >
@@ -59,7 +72,7 @@ export const CarouselButtons = ({ ulRef, showItemsCount, tileWidth }: Props) => 
       </CarouselButton>
 
       <CarouselButton
-        className='right-0 translate-x-1/2'
+        className='right-0 xs:translate-x-1/2 translate-x-2'
         onClick={() => handleScrollButton(false)}
         visible={buttonVisible.right}
       >
@@ -77,18 +90,18 @@ interface CarouselButtonsProps {
 }
 
 const CarouselButton = ({ className, children, onClick, visible }: CarouselButtonsProps) => {
-  const visibility = visible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+  const visibility = visible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
 
   return (
     <div
       className={`
-        absolute top-[28%] transition-all duration-300 
+        absolute top-[28%] transition-all duration-200 
         ${visibility} ${className}
       `}
     >
       <button
         className={`
-          p-2 rounded-full bg-gray-60 border border-gray-20 *:size-8 text-gray-20
+          p-2 rounded-full bg-gray-60 border border-gray-10/50 *:size-8 text-gray-20
           button animate-fade-in-fast shadow-card shadow-black/30 relative
         `}
         onClick={onClick}

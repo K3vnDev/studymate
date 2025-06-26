@@ -18,7 +18,7 @@ export const Achievements = () => {
       {mock_Achievements.map(achievement => (
         <li
           key={achievement}
-          className='flex items-center gap-2 bg-gray-60 border border-gray-30 rounded-full px-4 py-1'
+          className='flex items-center gap-1.5 bg-gray-60 border border-gray-30 rounded-full px-3.5 py-1'
         >
           <TrophyIcon className='size-6 text-yellow-500' />
           <Paragraph>{achievement}</Paragraph>

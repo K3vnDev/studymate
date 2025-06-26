@@ -7,7 +7,7 @@ import { useUserStore } from '@/store/useUserStore'
 import { useChatStore } from '@/store/useChatStore'
 import { saveChatToDatabase } from '@/lib/utils/saveChatToDatabase'
 import { useRouter } from 'next/navigation'
-import { useOnUser } from '@/hooks/useOnUser'
+import { useUserBehavior } from '@/hooks/useUserBehavior'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
 
 export const SaveButton = () => {
@@ -17,43 +17,50 @@ export const SaveButton = () => {
   const setChatStudyplanOriginalId = useChatStore(s => s.setStudyplanOriginalId)
   const setStateStudyplan = useStudyplansStore(s => s.setStudyplan)
   const router = useRouter()
-  const onUser = useOnUser()
+  const onUser = useUserBehavior()
 
   const handleSave = (isSaving: boolean) => {
-    if (!publicId) {
-      if (isSaving) {
-        // Create a new studyplan and save it
-        setIsLoading(true)
-        dataFetch<string>({
-          url: '/api/user/lists/save',
-          options: {
-            method: 'POST',
-            headers: CONTENT_JSON,
-            body: JSON.stringify(studyplan)
-          },
-          onSuccess: savedId => {
-            modifyStudyplansList(savedId, 'saved').add(true)
-
-            if (!studyplan.chat_message_id) return
-
-            setChatStudyplanOriginalId(studyplan.chat_message_id, savedId, newMessages => {
-              // Save chat messages to database
-              saveChatToDatabase(newMessages)
-
-              // Load new published studyplan
-              setStateStudyplan({ ...studyplan, id: savedId })
-              onUser({
-                stayed: () => router.replace(`/studyplan/${savedId}`)
-              })
-            })
-          },
-          onFinish: () => setIsLoading(false)
-        })
-      }
+    if (!publicId && isSaving) {
+      // The absence of a publicId means the studyplan is not in the database yet,
+      // so we have to create it before saving it
+      createAndSaveStudyplan()
       return
     }
 
-    // Save or un-save an existing studyplan
+    // If there's a publicId, we can save or unsave the studyplan
+    saveOrUnsaveStudyplan(isSaving)
+  }
+
+  const createAndSaveStudyplan = async () => {
+    setIsLoading(true)
+    dataFetch<string>({
+      url: '/api/user/lists/save',
+      options: {
+        method: 'POST',
+        headers: CONTENT_JSON,
+        body: JSON.stringify(studyplan)
+      },
+      onSuccess: savedId => {
+        modifyStudyplansList(savedId, 'saved').add(true)
+
+        if (studyplan.chat_message_id) {
+          setChatStudyplanOriginalId(studyplan.chat_message_id, savedId, newMessages => {
+            // Save chat messages to database
+            saveChatToDatabase(newMessages)
+
+            // Load new published studyplan
+            setStateStudyplan({ ...studyplan, id: savedId })
+            onUser({ stayed: () => router.replace(`/studyplan/${savedId}`) })
+          })
+        }
+      },
+      onFinish: () => setIsLoading(false)
+    })
+  }
+
+  const saveOrUnsaveStudyplan = (isSaving: boolean) => {
+    if (!publicId) return
+
     setIsLoading(true)
     dataFetch({
       url: '/api/user/lists/save',
@@ -76,15 +83,15 @@ export const SaveButton = () => {
     })
   }
 
-  const handleClick = () => {
-    handleSave(!studyplanIsSaved)
-  }
-
   const fill = studyplanIsSaved ? 'fill-blue-20' : 'fill-none'
   const basicStyle = 'size-9 min-w-9 text-blue-20'
 
   return (
-    <button onClick={handleClick} className='button flex items-center justify-center' disabled={isLoading}>
+    <button
+      onClick={() => handleSave(!studyplanIsSaved)}
+      className='button flex items-center justify-center'
+      disabled={isLoading}
+    >
       {isLoading ? (
         <LoadingIcon className={`${basicStyle} animate-spin stroke-2`} />
       ) : (

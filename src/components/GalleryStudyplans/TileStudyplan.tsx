@@ -6,22 +6,35 @@ import { ClockIcon } from '@icons'
 import Image from 'next/image'
 import Link from 'next/link'
 import { TileStudyPlanFallback } from './TileStudyplanFallback'
+import { useEffect, useRef } from 'react'
 
 interface Props {
   className?: string
   style?: React.CSSProperties
   id: string
+  inCarousel?: boolean
 }
 
-export const TileStudyplan = ({ id, className = '', style }: Props) => {
+export const TileStudyplan = ({ id, className = '', style, inCarousel }: Props) => {
   const { studyplan } = useSearchStudyplan(id)
+  const elementRef = useRef<HTMLLIElement>(null)
+  const initialScroll = useRef(true)
+
+  useEffect(() => {
+    if (elementRef.current && initialScroll.current && inCarousel) {
+      initialScroll.current = false
+
+      const { parentElement } = elementRef.current
+      parentElement?.scrollTo({ left: 0, behavior: 'smooth' })
+    }
+  }, [elementRef.current])
 
   if (studyplan) {
     const { name, category, daily_lessons } = studyplan
     const { image } = getCategoryValues(category)
 
     return (
-      <li className={`flex flex-col w-full button ${className}`} title={name} style={style}>
+      <li ref={elementRef} className={`flex flex-col w-full button ${className}`} title={name} style={style}>
         <Link href={`/studyplan/${id}`}>
           <Image
             src={`/studyplan/${image}.webp`}
