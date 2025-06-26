@@ -9,6 +9,7 @@ import { Paragraph } from '@components/Paragraph'
 import { ClockIcon, RocketIcon } from '@icons'
 import type { ChatStudyplan, StudyplanUnSaved, UserStudyplan } from '@types'
 import { useRouter } from 'next/navigation'
+import { twMerge } from 'tailwind-merge'
 
 interface Props {
   studyplan: StudyplanUnSaved | UserStudyplan | ChatStudyplan
@@ -45,10 +46,10 @@ export const CardStudyplan = ({ studyplan, userCurrent = false, inChat = false, 
       constant={userCurrent}
     >
       <article
-        className={`
-          ${className} w-[22rem] border border-card-border card bg-card-background 
-          px-5 py-6 flex flex-col gap-1 rounded-2xl cursor-default
-        `}
+        className={twMerge(`
+          w-[22rem] border border-card-border card bg-card-background 
+          px-5 py-6 flex flex-col gap-1 rounded-2xl cursor-default ${className}
+        `)}
         onClick={handleClick}
       >
         <Badge>STUDYPLAN</Badge>

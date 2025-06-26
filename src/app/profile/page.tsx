@@ -19,7 +19,7 @@ export default function ProfilePage() {
       <Main className='flex flex-col gap-16'>
         <section className='flex flex-col gap-6'>
           {profile?.avatar_url && (
-            <article className='flex gap-8 w-full'>
+            <article className='flex lg:gap-8 sm:gap-6 gap-4 w-full'>
               <Image
                 src={profile.avatar_url}
                 alt='The profile avatar of the user'
@@ -30,7 +30,7 @@ export default function ProfilePage() {
               <div className='self-center flex flex-col gap-1'>
                 <Header size={3}>{profile.user_name}</Header>
                 <Paragraph className='flex items-center gap-1'>
-                  <FlameIcon className='size-8 text-blue-20' /> Your max streak will appear here.
+                  <FlameIcon className='min-w-8 size-8 text-blue-20' /> Your max streak will appear here.
                 </Paragraph>
               </div>
             </article>

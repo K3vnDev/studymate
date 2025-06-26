@@ -1,3 +1,5 @@
+import { twMerge } from 'tailwind-merge'
+
 interface Props {
   pos:
     | 'left-top'
@@ -41,7 +43,7 @@ export const BlurredPoint = ({ className = '', margin = 5, size = 60, pos }: Pro
 
   return (
     <div
-      className={`${className} absolute -translate-x-1/2 -translate-y-1/2 blur-[200px]`}
+      className={twMerge(`${className} absolute -translate-x-1/2 -translate-y-1/2 blur-[200px]`)}
       style={{ ...getPositionStyle(), ...getSize() }}
     />
   )

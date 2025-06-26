@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { TileStudyPlanFallback } from './TileStudyplanFallback'
 import { useEffect, useRef } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 interface Props {
   className?: string
@@ -34,7 +35,12 @@ export const TileStudyplan = ({ id, className = '', style, inCarousel }: Props) 
     const { image } = getCategoryValues(category)
 
     return (
-      <li ref={elementRef} className={`flex flex-col w-full button ${className}`} title={name} style={style}>
+      <li
+        ref={elementRef}
+        className={twMerge(`flex flex-col w-full button ${className}`)}
+        title={name}
+        style={style}
+      >
         <Link href={`/studyplan/${id}`}>
           <Image
             src={`/studyplan/${image}.webp`}

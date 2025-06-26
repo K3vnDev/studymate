@@ -1,6 +1,7 @@
 import { GalleryStudyplansContext } from '@/lib/context/GalleryStudyplansContext'
 import { ChevronIcon } from '@icons'
 import { useContext, useEffect, useRef, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 interface Props {
   ulRef: React.RefObject<HTMLUListElement>
@@ -94,10 +95,10 @@ const CarouselButton = ({ className, children, onClick, visible }: CarouselButto
 
   return (
     <div
-      className={`
+      className={twMerge(`
         absolute top-[28%] transition-all duration-200 
         ${visibility} ${className}
-      `}
+      `)}
     >
       <button
         className={`

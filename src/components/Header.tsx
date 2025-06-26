@@ -1,4 +1,5 @@
 import { FONTS } from '@consts'
+import { twMerge } from 'tailwind-merge'
 
 interface Props {
   className?: string
@@ -11,7 +12,10 @@ export const Header = ({ className = '', size: s = 2, children }: Props) => {
 
   return (
     <h3
-      className={`${FONTS.POPPINS} text-white font-semibold ${sizes[s - 1]} flex gap-3 items-center ${className}`}
+      className={twMerge(
+        `${FONTS.POPPINS} text-white font-semibold ${sizes[s - 1]} 
+        flex gap-3 items-center ${className}`
+      )}
     >
       {children}
     </h3>
