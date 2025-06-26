@@ -22,10 +22,10 @@ export default function UserStudyplanPage() {
           ) : (
             <ErrorCard className='left-1/2 -translate-x-1/2'>
               <Gigant>Whoops...</Gigant>
-              <Message>You currently don't have a studyplan</Message>
+              <Message>You currently don't have a Studyplan</Message>
               <Button onClick={prompts.createStudyplan}>
                 <MagicWandIcon />
-                Create studyplan
+                Create Studyplan
               </Button>
             </ErrorCard>
           )}

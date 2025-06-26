@@ -12,12 +12,7 @@ export default function DashboardPage() {
     <>
       <Main className='gap-12 h-full'>
         <InitialSection />
-
-        <GalleryStudyplans
-          title='Studyplans for you'
-          storeKey='recommended'
-          itemsCount={{ max: 6, min: 4 }}
-        />
+        <GalleryStudyplans title='Studyplans for you' storeKey='recommended' />
       </Main>
       <Sidebar />
 

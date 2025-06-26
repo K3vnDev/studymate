@@ -32,7 +32,7 @@ export const TodaysLesson = ({ day }: Props) => {
       </div>
 
       <div className='flex flex-col gap-1'>
-        <Paragraph s={3} className='font-medium text-white'>
+        <Paragraph size={3} className='font-medium text-white'>
           {name}:
         </Paragraph>
         <Paragraph>{desc}</Paragraph>

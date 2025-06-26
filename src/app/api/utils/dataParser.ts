@@ -2,7 +2,7 @@ import { MATE_VALUES } from '@consts'
 import type {
   ChatMessage,
   ChatStudyplan,
-  DBChatWithMate,
+  DBChatMessages,
   DBCurrentStudyplanDay,
   DBUserStudyplanAndCurrentDayResponse,
   MateResponseSchema,
@@ -50,7 +50,7 @@ export const dataParser = {
     return { day, last_updated }
   },
 
-  fromStudyplansInClientMessages: (messages: ChatMessage[] | DBChatWithMate[]) => {
+  fromStudyplansInClientMessages: (messages: ChatMessage[] | DBChatMessages[]) => {
     const parse = (action: typeof JSON.parse | typeof JSON.stringify) =>
       messages.map(msg => {
         if (msg.role === 'studyplan') {

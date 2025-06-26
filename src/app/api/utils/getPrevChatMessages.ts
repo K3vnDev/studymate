@@ -1,14 +1,14 @@
 import { dataParser } from '@api/utils/dataParser'
 import { databaseQuery } from '@api/utils/databaseQuery'
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
-import type { DBChatWithMate } from '@types'
+import type { DBChatMessages } from '@types'
 
 interface Params {
   supabase: SupabaseClient
 }
 
 type QueryType = {
-  chat_with_mate: DBChatWithMate[]
+  chat_with_mate: DBChatMessages[]
 }
 
 export const getPrevChatMessages = async ({ supabase }: Params) => {
