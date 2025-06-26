@@ -33,7 +33,9 @@ interface Props {
 export const GalleryStudyplans = ({ title, storeKey, carousel = false }: Props) => {
   const addStudyplans = useStudyplansStore(s => s.addStudyplans)
   const { lists: studyplansLists } = useUserData()
+
   const studyplansList = studyplansLists[storeKey]
+  const gap = 16
 
   useEffect(() => {
     if (!studyplansList) return
@@ -50,8 +52,8 @@ export const GalleryStudyplans = ({ title, storeKey, carousel = false }: Props) 
   }, [studyplansList])
 
   return (
-    <GalleryStudyplansContext.Provider value={{ studyplansList, carousel }}>
-      <section className='flex flex-col gap-4'>
+    <GalleryStudyplansContext.Provider value={{ studyplansList, carousel, gap }}>
+      <section className='flex flex-col' style={{ gap: `${gap}px` }}>
         {/* Render the title if the studyplans list is not empty, otherwise render a placeholder */}
         {studyplansList ? (
           <Header>{title}</Header>

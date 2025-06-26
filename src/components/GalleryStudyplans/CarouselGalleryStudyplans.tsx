@@ -5,45 +5,53 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { TileStudyPlanFallback } from './TileStudyplanFallback'
 import { repeat } from '@/lib/utils/repeat'
 import { TileStudyplan } from './TileStudyplan'
+import { CarouselButtons } from './CarouselButtons'
 
 export const CarouselGalleryStudyplans = () => {
-  const { studyplansList } = useContext(GalleryStudyplansContext)
+  const { studyplansList, gap } = useContext(GalleryStudyplansContext)
   const { screenSize, loaded } = useResponsiveness()
 
   const ulRef = useRef<HTMLUListElement>(null)
-  const [tileWidth, setTileWidth] = useState<string | undefined>()
+  const [tileWidth, setTileWidth] = useState<number>()
 
   const showItemsCount = screenSize.x >= SCREENS.MD ? 3 : 2
 
+  // Calculate the width of the tile based on the screen size
   useEffect(() => {
     if (ulRef.current && loaded) {
-      // Calculate the width of the tile based on the screen size
       const { offsetWidth } = ulRef.current
-      const totalGap = 16 * (showItemsCount - 1)
+      const totalGap = gap * (showItemsCount - 1)
       const width = (offsetWidth - totalGap) / showItemsCount
-      setTileWidth(`${width}px`)
+      setTileWidth(width)
     }
   }, [screenSize.x, loaded])
 
   const tileProps = {
-    className: 'shrink-0',
+    className: 'shrink-0 snap-start',
     style: {
-      width: tileWidth,
-      maxWidth: tileWidth,
-      minWidth: tileWidth
+      width: `${tileWidth}px`,
+      maxWidth: `${tileWidth}px`,
+      minWidth: `${tileWidth}px`
     }
   }
 
   return (
-    <ul
-      ref={ulRef}
-      className='flex gap-4 overflow-x-clip w-full max-w-full'
-      style={{ contain: 'layout inline-size' }}
-    >
-      {loaded &&
-        (tileWidth && studyplansList
-          ? studyplansList.map(id => <TileStudyplan key={id} id={id} {...tileProps} />)
-          : repeat(showItemsCount, i => <TileStudyPlanFallback key={i} {...tileProps} />))}
-    </ul>
+    <div className='relative'>
+      <ul
+        ref={ulRef}
+        className={`
+          flex overflow-x-scroll w-full max-w-full 
+          scrollbar-hide snap-x snap-mandatory
+        `}
+        style={{ contain: 'layout inline-size', gap: `${gap}px` }}
+      >
+        {loaded &&
+          (tileWidth && studyplansList
+            ? studyplansList.map(id => <TileStudyplan key={id} id={id} {...tileProps} />)
+            : repeat(showItemsCount, i => <TileStudyPlanFallback key={i} {...tileProps} />))}
+      </ul>
+
+      {studyplansList && <CarouselButtons {...{ ulRef, showItemsCount, tileWidth }} />}
+    </div>
   )
 }
