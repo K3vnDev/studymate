@@ -20,11 +20,11 @@ export const ScrollDownButton = () => {
     <button
       className={`
         transition-all duration-200 absolute left-1/2 -translate-x-1/2 bottom-[5.5rem] rounded-full 
-        border border-gray-20 p-2 bg-gray-60 button ${style}
+        border border-gray-20 p-3 bg-gray-60 button ${style}
       `}
       onClick={handleClick}
     >
-      <ArrowIcon className='text-gray-20' />
+      <ArrowIcon className='text-gray-20 size-7' />
     </button>
   )
 }

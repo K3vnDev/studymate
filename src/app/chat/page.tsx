@@ -26,23 +26,20 @@ export default function ChatPage() {
 
   const classNames = {
     width: `3xl:w-[calc(100%-22vw-4rem-24rem)] 2xl:w-[calc(100%-22vw-4rem-16rem)] 
-      xl:w-[calc(100%-22vw-4rem-8rem)] lg:w-[calc(100%-16rem)] sm:w-[calc(100%-4rem)] 
-      xs:w-[calc(100%-3rem)] w-[calc(100%-1rem)]`,
-
-    heigth: 'xl:h-[calc(100dvh-3rem)] max-xl:min-h-0 sm:h-[calc(100dvh-5.5rem)] h-[calc(100dvh-5rem)]',
-
-    right: '3xl:right-48 2xl:right-32 xl:right-16 lg:right-32 sm:right-8 xs:right-4 right-2'
+      xl:w-[calc(100%-22vw-4rem-8rem)] lg:w-[calc(100%-16rem)] sm:w-[calc(100%-4rem)] w-screen`,
+    heigth: 'xl:h-[calc(100dvh-3rem)] max-xl:min-h-0 sm:h-[calc(100dvh-5.5rem)] h-screen',
+    right: '3xl:right-48 2xl:right-32 xl:right-16 lg:right-32 sm:right-8 right-0',
+    rounded: 'xl:rounded-3xl sm:rounded-b-none sm:rounded-t-3xl rounded-none',
+    border: 'xl:border sm:border-b-0 sm:border border-0',
   }
 
   return (
     <ChatContext.Provider value={{ ...chatMessagesValues, ...customScrollValues }}>
       <Main
         className={`
-          items-center flex-col justify-between fixed 
-          xl:rounded-3xl rounded-b-none xl:border border-b-0 top-6 
-          3xl:px-44 lg:px-28 sm:pb-12 pb-12 sm:pt-0 pt-0 sm:py-0 py-0 
-          
-          ${classNames.width} ${classNames.heigth} ${classNames.right}
+          items-center flex-col justify-between fixed mt-0
+          sm:top-6 top-0 3xl:px-44 lg:px-28 sm:pb-12 pb-12 sm:pt-0 pt-0 sm:py-0 py-0 
+          ${classNames.rounded} ${classNames.border} ${classNames.width} ${classNames.heigth} ${classNames.right}
         `}
       >
         {!isOnLoadingError ? (
