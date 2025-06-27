@@ -1,4 +1,4 @@
-import { BookmarkIcon } from '@icons'
+import { LoadingIcon } from '@icons'
 import { useContext, useEffect, useRef } from 'react'
 import { CompletedBadge } from './CompletedBadge'
 import { FinishButton } from './FinishButton'
@@ -8,8 +8,11 @@ import { SaveButton } from './SaveButton'
 
 export const ButtonsSection = () => {
   const ref = useRef<HTMLDivElement>(null)
-  const { usersCurrent, isCompleted, justCompleted, userHasAnotherStudyplan } = useContext(StudyplanContext)
 
+  const { usersCurrent, isCompleted, justCompleted, userHasAnotherStudyplan, isLoadingUserData } =
+    useContext(StudyplanContext)
+
+  // Handle buttons responsiveness
   useEffect(() => {
     if (typeof window === 'undefined') return
 
@@ -33,6 +36,11 @@ export const ButtonsSection = () => {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [ref.current])
+
+  // Render a loading icon when it's still loading the user data
+  if (isLoadingUserData) {
+    return <LoadingIcon className='h-full aspect-square text-gray-10/50 animate-spin [scale:1.2]' />
+  }
 
   return (
     <div className='flex justify-end gap-4' ref={ref}>

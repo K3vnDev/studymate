@@ -32,7 +32,8 @@ export const useUserStudyplan = (params?: Params) => {
 
     dataFetch<UserStudyplan | null>({
       url: '/api/user/studyplan',
-      onSuccess: data => setUserStudyplan(data)
+      onSuccess: data => setUserStudyplan(data),
+      onError: () => setUserStudyplan(null)
     })
   }, [])
 
