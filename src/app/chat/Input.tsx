@@ -1,10 +1,12 @@
+import { Paragraph } from '@components/Paragraph'
 import { ChatContext } from '@/lib/context/ChatContext'
 import { dispatchEvent } from '@/lib/utils/dispatchEvent'
 import { useChatStore } from '@/store/useChatStore'
 import { GradientBorder } from '@components/GradientBorder'
-import { EVENTS } from '@consts'
+import { EVENTS, USER_MAX_MESSAGE_LENGTH } from '@consts'
 import { ChevronIcon } from '@icons'
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 interface Props {
   className?: string
@@ -14,10 +16,12 @@ export const Input = ({ className = '' }: Props) => {
   const highlightedMessage = useChatStore(s => s.highlightedMessage)
   const setHighlihtedMessage = useChatStore(s => s.setHighlihtedMessage)
   const setUserInput = useChatStore(s => s.setUserInput)
+  const [characterCount, setCharacterCount] = useState(0)
 
-  const { handleSubmit, inputProps, isWaitingResponse } = useContext(ChatContext)
+  const { handleSubmit, inputProps, isWaitingResponse, setInputElementHeight } = useContext(ChatContext)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
+  // Reset highlighted message and focus on input when it changes
   useEffect(() => {
     if (highlightedMessage !== null) {
       if (highlightedMessage !== '') {
@@ -29,10 +33,21 @@ export const Input = ({ className = '' }: Props) => {
     }
   }, [highlightedMessage])
 
+  // Focus input when component mounts and reset highlighted message on unmount
   useEffect(() => {
     focusInput()
-    return () => setHighlihtedMessage(null)
+    return () => {
+      setHighlihtedMessage(null)
+    }
   }, [])
+
+  // Update input element height when it changes
+  useEffect(() => {
+    if (inputRef.current) {
+      setInputElementHeight(inputRef.current.clientHeight)
+      setCharacterCount(inputRef.current.value.length)
+    }
+  }, [inputRef.current?.clientHeight])
 
   const focusInput = () => {
     if (!inputRef.current) return
@@ -42,19 +57,28 @@ export const Input = ({ className = '' }: Props) => {
     inputRef.current.setSelectionRange(length, length)
   }
 
+  const newInputProps = {
+    ...inputProps,
+    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      inputProps.onChange(e)
+      setCharacterCount(e.target.value.length)
+    }
+  }
+
+  const messageTrimLength = inputRef.current?.value.trim().length
+
   return (
     <GradientBorder
       color='skySalmon'
-      className={{
-        main: `${className} p-1 rounded-[1.625rem]`
-      }}
+      className={{ main: twMerge(`p-1 rounded-[1.625rem] ${className}`) }}
+      style={{ contain: 'layout inline-size' }}
       bouncy
     >
       <form
         className={`
-          flex justify-between items-center md:px-4 px-3 md:gap-4 gap-2
+          flex justify-between items-center md:px-4 px-3 gap-2
           bg-gray-50 border border-gray-20 rounded-3xl focus-within:border-[#aaa]
-          [transition:all_.2s_ease] hover:brightness-110
+          [transition:all_.2s_ease] hover:brightness-110 relative
         `}
         onSubmit={handleSubmit}
       >
@@ -65,16 +89,37 @@ export const Input = ({ className = '' }: Props) => {
           `}
           placeholder='Message Mate'
           ref={inputRef}
-          {...inputProps}
+          {...newInputProps}
           autoFocus
         />
         <button
-          className='bg-gray-20 rounded-full size-9 min-w-9 flex justify-center items-center button group'
-          disabled={isWaitingResponse}
+          className='bg-gray-20 rounded-full size-9 min-w-9 flex justify-center items-center group button z-10'
+          disabled={isWaitingResponse || !messageTrimLength}
         >
           <ChevronIcon className='text-gray-50 stroke-[2.5px] transition group-active:-translate-y-1' />
         </button>
+
+        <CharacterCounter {...{ characterCount }} />
       </form>
     </GradientBorder>
+  )
+}
+
+const CharacterCounter = ({ characterCount }: { characterCount: number }) => {
+  const remainingCharacters = Math.max(0, USER_MAX_MESSAGE_LENGTH - characterCount)
+  const maxRemainingCharacters = USER_MAX_MESSAGE_LENGTH / 3
+
+  const visibility =
+    remainingCharacters <= maxRemainingCharacters ? 'opacity-25 bottom-2' : 'opacity-0 bottom-1'
+
+  return (
+    <Paragraph
+      className={`
+        absolute md:right-4 right-3 transition-all duration-200 
+        pointer-events-none ${visibility}
+      `}
+    >
+      {remainingCharacters}
+    </Paragraph>
   )
 }

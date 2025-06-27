@@ -10,6 +10,7 @@ import type { ChatMessage, PromptRequestSchema as PromptRequestSchemaType } from
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import type { ChatCompletionMessageParam } from 'openai/src/resources/index.js'
+import { USER_MAX_MESSAGE_LENGTH } from '@consts'
 
 // Get all previous chat messages
 export const GET = async () => {
@@ -25,7 +26,7 @@ export const GET = async () => {
   }
 }
 
-// Send a message to mate and get a response
+// Send a message to Mate and get a response
 export const POST = async (req: NextRequest) => {
   const supabase = createServerComponentClient({ cookies })
 
@@ -44,9 +45,15 @@ export const POST = async (req: NextRequest) => {
 
     const { new: newMessage, previous: previousChatMessages } = messages
 
+    // Check if user message is too long
+    if (newMessage.length > USER_MAX_MESSAGE_LENGTH) {
+      return Response(false, 400, { msg: 'User message was too long' })
+    }
+
     // Extract new user message and previous messages
     userMessage = newMessage
-    chatMessages = dataParser.fromClientMessagesToModelPrompt(previousChatMessages)
+    const rawMessages = dataParser.fromClientMessagesToModelPrompt(previousChatMessages)
+    chatMessages = rawMessages.filter(m => m.content && m.content.length <= USER_MAX_MESSAGE_LENGTH)
 
     // Extract user data
     userData = user_data

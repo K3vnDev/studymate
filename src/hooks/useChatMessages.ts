@@ -1,7 +1,7 @@
 import { dataFetch } from '@/lib/utils/dataFetch'
 import { useChatStore } from '@/store/useChatStore'
 import { useStudyplansStore } from '@/store/useStudyplansStore'
-import { CONTENT_JSON, EVENTS } from '@consts'
+import { CONTENT_JSON, EVENTS, USER_MAX_MESSAGE_LENGTH } from '@consts'
 import { useEvent } from '@hooks/useEvent'
 import { useUserStudyplan } from '@hooks/useUserStudyplan'
 import type { ChatMessage, ChatStudyplan, PromptRequestSchema, StudyplanSaved } from '@types'
@@ -91,7 +91,11 @@ export const useChatMessages = () => {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setUserInput(e.target.value)
+    const { value } = e.target
+
+    if (value.length <= USER_MAX_MESSAGE_LENGTH) {
+      setUserInput(value)
+    }
   }
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {

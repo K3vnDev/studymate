@@ -1,6 +1,6 @@
 import { MateResponseSchema } from '@/lib/schemas/MateResponse'
 import { MATE_TRAIN_MESSAGE } from '@api/utils/mateTrainMessage'
-import { MAX_MESSAGES_ON_PROMPT } from '@consts'
+import { MATE_MESSAGES_MEMORY } from '@consts'
 import type { PromptRequestSchema as PromptRequestSchemaType } from '@types'
 import OpenAI from 'openai'
 import { zodResponseFormat } from 'openai/helpers/zod.mjs'
@@ -18,7 +18,7 @@ export const promptAIModel = async (
   const openai = new OpenAI()
   openai.apiKey = process.env.OPENAI_API_KEY ?? ''
 
-  const previousMessages = prevMessages.slice(-MAX_MESSAGES_ON_PROMPT)
+  const previousMessages = prevMessages.slice(-MATE_MESSAGES_MEMORY)
 
   const trainingMessages: ChatCompletionMessageParam[] = [{ role: 'system', content: MATE_TRAIN_MESSAGE }]
 

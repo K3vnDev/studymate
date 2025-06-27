@@ -5,6 +5,8 @@ interface ChatContext {
   isWaitingResponse: boolean
   isOnChatError: boolean
   isOnLoadingError: boolean
+  inputElementHeight: number
+  setInputElementHeight: React.Dispatch<React.SetStateAction<number>>
   inputProps: {
     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
     onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void
@@ -21,6 +23,8 @@ export const ChatContext = createContext<ChatContext>({
   isWaitingResponse: false,
   isOnChatError: false,
   isOnLoadingError: false,
+  inputElementHeight: 0,
+  setInputElementHeight: () => {},
   inputProps: {
     onChange: () => {},
     onKeyDown: () => {},
