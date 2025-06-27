@@ -26,8 +26,8 @@ export default function ChatPage() {
 
   const classNames = {
     width: `3xl:w-[calc(100%-22vw-4rem-24rem)] 2xl:w-[calc(100%-22vw-4rem-16rem)] 
-      xl:w-[calc(100%-22vw-4rem-8rem)] lg:w-[calc(100%-16rem)] sm:w-[calc(100%-4rem)] w-screen`,
-    heigth: 'xl:h-[calc(100dvh-3rem)] max-xl:min-h-0 sm:h-[calc(100dvh-5.5rem)] h-screen',
+      xl:w-[calc(100%-22vw-4rem-8rem)] lg:w-[calc(100%-16rem)] sm:w-[calc(100%-4rem)]`,
+    heigth: 'xl:h-[calc(100dvh-3rem)] max-xl:min-h-0 sm:h-[calc(100dvh-5.5rem)] h-dvh',
     right: '3xl:right-48 2xl:right-32 xl:right-16 lg:right-32 sm:right-8 right-0',
     rounded: 'xl:rounded-3xl sm:rounded-b-none sm:rounded-t-3xl rounded-none',
     border: 'xl:border sm:border-b-0 sm:border border-0'

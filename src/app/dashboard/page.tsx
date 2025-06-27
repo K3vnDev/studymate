@@ -12,7 +12,12 @@ export default function DashboardPage() {
     <>
       <Main className='gap-12 h-full'>
         <InitialSection />
-        <GalleryStudyplans title='Studyplans for you' storeKey='recommended' />
+
+        <GalleryStudyplans
+          title='Studyplans for you'
+          storeKey='recommended'
+          emptyMessage="Oops! We couldn't find any Studyplans for you."
+        />
       </Main>
       <Sidebar />
 

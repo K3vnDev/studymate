@@ -33,34 +33,38 @@ export const TileStudyplan = ({ id, className = '', style, inCarousel }: Props) 
   if (studyplan) {
     const { name, category, daily_lessons } = studyplan
     const { image } = getCategoryValues(category)
+    const duration = parseDays(daily_lessons.length)
 
     return (
       <li
-        ref={elementRef}
-        className={twMerge(`flex flex-col w-full button ${className}`)}
+        className={twMerge(`
+          flex flex-col w-full h-[var(--studyplan-tile-height)] 
+          button ${className}
+        `)}
         title={name}
         style={style}
       >
-        <Link href={`/studyplan/${id}`}>
-          <Image
-            src={`/studyplan/${image}.webp`}
-            alt='Studyplan category'
-            width={250}
-            height={200}
-            className='object-cover w-full h-[11.5rem] rounded-lg mb-2'
-            draggable={false}
-          />
+        <Link href={`/studyplan/${id}`} className='flex flex-col h-full'>
+          <div className='flex-1 w-full rounded-lg overflow-hidden mb-2 relative'>
+            <Image
+              src={`/studyplan/${image}.webp`}
+              alt='Studyplan category'
+              fill
+              className='object-cover'
+              draggable={false}
+            />
+          </div>
           <span
             className={`
-              ${FONTS.POPPINS} text-lg text-white w-full inline-block text-nowrap 
-              whitespace-nowrap overflow-hidden text-ellipsis h-7
+              ${FONTS.POPPINS} text-lg text-white overflow-hidden 
+              text-ellipsis whitespace-nowrap h-7 mb-1
             `}
           >
             {name}
           </span>
           <span className='flex items-center gap-1 text-gray-10 -translate-y-1'>
             <ClockIcon className='size-5' />
-            {parseDays(daily_lessons.length)}
+            {duration}
           </span>
         </Link>
       </li>
