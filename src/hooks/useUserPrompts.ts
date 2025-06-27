@@ -24,6 +24,7 @@ export const useUserPrompts = (params: Params = { redirect: false }) => {
     explainTasks: () => prompt(EXPLAIN_TASKS),
     whatCanYouDo: () => prompt(WHAT_CAN_YOU_DO),
     whatsNext: () => prompt(WHATS_NEXT),
-    blank: () => prompt('')
+    blank: () => prompt(''),
+    custom: prompt
   }
 }

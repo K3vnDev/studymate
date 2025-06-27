@@ -1,5 +1,6 @@
 import { useResponsiveness } from '@/hooks/useResponsiveness'
 import { TasksContext } from '@/lib/context/TasksContext'
+import { getOrdinal } from '@/lib/utils/getOrdinal'
 import { ChipButton } from '@components/ChipButton'
 import { SCREENS } from '@consts'
 import { useJustLoaded } from '@hooks/useJustLoaded'
@@ -26,14 +27,25 @@ export const Buttons = () => {
 }
 
 const ExplainTaskButton = () => {
+  const { selectedTask } = useContext(TasksContext)
   const prompts = useUserPrompts({ redirect: true })
   const { isLoading } = useContext(TasksContext)
 
   const { screenSize } = useResponsiveness()
   const buttonLabel = screenSize.x >= SCREENS.XS ? 'Explain this task' : 'Explain'
 
+  const prompt = () => {
+    // Get the ordinal number
+    const ordinals = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh']
+    const ordinal = selectedTask < ordinals.length ? ordinals[selectedTask] : getOrdinal(selectedTask + 1)
+
+    // Send prompt
+    const message = `Hey Mate, would you help me with my ${ordinal} task of today?`
+    prompts.custom(message)
+  }
+
   return (
-    <ChipButton empty disabled={isLoading} onClick={prompts.explainTasks}>
+    <ChipButton empty disabled={isLoading} onClick={prompt}>
       <MagicWandIcon /> {buttonLabel}
     </ChipButton>
   )
