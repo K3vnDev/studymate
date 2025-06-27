@@ -1,4 +1,4 @@
-import { Response } from '@api/utils/Response'
+import { response } from '@/app/api/utils/response'
 import { databaseQuery } from '@api/utils/databaseQuery'
 import { getUserId } from '@api/utils/getUserId'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
@@ -18,11 +18,11 @@ export const POST = async (req: NextRequest) => {
     const { index } = await req.json()
     taskIndex = await z.number().nonnegative().parseAsync(index)
   } catch {
-    return Response(false, 400, { msg: 'Task index is missing or invalid' })
+    return response(false, 400, { msg: 'Task index is missing or invalid' })
   }
 
   const userId = await getUserId({ supabase })
-  if (userId === null) return Response(false, 401)
+  if (userId === null) return response(false, 401)
 
   try {
     // Fetch studyplan and current day from database
@@ -32,28 +32,28 @@ export const POST = async (req: NextRequest) => {
     const [{ studyplan, current_studyplan_day }] = data
 
     if (!studyplan || !current_studyplan_day) {
-      return Response(false, 405, { msg: "User doesn't have a studyplan" })
+      return response(false, 405, { msg: "User doesn't have a studyplan" })
     }
 
     const dayIndex = current_studyplan_day.day - 1
     const { tasks } = studyplan.daily_lessons[dayIndex]
 
     if (taskIndex > tasks.length - 1) {
-      return Response(false, 405, { msg: 'Task index is out of bounds' })
+      return response(false, 405, { msg: 'Task index is out of bounds' })
     }
 
     // Update tasks value
     studyplan.daily_lessons[dayIndex].tasks[taskIndex].done = true
     newStudyplan = studyplan
   } catch {
-    return Response(false, 500)
+    return response(false, 500)
   }
 
   // Update values on database
   try {
     await databaseQuery(supabase.from('users').update({ studyplan: newStudyplan }).eq('id', userId))
-    return Response(true, 201)
+    return response(true, 201)
   } catch {
-    return Response(false, 500)
+    return response(false, 500)
   }
 }

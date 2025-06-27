@@ -3,7 +3,7 @@ import { databaseQuery } from '@api/utils/databaseQuery'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
-import { Response } from '@api/utils/Response'
+import { response } from '@/app/api/utils/response'
 import { z } from 'zod'
 import { getUserId } from '@api/utils/getUserId'
 import { StudyplanSchema } from '@/lib/schemas/Studyplan'
@@ -17,7 +17,7 @@ export const PATCH = async (req: NextRequest) => {
 
   // Check if user is authenticated
   const userId = await getUserId({ supabase })
-  if (userId === null) return Response(false, 401, { msg: 'Unauthorized' })
+  if (userId === null) return response(false, 401, { msg: 'Unauthorized' })
 
   // Parse the request body
   try {
@@ -32,7 +32,7 @@ export const PATCH = async (req: NextRequest) => {
     studyplanId = id
     saveStudyplan = save
   } catch {
-    return Response(false, 400, { msg: 'Invalid request body' })
+    return response(false, 400, { msg: 'Invalid request body' })
   }
 
   try {
@@ -48,11 +48,11 @@ export const PATCH = async (req: NextRequest) => {
 
     if (!wasSavedOrNot) {
       const prefix = saveStudyplan ? '' : 'un-'
-      return Response(false, 400, { msg: `Nothing happened, studyplan was already ${prefix}saved` })
+      return response(false, 400, { msg: `Nothing happened, studyplan was already ${prefix}saved` })
     }
-    return Response(true, 200)
+    return response(true, 200)
   } catch {
-    return Response(false, 500)
+    return response(false, 500)
   }
 }
 
@@ -63,14 +63,14 @@ export const POST = async (req: NextRequest) => {
 
   // Check if user is authenticated
   const userId = await getUserId({ supabase })
-  if (userId === null) return Response(false, 401, { msg: 'Unauthorized' })
+  if (userId === null) return response(false, 401, { msg: 'Unauthorized' })
 
   // Parse the request body
   try {
     const reqBody = await req.json()
     studyplanFromReq = await StudyplanSchema.parseAsync(reqBody)
   } catch {
-    return Response(false, 400, { msg: 'Invalid request body' })
+    return response(false, 400, { msg: 'Invalid request body' })
   }
 
   // Publish studyplan and save it
@@ -88,8 +88,8 @@ export const POST = async (req: NextRequest) => {
       modifyId: id
     }).add()
 
-    return Response(true, 200, { data: id })
+    return response(true, 200, { data: id })
   } catch {
-    return Response(false, 500)
+    return response(false, 500)
   }
 }
