@@ -1,4 +1,5 @@
 import { twMerge } from 'tailwind-merge'
+import { FallbackBox } from '../FallbackBox'
 
 interface Props {
   className?: string
@@ -13,8 +14,8 @@ export const TileStudyPlanFallback = ({ className = '', style }: Props) => (
     `)}
     style={style}
   >
-    <div className='bg-zinc-600 w-full h-full rounded-lg' />
-    <span className='bg-zinc-700 w-full h-8 rounded-lg' />
-    <span className='bg-zinc-700 w-[4.5rem] h-8 rounded-lg' />
+    <FallbackBox className='w-full h-full' />
+    <FallbackBox className='bg-zinc-700 w-full h-8' />
+    <FallbackBox className='bg-zinc-700 w-[4.5rem] h-8' />
   </li>
 )

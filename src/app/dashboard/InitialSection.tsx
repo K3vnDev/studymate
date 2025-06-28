@@ -1,4 +1,4 @@
-import { FallbackZone } from '@/components/FallbackZone'
+import { FallbackBox } from '@/components/FallbackBox'
 import { useUserPrompts } from '@/hooks/useUserPrompts'
 import { useUserStudyplan } from '@/hooks/useUserStudyplan'
 import { CardMate } from '@components/CardMate'
@@ -12,7 +12,7 @@ export const InitialSection = () => {
   const { userStudyplan, isLoading } = useUserStudyplan()
 
   if (isLoading) {
-    return <FallbackZone className='max-w-[32rem] h-40 bg-zinc-600' />
+    return <FallbackBox className='max-w-[32rem] h-40' />
   }
 
   if (userStudyplan) {
