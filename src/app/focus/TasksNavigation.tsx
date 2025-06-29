@@ -1,5 +1,6 @@
 import { TasksContext } from '@/lib/context/TasksContext'
 import { useContext } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export const TasksNavigation = () => {
   const { tasks } = useContext(TasksContext)
@@ -8,17 +9,17 @@ export const TasksNavigation = () => {
   return (
     <aside className={`md:w-4 w-3 h-full flex flex-col justify-center ${gap}`}>
       {tasks.map((_, index) => (
-        <NavigationButton key={index} index={index} />
+        <NavigationPoint key={index} index={index} />
       ))}
     </aside>
   )
 }
 
-interface NavigationButtonProps {
+interface NavigationPointProps {
   index: number
 }
 
-const NavigationButton = ({ index }: NavigationButtonProps) => {
+const NavigationPoint = ({ index }: NavigationPointProps) => {
   const { tasks, swapTask, selectedTask, isLoading } = useContext(TasksContext)
 
   const handleClick = () => swapTask(index)
@@ -27,7 +28,7 @@ const NavigationButton = ({ index }: NavigationButtonProps) => {
 
   return (
     <button
-      className={`size-3.5 rounded-full button relative ${opacity} ${bgColor} disabled:opacity-10`}
+      className={twMerge(`size-3.5 rounded-full button relative ${opacity} ${bgColor} disabled:opacity-10`)}
       onClick={handleClick}
       disabled={isLoading}
     >

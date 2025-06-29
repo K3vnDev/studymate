@@ -1,5 +1,11 @@
 import { useEffect } from 'react'
 
+/**
+ * @param eventName - The name of the event to listen for
+ * @param eventHandler - The function to call when the event is triggered
+ * @param dependencyArray - An array of dependencies that will refresh the event listener
+ */
+
 export const useEvent = <T>(
   eventName: string,
   eventHandler: (e: T) => void,

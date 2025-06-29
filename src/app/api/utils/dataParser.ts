@@ -1,4 +1,4 @@
-import { MATE_VALUES } from '@consts'
+import { MATE_PROMPT_VALUES } from '@consts'
 import type {
   ChatMessage,
   ChatStudyplan,
@@ -26,7 +26,7 @@ export const dataParser = {
         return { role: 'assistant', content: data }
       }
       // Remove extra daily lessons and set the original_id to null
-      const slicedDailyLessons = data.daily_lessons.slice(0, MATE_VALUES.STUDYPLAN.MAX_DAYS)
+      const slicedDailyLessons = data.daily_lessons.slice(0, MATE_PROMPT_VALUES.STUDYPLAN.MAX_DAYS)
       const content: ChatStudyplan = {
         ...data,
         daily_lessons: slicedDailyLessons,

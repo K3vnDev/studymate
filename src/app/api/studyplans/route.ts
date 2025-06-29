@@ -1,4 +1,4 @@
-import { Response } from '@api/utils/Response'
+import { response } from '@/app/api/utils/response'
 import { databaseQuery } from '@api/utils/databaseQuery'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import type { StudyplanSaved } from '@types'
@@ -18,7 +18,7 @@ export const GET = async (req: NextRequest) => {
       limit = await z.coerce.number().positive().parseAsync(limitFromSearchParams)
     }
   } catch {
-    return Response(false, 400, { msg: 'Invalid limit' })
+    return response(false, 400, { msg: 'Invalid limit' })
   }
 
   const supabase = createServerComponentClient({ cookies })
@@ -27,9 +27,9 @@ export const GET = async (req: NextRequest) => {
     const data = await databaseQuery<StudyplanSaved[]>(
       supabase.from('studyplans').select('id, name, desc, category, daily_lessons').limit(limit)
     )
-    return Response(true, 200, { data })
+    return response(true, 200, { data })
   } catch {
-    return Response(false, 500)
+    return response(false, 500)
   }
 }
 
@@ -41,7 +41,7 @@ export const POST = async (req: NextRequest) => {
     const data = await req.json()
     idsList = await z.array(z.string().uuid()).parseAsync(data)
   } catch {
-    return Response(false, 400, { msg: 'Id array is missing or invalid' })
+    return response(false, 400, { msg: 'Id array is missing or invalid' })
   }
 
   const supabase = createServerComponentClient({ cookies })
@@ -50,8 +50,8 @@ export const POST = async (req: NextRequest) => {
     const data = await databaseQuery<StudyplanSaved[]>(
       supabase.from('studyplans').select('id, name, desc, category, daily_lessons').in('id', idsList)
     )
-    return Response(true, 200, { data })
+    return response(true, 200, { data })
   } catch {
-    return Response(false, 404)
+    return response(false, 404)
   }
 }

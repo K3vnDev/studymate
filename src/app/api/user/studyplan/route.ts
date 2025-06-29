@@ -1,5 +1,5 @@
 import { dateSubstraction } from '@/lib/utils/dateSubstraction'
-import { Response } from '@api/utils/Response'
+import { response } from '@/app/api/utils/response'
 import { abandonStudyplan } from '@api/utils/abandonStudyplan'
 import { dataParser } from '@api/utils/dataParser'
 import { databaseQuery } from '@api/utils/databaseQuery'
@@ -23,7 +23,7 @@ export const GET = async () => {
   const supabase = createServerComponentClient({ cookies })
 
   const userId = await getUserId({ supabase })
-  if (userId === null) return Response(false, 401)
+  if (userId === null) return response(false, 401)
 
   try {
     let data = await databaseQuery<DBUserStudyplanAndCurrentDayResponse[]>(
@@ -33,7 +33,7 @@ export const GET = async () => {
     const [{ studyplan, current_studyplan_day }] = data
 
     if (!studyplan || !current_studyplan_day) {
-      return Response(true, 200, { data: null })
+      return response(true, 200, { data: null })
     }
 
     const { day, last_updated } = current_studyplan_day
@@ -50,17 +50,17 @@ export const GET = async () => {
         const data = await databaseQuery<DBCurrentStudyplanDay[]>(
           supabase.from('users').update({ current_studyplan_day }).eq('id', userId).select()
         )
-        if (!data) return Response(false, 500)
+        if (!data) return response(false, 500)
       } catch {
-        return Response(false, 500)
+        return response(false, 500)
       }
 
       data = [{ studyplan, current_studyplan_day }]
     }
 
-    return Response(true, 200, { data: dataParser.fromDBResponseToUserStudyplan(data) })
+    return response(true, 200, { data: dataParser.fromDBResponseToUserStudyplan(data) })
   } catch {
-    return Response(false, 500)
+    return response(false, 500)
   }
 }
 
@@ -73,12 +73,12 @@ export const POST = async (req: NextRequest) => {
   let original_id: string
 
   const userId = await getUserId({ supabase })
-  if (userId === null) return Response(false, 401)
+  if (userId === null) return response(false, 401)
 
   try {
     studyplanFromReq = await StudyplanSchema.parseAsync(reqData)
   } catch {
-    return Response(false, 400, { msg: "Sent studyplan doesn't follow the schema" })
+    return response(false, 400, { msg: "Sent studyplan doesn't follow the schema" })
   }
 
   // Create a new studyplan if no one matches the id
@@ -97,7 +97,7 @@ export const POST = async (req: NextRequest) => {
       original_id = id
     }
   } catch {
-    return Response(false, 500)
+    return response(false, 500)
   }
 
   // Save a copy of the studyplan on the user
@@ -119,9 +119,9 @@ export const POST = async (req: NextRequest) => {
         .eq('id', userId)
         .select()
     )
-    return Response(true, 201, { data: dataParser.fromDBResponseToUserStudyplan(data) })
+    return response(true, 201, { data: dataParser.fromDBResponseToUserStudyplan(data) })
   } catch {
-    return Response(false, 500)
+    return response(false, 500)
   }
 }
 
@@ -130,13 +130,13 @@ export const DELETE = async () => {
   const supabase = createServerComponentClient({ cookies })
 
   const userId = await getUserId({ supabase })
-  if (userId === null) return Response(false, 401)
+  if (userId === null) return response(false, 401)
 
   try {
     await abandonStudyplan({ supabase, userId })
-    return Response(true, 200)
+    return response(true, 200)
   } catch {
-    return Response(false, 500)
+    return response(false, 500)
   }
 }
 
@@ -145,7 +145,7 @@ export const PUT = async () => {
   const supabase = createServerComponentClient({ cookies })
 
   const userId = await getUserId({ supabase })
-  if (userId === null) return Response(false, 401)
+  if (userId === null) return response(false, 401)
 
   let originalId: string
 
@@ -154,7 +154,7 @@ export const PUT = async () => {
     type QueryResponse = { studyplan: UserStudyplan | null }
     const [{ studyplan }] = await databaseQuery<QueryResponse[]>(supabase.from('users').select('studyplan'))
     if (studyplan === null) {
-      return Response(false, 405, { msg: "User doesn't have a studyplan" })
+      return response(false, 405, { msg: "User doesn't have a studyplan" })
     }
 
     const { original_id, daily_lessons } = studyplan
@@ -162,19 +162,19 @@ export const PUT = async () => {
 
     // Check if all tasks are done
     if (!daily_lessons.every(d => d.tasks.every(t => t.done))) {
-      return Response(false, 403, { msg: 'All tasks must be done' })
+      return response(false, 403, { msg: 'All tasks must be done' })
     }
 
     // Abandon studyplan
     await abandonStudyplan({ supabase, userId })
   } catch {
-    return Response(false, 500)
+    return response(false, 500)
   }
 
   try {
     await modifyStudyplansLists({ supabase, modifyId: originalId, key: 'completed', userId }).add()
-    return Response(true, 200, { data: originalId })
+    return response(true, 200, { data: originalId })
   } catch {
-    return Response(false, 500)
+    return response(false, 500)
   }
 }

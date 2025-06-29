@@ -110,3 +110,8 @@ export interface DBChatMessages {
   role: 'user' | 'assistant' | 'studyplan'
   content: string
 }
+
+export interface ReusableComponent {
+  className?: string
+  style?: React.CSSProperties
+}

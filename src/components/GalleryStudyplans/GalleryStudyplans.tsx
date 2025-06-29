@@ -6,16 +6,18 @@ import type { UserStore } from '@/store/useUserStore'
 import { Header } from '@components/Header'
 import { CONTENT_JSON } from '@consts'
 import type { StudyplanSaved } from '@types'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useUserData } from '@/hooks/useUserData'
 import { GalleryStudyplansContext } from '@/lib/context/GalleryStudyplansContext'
 import { RowsGalleryStudyplans } from './RowsGalleryStudyplans'
 import { CarouselGalleryStudyplans } from './CarouselGalleryStudyplans'
+import { EmptyGalleryStudyplans } from './EmptyGalleryStudyplans'
 
 interface Props {
   title: string
   storeKey: keyof UserStore['studyplansLists']
   carousel?: boolean
+  emptyMessage?: string
 }
 
 /**
@@ -29,8 +31,14 @@ interface Props {
  * @param {string} props.title - The title of the gallery.
  * @param {keyof UserStore['studyplansLists']} props.storeKey - The key of the studyplans list in the user store.
  * @param {boolean} [props.carousel=false] - Whether to render the studyplans in a carousel or not.
+ * @param {string} [props.emptyMessage='No studyplans found'] - The message to display when the studyplans list is empty.
  */
-export const GalleryStudyplans = ({ title, storeKey, carousel = false }: Props) => {
+export const GalleryStudyplans = ({
+  title,
+  storeKey,
+  carousel = false,
+  emptyMessage = 'No studyplans found'
+}: Props) => {
   const addStudyplans = useStudyplansStore(s => s.addStudyplans)
   const { lists: studyplansLists } = useUserData()
 
@@ -51,19 +59,31 @@ export const GalleryStudyplans = ({ title, storeKey, carousel = false }: Props) 
     })
   }, [studyplansList])
 
-  return (
-    <GalleryStudyplansContext.Provider value={{ studyplansList, carousel, gap }}>
-      <section className='flex flex-col' style={{ gap: `${gap}px` }}>
-        {/* Render the title if the studyplans list is not empty, otherwise render a placeholder */}
-        {studyplansList ? (
-          <Header>{title}</Header>
-        ) : (
-          <div className='bg-zinc-700 animate-pulse rounded-lg w-48 h-8' />
-        )}
+  const isEmpty = studyplansList?.length === 0
 
-        {/* Render the correct component based on the paginated prop */}
-        {carousel ? <CarouselGalleryStudyplans /> : <RowsGalleryStudyplans />}
+  return (
+    <GalleryStudyplansContext.Provider value={{ studyplansList, carousel, gap, emptyMessage, title }}>
+      <section className='flex flex-col' style={{ gap: `${gap}px` }}>
+        <GalleryHeader />
+
+        {isEmpty ? (
+          <EmptyGalleryStudyplans />
+        ) : carousel ? (
+          <CarouselGalleryStudyplans />
+        ) : (
+          <RowsGalleryStudyplans />
+        )}
       </section>
     </GalleryStudyplansContext.Provider>
+  )
+}
+
+const GalleryHeader = () => {
+  const { title, studyplansList } = useContext(GalleryStudyplansContext)
+
+  return studyplansList ? (
+    <Header>{title}</Header>
+  ) : (
+    <div className='bg-zinc-700 animate-pulse rounded-lg w-48 h-8' />
   )
 }

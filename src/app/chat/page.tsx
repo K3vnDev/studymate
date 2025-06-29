@@ -12,8 +12,10 @@ import { ReloadIcon } from '@icons'
 import { MessagesScreen } from './MessagesScreen'
 import { NoMessagesScreen } from './NoMessagesScreen'
 import { ScrollHelper } from './ScrollHelper'
+import { useState } from 'react'
 
 export default function ChatPage() {
+  const [inputElementHeight, setInputElementHeight] = useState(0)
   useUserStudyplan()
   const messages = useChatStore(s => s.messages)
 
@@ -26,19 +28,26 @@ export default function ChatPage() {
 
   const classNames = {
     width: `3xl:w-[calc(100%-22vw-4rem-24rem)] 2xl:w-[calc(100%-22vw-4rem-16rem)] 
-      xl:w-[calc(100%-22vw-4rem-8rem)] lg:w-[calc(100%-16rem)] sm:w-[calc(100%-4rem)] w-screen`,
-    heigth: 'xl:h-[calc(100dvh-3rem)] max-xl:min-h-0 sm:h-[calc(100dvh-5.5rem)] h-screen',
+      xl:w-[calc(100%-22vw-4rem-8rem)] lg:w-[calc(100%-16rem)] sm:w-[calc(100%-4rem)]`,
+    heigth: 'xl:h-[calc(100dvh-3rem)] max-xl:min-h-0 sm:h-[calc(100dvh-5.5rem)] h-dvh',
     right: '3xl:right-48 2xl:right-32 xl:right-16 lg:right-32 sm:right-8 right-0',
     rounded: 'xl:rounded-3xl sm:rounded-b-none sm:rounded-t-3xl rounded-none',
-    border: 'xl:border sm:border-b-0 sm:border border-0'
+    border: 'xl:border sm:border sm:border-b-0 border-0'
+  }
+
+  const contextValue = {
+    ...chatMessagesValues,
+    ...customScrollValues,
+    inputElementHeight,
+    setInputElementHeight
   }
 
   return (
-    <ChatContext.Provider value={{ ...chatMessagesValues, ...customScrollValues }}>
+    <ChatContext.Provider value={contextValue}>
       <Main
         className={`
           items-center flex-col justify-between fixed xs:mt-0 mt-0
-          sm:top-6 top-0 3xl:px-44 lg:px-28 sm:pb-12 pb-12 sm:pt-0 pt-0 sm:py-0 py-0 
+          sm:top-6 top-0 3xl:px-44 lg:px-28 sm:pt-0 pt-0 sm:py-0 py-0 
           ${classNames.rounded} ${classNames.border} ${classNames.width} ${classNames.heigth} ${classNames.right}
         `}
       >

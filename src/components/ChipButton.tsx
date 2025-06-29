@@ -1,16 +1,16 @@
 'use client'
 
+import type { ReusableComponent } from '@types'
 import { Waitable } from '@components/Waitable'
 import { twMerge } from 'tailwind-merge'
 
-interface Props {
+type Props = {
   children: React.ReactNode
   onClick?: () => void
   empty?: boolean
   disabled?: boolean
-  className?: string
   isLoading?: boolean
-}
+} & ReusableComponent
 
 export const ChipButton = ({
   children,
@@ -18,9 +18,10 @@ export const ChipButton = ({
   empty,
   isLoading = false,
   disabled,
-  className = ''
+  className = '',
+  style
 }: Props) => {
-  const style = empty
+  const generalStyle = empty
     ? 'bg-transparent border-blue-10 text-blue-10'
     : 'bg-blue-30 border-[#6168E8] text-white'
 
@@ -32,11 +33,12 @@ export const ChipButton = ({
   return (
     <button
       className={twMerge(`
-        ${className} ${style} border rounded-full py-1 lg:px-5 px-3 font-medium text-lg button 
+        ${className} ${generalStyle} border rounded-full py-1 lg:px-5 px-3 font-medium text-lg button 
         flex lg:gap-2 gap-1 items-center *:size-6 text-nowrap w-fit
       `)}
       onClick={handleClick}
       disabled={disabled || isLoading}
+      style={style}
     >
       <Waitable isWaiting={isLoading}>{children}</Waitable>
     </button>

@@ -32,7 +32,8 @@ export const useUserStudyplan = (params?: Params) => {
 
     dataFetch<UserStudyplan | null>({
       url: '/api/user/studyplan',
-      onSuccess: data => setUserStudyplan(data)
+      onSuccess: data => setUserStudyplan(data),
+      onError: () => setUserStudyplan(null)
     })
   }, [])
 
@@ -133,5 +134,5 @@ interface DataFetchHandlerParams<T> {
 
 const dataFetchHandler = <T>({ url, options, onSuccess }: DataFetchHandlerParams<T>) =>
   new Promise<void>(res => {
-    dataFetch<T>({ url, options, onSuccess, onFinish: res })
+    dataFetch<T>({ url, options, onSuccess, onFinish: res, redirectOn401: true })
   })

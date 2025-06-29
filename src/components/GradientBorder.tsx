@@ -1,6 +1,7 @@
 import { EVENTS } from '@consts'
 import { useEvent } from '@hooks/useEvent'
 import { useEffect, useRef, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 interface Props {
   className?: {
@@ -13,6 +14,7 @@ interface Props {
   color: keyof typeof colors
   constant?: boolean
   bouncy?: boolean
+  style?: React.CSSProperties
 }
 
 const initialAnimationValues = {
@@ -25,7 +27,14 @@ const colors = {
   blues: 'bg-gradient-to-r from-blue-30 to-blue-20 animate-spin'
 }
 
-export const GradientBorder = ({ children, className, constant = false, bouncy = false, color }: Props) => {
+export const GradientBorder = ({
+  children,
+  className,
+  constant = false,
+  bouncy = false,
+  color,
+  style
+}: Props) => {
   const [{ opacity, animation }, setAnimationValues] = useState(initialAnimationValues)
   const timeout = useRef<NodeJS.Timeout>()
   const ANIMATION_DURATION = 2000
@@ -46,21 +55,23 @@ export const GradientBorder = ({ children, className, constant = false, bouncy =
   useEffect(() => () => clearTimeout(timeout.current), [])
 
   return (
-    <div className={`${className?.main ?? ''} ${animation} rounded-2xl overflow-clip`}>
-      <div className={`${className?.contentWrapper ?? ''} relative`}>
+    <div className={twMerge(`${animation} rounded-2xl overflow-clip ${className?.main ?? ''}`)} style={style}>
+      <div className={twMerge(`relative ${className?.contentWrapper ?? ''}`)}>
         {children}
 
         <div
-          className={`
-            ${className?.gradientWrapper ?? ''} absolute aspect-square w-[calc(200%)] 
+          className={twMerge(`
+            absolute aspect-square w-[calc(200%)] 
             top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-[1]
-          `}
+            ${className?.gradientWrapper ?? ''}
+          `)}
         >
           <div
-            className={`
-              ${className?.gradient ?? ''} ${colors[color]} w-full h-full 
+            className={twMerge(`
+              ${colors[color]} w-full h-full 
               ${constant ? 'opacity-100' : opacity} animate-spin
-            `}
+              ${className?.gradient ?? ''}
+            `)}
           />
         </div>
       </div>

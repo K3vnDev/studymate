@@ -2,6 +2,7 @@ import { Paragraph } from '@components/Paragraph'
 import { MATE_IMAGES_ALT } from '@consts'
 import { useUserPrompts } from '@hooks/useUserPrompts'
 import Image from 'next/image'
+import { twMerge } from 'tailwind-merge'
 
 interface Props {
   message: string
@@ -18,11 +19,11 @@ export const CardMate = ({ message, children, onClick, className }: Props) => {
 
   return (
     <article
-      className={`
-        ${className?.main ?? ''} bg-card-background border border-card-border 
+      className={twMerge(`
+        bg-card-background border border-card-border 
         w-fit max-w-[40rem] rounded-2xl flex items-center px-8 gap-5 
-        card relative xs:mt-0 mt-36
-      `}
+        card relative xs:mt-0 mt-36 ${className?.main ?? ''}
+      `)}
       onClick={onClick ?? prompts.blank}
     >
       <div
@@ -38,10 +39,10 @@ export const CardMate = ({ message, children, onClick, className }: Props) => {
           draggable={false}
           width={160}
           height={150}
-          className={`
-            ${className?.image ?? ''} [scale:1.15] object-cover self-end xs:origin-bottom origin-top
-            xs:max-w-40 xs:w-40 aspect-square
-          `}
+          className={twMerge(`
+            [scale:1.15] object-cover self-end xs:origin-bottom origin-top
+            xs:max-w-40 xs:w-40 aspect-square ${className?.image ?? ''}
+          `)}
         />
       </div>
 

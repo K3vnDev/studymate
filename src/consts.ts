@@ -71,7 +71,7 @@ export const MATE_MESSAGES = {
       "Hey there! Do you need any help with today's tasks? I'm here to support you and make it easier!"
   }
 }
-export const MATE_VALUES = {
+export const MATE_PROMPT_VALUES = {
   MESSAGE: {
     MAX: 350
   },
@@ -85,7 +85,9 @@ export const MATE_VALUES = {
     MAX_DAYS: 10
   }
 }
-export const MAX_MESSAGES_ON_PROMPT = 8
+export const MATE_MESSAGES_MEMORY = 10
+export const USER_MAX_MESSAGE_LENGTH = 600
+
 export const MATE_IMAGES_ALT = {
   GREETING: 'Your virtual assistant, Mate, waving its hand at you',
   SITTING: 'Your virtual assistant, Mate, sitting on the floor and looking down'

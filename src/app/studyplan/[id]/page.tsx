@@ -39,11 +39,13 @@ export default function PublicStudyplanPage() {
   }
 
   const handleStudyplanLoad = () => {
+    // Don't proceed if the id is not a string and redirect to the dashboard if the studyplan is null
     if (typeof id !== 'string') {
       if (studyplan === null) router.push('./dashboard')
       return
     }
 
+    // If the studyplan is null or the id is not the same as the studyplan id, search for the studyplan
     if (studyplan === null || (studyplan as StudyplanSaved)?.id !== id) {
       const foundStudyplan = searchStudyplan(id)
 
@@ -55,6 +57,7 @@ export default function PublicStudyplanPage() {
       return
     }
 
+    // If the studyplan wasn't already loaded, fetch it
     setStateStudyplan(null)
 
     dataFetch<StudyplanSaved[]>({
@@ -74,13 +77,20 @@ export default function PublicStudyplanPage() {
   }
 
   useEffect(() => {
+    // Redirect to the tasks page if the id is a typo
+    const typoRoutes = ['task', 'lesson', 'lessons']
+    if (typoRoutes.includes(id as string)) {
+      router.replace('/studyplan/tasks')
+      return
+    }
+
     checkSession()
     handleStudyplanLoad()
   }, [])
 
   const justifySelf = !hasSession ? 'justify-self-center xl:justify-self-center' : ''
 
-  const goHome = () => router.replace('/dashboard')
+  const backToDashboard = () => router.replace('/dashboard')
 
   if (hasSession === undefined) {
     return null
@@ -95,9 +105,9 @@ export default function PublicStudyplanPage() {
           <ErrorCard className='self-center'>
             <Gigant>Uh oh... 404</Gigant>
             <Message>That studyplan doesn't exist</Message>
-            <Button onClick={goHome}>
-              <ArrowIcon className='rotate-90 group-active:-translate-x-1.5 transition' />
-              Go home
+            <Button onClick={backToDashboard}>
+              <ArrowIcon className='rotate-90 group-active:-translate-x-1.5 transition size-6 min-w-6' />
+              Go to dashboard
             </Button>
           </ErrorCard>
         )}

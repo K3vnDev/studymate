@@ -34,7 +34,9 @@ const config: Config = {
         'bounce-once': 'bounce-once 1s ease-in-out',
 
         appear: 'fade-and-scale 250ms ease both',
-        disappear: 'fade-and-scale 250ms ease reverse both'
+        disappear: 'fade-and-scale 250ms ease reverse both',
+
+        'weak-pulse': 'weak-pulse 4s ease both infinite'
       },
       keyframes: {
         'spin-pulse': {
@@ -54,6 +56,9 @@ const config: Config = {
         'fade-and-scale': {
           '0%': { opacity: '0', scale: '0.8' },
           '100%': { opacity: '1', scale: '1' }
+        },
+        'weak-pulse': {
+          '50%': { opacity: '0.75' }
         }
       }
     },

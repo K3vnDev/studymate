@@ -1,9 +1,10 @@
-interface Params<T> {
+export interface Params<T> {
   url: string
   options?: RequestInit
   onSuccess?: (data: T, message?: string, status?: number) => void
   onError?: (message?: string, status?: number) => void
   onFinish?: () => void
+  redirectOn401?: boolean
 }
 
 interface JSONResponse<T> {
@@ -17,13 +18,18 @@ export const dataFetch = async <T>({
   options,
   onSuccess = () => {},
   onError = () => {},
-  onFinish = () => {}
+  onFinish = () => {},
+  redirectOn401 = false
 }: Params<T>): Promise<T | undefined> => {
   try {
     const res = await fetch(url, options)
     const { success, data, message } = (await res.json()) as JSONResponse<T>
 
     if (!success || !res.ok) {
+      if (redirectOn401 && res.status === 401 && typeof window !== 'undefined') {
+        window.location.href = '/'
+        return
+      }
       onError(message, res.status)
       return
     }

@@ -3,6 +3,7 @@ import { createContext } from 'react'
 
 interface StudyplanContext {
   studyplan: Props['studyplan']
+  isLoadingUserData: boolean
   usersCurrent: boolean
   isCompleted: boolean
   userHasAnotherStudyplan: boolean
@@ -13,6 +14,7 @@ interface StudyplanContext {
 
 export const StudyplanContext = createContext<StudyplanContext>({
   studyplan: undefined as any,
+  isLoadingUserData: true,
   usersCurrent: false,
   isCompleted: false,
   userHasAnotherStudyplan: false,

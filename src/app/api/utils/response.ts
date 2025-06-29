@@ -5,5 +5,5 @@ interface Info {
   data?: unknown
 }
 
-export const Response = (success: boolean, statusCode: number, info?: Info) =>
+export const response = (success: boolean, statusCode: number, info?: Info) =>
   NextResponse.json({ success, message: info?.msg, data: info?.data }, { status: statusCode })

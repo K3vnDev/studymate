@@ -30,24 +30,24 @@ export const CurrentTask = ({ todaysTasks: tasks, isOnLastDay }: Props) => {
   const allTasksAreDone = tasks.every(t => t.done)
   const searchParams = useSearchParams()
 
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null)
+  const SCROLL_COOLDOWN = 150
+
   // Load task recieved on query params
   useEffect(() => {
     const taskIndex = Number(searchParams.get('task'))
 
     if (taskIndex && !Number.isNaN(taskIndex) && taskIndex <= tasks.length) {
-      swapTask(taskIndex - 1, 'instant')
+      scrollToTask(taskIndex - 1, 'instant')
     }
     setIsShowingCompletedMessage(allTasksAreDone)
   }, [])
 
-  const swapTask = (index: number, behavior: ScrollBehavior = 'smooth') => {
-    if (!ulRef.current) return
+  const scrollToTask = (index: number, behavior: ScrollBehavior = 'smooth') => {
+    if (!ulRef.current || index < 0 || index >= tasks.length) return
 
     const { height } = ulRef.current.getBoundingClientRect()
     ulRef.current.scrollTo({ top: height * index - 2, behavior })
-
-    setSelectedTask(index)
-    router.replace(`/focus?task=${selectedTask}`)
   }
 
   const completeTask = () => {
@@ -68,8 +68,39 @@ export const CurrentTask = ({ todaysTasks: tasks, isOnLastDay }: Props) => {
   useVerticalNavigation({
     currentIndex: selectedTask,
     maxIndex: tasks.length - 1,
-    action: newIndex => swapTask(newIndex)
+    action: newIndex => scrollToTask(newIndex)
   })
+
+  // Handle wheel event to scroll the list
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault()
+      if (scrollTimeout.current) return
+
+      scrollTimeout.current = setTimeout(() => {
+        scrollTimeout.current = null
+      }, SCROLL_COOLDOWN)
+
+      const { deltaY } = e
+
+      const add = deltaY > 0 ? 1 : -1
+      scrollToTask(selectedTask + add)
+    }
+
+    ulRef.current?.addEventListener('wheel', handleWheel)
+    return () => ulRef.current?.removeEventListener('wheel', handleWheel)
+  }, [ulRef.current, selectedTask])
+
+  // Handle task slection based on scroll position
+  const handleULScroll = (e: React.UIEvent<HTMLUListElement>) => {
+    if (!ulRef.current) return
+
+    const { scrollTop } = e.currentTarget
+    const index = Math.round(scrollTop / ulRef.current.clientHeight)
+
+    setSelectedTask(index)
+    router.replace(`/focus?task=${selectedTask}`)
+  }
 
   return !isShowingCompletedMessage ? (
     <TasksContext.Provider
@@ -79,7 +110,7 @@ export const CurrentTask = ({ todaysTasks: tasks, isOnLastDay }: Props) => {
         selectedTaskIsDone: tasks[selectedTask].done,
         allTasksAreDone,
         isOnLastDay,
-        swapTask,
+        swapTask: scrollToTask,
         completeTask,
         isLoading
       }}
@@ -93,11 +124,15 @@ export const CurrentTask = ({ todaysTasks: tasks, isOnLastDay }: Props) => {
         <main className='flex flex-col gap-3 w-full'>
           <Badge>CURRENT TASK</Badge>
           <ul
-            className='w-full flex flex-col h-20 overflow-hidden rounded-lg border border-gray-50'
+            className={`
+              w-full flex flex-col h-20 rounded-lg border border-gray-50 
+              overflow-y-scroll scrollbar-hide snap-y snap-mandatory
+            `}
             ref={ulRef}
+            onScroll={handleULScroll}
           >
             {tasks.map((task, i) => (
-              <TaskTile {...task} key={i} />
+              <TaskTile {...task} key={i} className='snap-start' />
             ))}
           </ul>
           <Buttons />

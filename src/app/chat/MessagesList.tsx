@@ -11,7 +11,10 @@ export const MessagesList = () => {
 
   return (
     <ul
-      className='w-full max-h-full flex flex-col gap-4 pb-20 pt-32 overflow-hidden animate-fade-in-fast'
+      className={`
+        w-full max-h-full flex flex-col gap-4 pb-16 pt-32 
+        overflow-hidden animate-fade-in-fast mb-12
+      `}
       ref={listRef}
     >
       {messages.map((message, i) => (

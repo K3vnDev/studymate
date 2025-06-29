@@ -1,5 +1,5 @@
 import type { DBStudyplansLists } from '@types'
-import { Response } from '@api/utils/Response'
+import { response } from '@/app/api/utils/response'
 import { databaseQuery } from '@api/utils/databaseQuery'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
@@ -11,12 +11,12 @@ export const GET = async () => {
     const data = await databaseQuery<DBStudyplansLists[]>(supabase.from('users').select('studyplans_lists'))
 
     if (data.length === 0) {
-      return Response(false, 401)
+      return response(false, 401)
     }
 
     const [{ studyplans_lists }] = data
-    return Response(true, 200, { data: studyplans_lists })
+    return response(true, 200, { data: studyplans_lists })
   } catch {
-    return Response(false, 500)
+    return response(false, 500)
   }
 }

@@ -34,7 +34,7 @@ interface MessageProps {
 export const Gigant = ({ className = '', children = 'Ooops...' }: MessageProps) => (
   <span
     className={twMerge(
-      `${FONTS.POPPINS} ${className} sm:text-5xl text-4xl font-bold text-center text-balance text-white`
+      `${FONTS.POPPINS} sm:text-5xl text-4xl font-bold text-center text-balance text-white ${className}`
     )}
   >
     {children}
@@ -44,7 +44,7 @@ export const Gigant = ({ className = '', children = 'Ooops...' }: MessageProps) 
 export const Message = ({ className = '', children = 'Sorry, there was an error' }: MessageProps) => (
   <span
     className={twMerge(
-      `${FONTS.POPPINS} ${className} sm:text-2xl text-xl text-gray-10 text-balance text-center`
+      `${FONTS.POPPINS} sm:text-2xl text-xl text-gray-10 text-balance text-center ${className}`
     )}
   >
     {children} :(
@@ -60,8 +60,8 @@ interface ButtonProps {
 export const Button = ({ className = '', children, onClick = () => {} }: ButtonProps) => (
   <button
     className={twMerge(`
-      ${className} border border-gray-20 bg-gray-30/25 px-5 py-2 group
-      text-gray-10 text-xl flex gap-2 rounded-lg button items-center
+      border border-gray-20 bg-gray-30/25 px-5 py-2 group w-fit
+      text-gray-10 text-xl flex gap-2 rounded-lg button items-center ${className}
     `)}
     {...{ onClick }}
   >
