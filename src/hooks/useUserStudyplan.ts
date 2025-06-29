@@ -134,5 +134,5 @@ interface DataFetchHandlerParams<T> {
 
 const dataFetchHandler = <T>({ url, options, onSuccess }: DataFetchHandlerParams<T>) =>
   new Promise<void>(res => {
-    dataFetch<T>({ url, options, onSuccess, onFinish: res })
+    dataFetch<T>({ url, options, onSuccess, onFinish: res, redirectOn401: true })
   })

@@ -3,10 +3,12 @@ import { DropdownMenuContext } from '@/lib/context/DropdownMenuContext'
 import { useEvent } from '@hooks/useEvent'
 import { ChevronIcon, MoreIcon } from '@icons'
 import { useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 interface Props {
   children: React.ReactNode
   className?: {
+    main?: string
     button?: string
   }
 }
@@ -39,10 +41,13 @@ export const DropdownMenu = ({ children, className }: Props) => {
 
   return (
     <DropdownMenuContext.Provider value={{ isOpen, manage }}>
-      <div className='relative'>
+      <div className={twMerge(`relative ${className?.main}`)}>
         <button
           onClick={manage.toggle}
-          className={`${className?.button} aspect-square button *:size-8 ${style.rotation} text-gray-10`}
+          className={twMerge(`
+            aspect-square button *:size-8 text-gray-10
+            ${style.rotation} ${className?.button}
+          `)}
           id={IDS.BUTTON}
         >
           {isOpen ? <ChevronIcon className='-rotate-90' /> : <MoreIcon />}

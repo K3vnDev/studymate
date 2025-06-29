@@ -33,7 +33,8 @@ export const useChatMessages = () => {
         setMessages(newMessages)
         preloadChatStudyplans(newMessages)
       },
-      onError: () => setIsOnLoadingError(true)
+      onError: () => setIsOnLoadingError(true),
+      redirectOn401: true
     })
   }
   useEffect(loadPreviousMessages, [])
@@ -82,6 +83,7 @@ export const useChatMessages = () => {
       },
       onSuccess: messages => pushMessages(...messages),
       onFinish: () => setIsWaitingRespose(false),
+      redirectOn401: true,
 
       onError: () => {
         setIsOnChatError(true)
