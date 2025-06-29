@@ -18,7 +18,7 @@ export const LoginButton = () => {
   return (
     <button
       onClick={handleSignIn}
-      className='bg-black border border-[#333] rounded-full px-8 py-3 flex gap-3 items-center hover:scale-105 active:scale-95 transition hover:brightness-125 active:brightness-90'
+      className='bg-black border border-[#333] rounded-full px-8 py-3 flex gap-3 items-center button'
     >
       <GithubIcon className='size-6' />
       <span className='text-white'>Sign in with Github</span>

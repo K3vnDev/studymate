@@ -1,4 +1,4 @@
-import { CardStudyplan } from '@/components/CardStudyplan'
+import { CardStudyplan } from '@components/CardStudyplan'
 import { dispatchEvent } from '@/lib/utils/dispatchEvent'
 import { repeat } from '@/lib/utils/repeat'
 import { useUserStore } from '@/store/useUserStore'

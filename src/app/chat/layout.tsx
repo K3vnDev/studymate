@@ -1,5 +1,5 @@
 import { Background } from '@components/Background/Background'
-import { BlurredPoint } from '@components/Background/BlurredPoint'
+import { Glow } from '@components/Background/Glow'
 import { Sidebar } from '@components/Sidebar'
 
 export default function RootLayout({
@@ -13,10 +13,9 @@ export default function RootLayout({
 
       <Sidebar />
 
-      <Background className='bg-[#020202]'>
-        <BlurredPoint className='bg-[#6A71FC]/15' pos='left-top' />
-        <BlurredPoint className='bg-[#6313ED]/10' pos='center-center' />
-        <BlurredPoint className='bg-[#6A71FC]/15' pos='right-bottom' />
+      <Background className='bg-[#020202] '>
+        <Glow className='bg-[#3e2ed2]/15' pos='left-center' margin={10} />
+        <Glow className='bg-[#6313ED]/15' pos='right-bottom' margin={0} />
       </Background>
     </>
   )
