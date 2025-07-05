@@ -1,3 +1,5 @@
+import { SCREENS } from '@/consts'
+import { useResponsiveness } from '@/hooks/useResponsiveness'
 import { FallbackBox } from '@components/FallbackBox'
 import type { DBUserData } from '@types'
 import Image from 'next/image'
@@ -7,7 +9,8 @@ interface Props {
 }
 
 export const UserImage = ({ profile }: Props) => {
-  const imageSize = 128
+  const { screenSize } = useResponsiveness()
+  const imageSize = screenSize.x > SCREENS.XS ? 128 : 90
 
   if (!profile) {
     return <FallbackBox className='rounded-full' style={{ width: imageSize, height: imageSize }} />
@@ -19,7 +22,7 @@ export const UserImage = ({ profile }: Props) => {
       alt='The profile avatar of the user'
       width={imageSize}
       height={imageSize}
-      className='rounded-full'
+      className='rounded-full aspect-square object-cover'
     />
   )
 }

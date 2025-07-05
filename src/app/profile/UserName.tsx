@@ -7,4 +7,16 @@ interface Props {
 }
 
 export const UserName = ({ profile }: Props) =>
-  profile ? <Header size={3}>{profile?.user_name}</Header> : <FallbackBox className='w-48 h-8' />
+  profile ? (
+    <Header
+      className={`
+        inline-block overflow-hidden whitespace-nowrap text-ellipsis
+        md:max-w-xs xs:max-w-56 max-w-40 
+      `}
+      size={3}
+    >
+      {profile.user_name}
+    </Header>
+  ) : (
+    <FallbackBox className='xs:w-48 w-32 h-8' />
+  )
